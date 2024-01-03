@@ -93,6 +93,7 @@ const LoginScreen = ({ location, history }) => {
       <Input
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        data-cy="email"
       />
     </Form.Item>
 
@@ -109,6 +110,7 @@ const LoginScreen = ({ location, history }) => {
       <Input.Password
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              data-cy="password"
       />
     </Form.Item>
 
@@ -129,7 +131,7 @@ const LoginScreen = ({ location, history }) => {
         span: 32,
       }}
     >
-      <Button variant='success' className='w-100' type="submit" htmlType="submit">
+      <Button variant='success' className='w-100' type="submit" htmlType="submit" data-cy="login-btn">
         Login
       </Button>
     </Form.Item>
