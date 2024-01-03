@@ -23,17 +23,17 @@ Welcome to the MERN School Management System repository! This comprehensive syst
 4. Configure MongoDB connection in the backend (`server/config/db.js`).
 5. Run the backend server using `npm run server`.
 6. Navigate to the `frontend` directory and run the frontend using `npm start`.
-7. On the root folder create a .env file and have the following variables' values
+7. On the root folder create a .env file and have the following variables' values : -
 
-MONGO_URI=
-JWT_SECRET = "abc123"
-HOST='smtp.gmail.com'
-SERVICE='gmail'
-EMAIL_PORT=587
-SECURE=true
-USER=
-PASS=
-BASE_URL=http://localhost:5173/
+ - MONGO_URI=
+ - JWT_SECRET = "abc123"
+ - HOST='smtp.gmail.com'
+ - SERVICE='gmail'
+ - EMAIL_PORT=587
+ - SECURE=true
+ - USER=
+ - PASS=
+ - BASE_URL=http://localhost:5173/
 
 
 Feel free to explore the codebase and contribute to the improvement of this School Management System!
