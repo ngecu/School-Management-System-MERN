@@ -1,0 +1,42 @@
+###
+## REGISTER USER
+POST http://localhost:5000/api/users/
+Content-Type: application/json
+
+{
+    "firstName": "Robinson",
+    "secondName":"Ngecu",
+    "email":"devngecu@gmail.com",
+    "password": "3W!W.:srzc4r^!P",
+    "userType":"admin",
+    "isAdmin":true
+}
+
+
+###
+## LOGIN USER
+POST http://localhost:5000/api/users/login
+Content-Type: application/json
+
+{
+    "email":"devngecu@gmail.com",
+    "password": "3W!W.:srzc4r^!P"
+}
+
+###
+## RESET PASSWORD
+POST http://localhost:5000/api/users/reset-password
+Content-Type: application/json
+
+{
+    "email":"devngecu@gmail.com"
+}
+
+###
+## CHANGE PASSWORD
+POST http://localhost:5000/api/users/change-password/6595b8c2cf8204a829aba591/715a2c03fa1a409c94d60b061e21393d3d001a4e2bd87a096d864a7014391d6d
+Content-Type: application/json
+
+{
+    "password":"3W!W.:srzc4r^!P"
+}
