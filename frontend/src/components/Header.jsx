@@ -32,11 +32,24 @@ const Header = () => {
     setOpen(false);
   };
 
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  
+  useEffect(() => {
+    // Update the date-time every second
+    const intervalId = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+
   return (
     <>
       <header>
         <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
-          <Container>
+          <>
             <Nav className="mr-auto">
               <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={showDrawer} />
             </Nav>
@@ -49,59 +62,34 @@ const Header = () => {
             </LinkContainer>
 
             <Navbar.Collapse id="basic-navbar-nav">
+            {userInfo && (
               <Route render={({ history }) => <SearchBox history={history} />} />
+            )}
               <Nav className="ml-auto">
-              {!userInfo && (
-                <>
-                <LinkContainer to="/">
-                  <Nav.Link>
-                    <div className="icon-text-wrapper">
-                      <AccountCircle />
-                      <span>Login</span>
-                    </div>
-                  </Nav.Link>
-                </LinkContainer>
+           {!userInfo && (
+        <>
 
-                <LinkContainer to="/register">
-                  <Nav.Link>
-                    <div className="icon-text-wrapper">
-                      <AccountCircle />
-                      <span>prm</span>
-                    </div>
-                  </Nav.Link>
-                </LinkContainer>
+          {/* Display live date-time */}
+          <LinkContainer to="#">
+            <Nav.Link className='m-auto'>
+          <div className="live-date-time">
+            {currentDateTime.toLocaleString()}
+          </div>
+          </Nav.Link>
+          </LinkContainer>
 
+          <LinkContainer to="/">
+            <Nav.Link>
+              <div className="icon-text-wrapper">
+                <AccountCircle />
+                <span>Login</span>
+              </div>
+            </Nav.Link>
+          </LinkContainer>
 
-                <LinkContainer to="/register">
-                  <Nav.Link>
-                    <div className="icon-text-wrapper">
-                      <AccountCircle />
-                      <span>lm</span>
-                    </div>
-                  </Nav.Link>
-                </LinkContainer>
-
-                
-                <LinkContainer to="/register">
-                  <Nav.Link>
-                    <div className="icon-text-wrapper">
-                      <AccountCircle />
-                      <span>sm</span>
-                    </div>
-                  </Nav.Link>
-                </LinkContainer>
-
-
-                <LinkContainer to="/register">
-                  <Nav.Link>
-                    <div className="icon-text-wrapper">
-                      <AccountCircle />
-                      <span>pm</span>
-                    </div>
-                  </Nav.Link>
-                </LinkContainer>
-                </>
-              )}
+        
+        </>
+      )}
                 
 
                 {userInfo && userInfo.isAdmin && (
@@ -126,7 +114,7 @@ const Header = () => {
  
               </Nav>
             </Navbar.Collapse>
-          </Container>
+          </>
         </Navbar>
         <div className="bg-dark form-small-device">
           <Container className="py-2">

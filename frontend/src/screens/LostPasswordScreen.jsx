@@ -1,8 +1,9 @@
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, message } from 'antd';
+
 import React, { useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { resetPassword } from '../actions/userActions';
-import { Container } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
@@ -35,14 +36,23 @@ const LostPasswordScreen = () => {
   
 
   return (
-    <Container>
-      <div className="entry-content my-4">
-        <div className="woocommerce">
-          <div className="woocommerce-notices-wrapper"></div>
-          <p>
+    <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <div style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px', padding: '20px', width: '800px' }}>
+            <Row>
+        <Col md={12} className='text-center'>
+          <h1>School Management System</h1>
+         
+        </Col>
+
+        <Col md={6}>
+        <p>
             Lost your password? Please enter your username or email address. You will receive a
             link to create a new password via email.
           </p>
+        <div className="entry-content my-4">
+        <div className="woocommerce">
+          <div className="woocommerce-notices-wrapper"></div>
+         
           {error && <Message variant='danger'>{error}</Message>}
           {success && <Message variant='success'>{success.message}</Message>}
           {loading && <Loader />}
@@ -54,7 +64,7 @@ const LostPasswordScreen = () => {
             layout="vertical"
             name="basic"
             labelCol={{
-              span: 8,
+              span: 32,
             }}
             wrapperCol={{
               span: 24,
@@ -62,6 +72,10 @@ const LostPasswordScreen = () => {
             autoComplete="off"
           >
             <Form.Item
+             wrapperCol={{
+              offset: 0,
+              span: 32,
+            }}
               label="Email address"
               name="Email"
               rules={[
@@ -77,15 +91,25 @@ const LostPasswordScreen = () => {
             <Form.Item
               wrapperCol={{
                 offset: 0,
-                span: 16,
+                span: 32,
               }}
             >
-              <Button variant="success" type="primary" htmlType="submit">
+              <Button variant="primary" className='w-100' type="primary" htmlType="submit">
                 Reset Password
               </Button>
             </Form.Item>
           </Form>
         </div>
+      </div>
+        </Col>
+
+        <Col md={6}>
+          <img src="https://www.edoptim.com/assets/school-management-software-system-edoptim-b5ef1e0f510b713c561367aa9b938021810178a1d8f2d67f56a200c953a0d86c.jpg
+" alt="" className='w-100' />
+          </Col>
+        
+        </Row>
+     
       </div>
     </Container>
   );

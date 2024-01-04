@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <>
 <section className="">
-  <Container className="text-center text-md-start mt-5">
+  <div className="text-center text-md-start mt-5">
   <Row className='w-100'>
   <Col xs={12} sm={3} md={3} lg={3} xl={3} className="text-left">
     <div id="custom_html-10" className="widget_text widget widget_custom_html">
@@ -57,7 +57,7 @@ const Footer = () => {
   </Col>
 </Row>
 
-  </Container>
+  </div>
 </section>
 
 

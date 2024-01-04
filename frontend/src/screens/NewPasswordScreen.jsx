@@ -1,6 +1,6 @@
 import { Form,Input } from 'antd';
 import React, { useState, useEffect } from 'react'
-import {  Button, Container } from 'react-bootstrap';
+import {  Button, Container,Row,Col } from 'react-bootstrap';
 import { changePassword } from '../actions/userActions';
 import { useDispatch,useSelector } from 'react-redux';
 import Message from '../components/Message'
@@ -46,7 +46,17 @@ const NewPasswordScreen = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <div style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px', padding: '20px', width: '800px' }}>
+
+    <Row>
+        <Col md={12} className='text-center'>
+          <h1>School Management System</h1>
+         
+        </Col>
+
+        <Col md={6}>
+
     <div className="entry-content my-4">
       <div className="woocommerce">
         <div className="woocommerce-notices-wrapper"></div>
@@ -63,7 +73,7 @@ const NewPasswordScreen = () => {
             layout="vertical"
             name="basic"
             labelCol={{
-              span: 8,
+              span: 32,
             }}
             wrapperCol={{
               span: 32,
@@ -111,12 +121,20 @@ const NewPasswordScreen = () => {
         span: 32,
       }}
     >
-      <Button variant='success' type="submit" className='w-100' htmlType="submit">
+      <Button variant='primary' type="submit" className='w-100' htmlType="submit">
         Reset Password
       </Button>
     </Form.Item>
   </Form>
       </div>
+    </div>
+    </Col>
+
+    <Col md={6}>
+          <img src="https://www.edoptim.com/assets/school-management-software-system-edoptim-b5ef1e0f510b713c561367aa9b938021810178a1d8f2d67f56a200c953a0d86c.jpg
+" alt="" className='w-100' />
+          </Col>
+    </Row>
     </div>
     </Container>
   );

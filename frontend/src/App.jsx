@@ -1,7 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
 import { HelmetProvider } from 'react-helmet-async';
 
 
@@ -10,21 +8,28 @@ import Footer from './components/Footer'
 import LoginScreen from './screens/LoginScreen'
 import LostPasswordScreen from './screens/LostPasswordScreen'
 import NewPasswordScreen from './screens/NewPasswordScreen'
+import ChatScreen from './screens/ChatScreen'
+import AllStudents from './screens/Admin/AllStudentsScreen';
 
 const App = () => {
 
   return (
     <HelmetProvider>
     <Router>
-      <Header />
+      
       <main>
 
           <Route path='/' component={LoginScreen} exact />
           <Route path="/lost-password" component={LostPasswordScreen} />
           <Route path="/new-password/:id/:token" component={NewPasswordScreen} />
+          
+          <Route path="/allStudents" component={AllStudents} />
+          
+          <Route path="/chat" component={ChatScreen} />
+
        
       </main>
-      <Footer />
+      
     </Router>
     </HelmetProvider>
   )

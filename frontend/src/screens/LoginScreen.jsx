@@ -7,6 +7,8 @@ import Loader from '../components/Loader'
 import { login, register } from '../actions/userActions'
 import { Checkbox, Form, Input } from 'antd'
 // import ProfileScreen from './ProfileScreen'
+import logourl from '../assets/logo.png'
+import ProfileScreen from './ProfileScreen'
 
 const LoginScreen = ({ location, history }) => {
   const [name, setName] = useState('')
@@ -50,16 +52,20 @@ const LoginScreen = ({ location, history }) => {
   };
 
   return (
-    <Container>
-      {!userInfo ? <>
+    <>
+      {!userInfo ? <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
      
-   
+      <div style={{ boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px', padding: '20px', width: '800px' }}>
 
       <Row>
+        <Col md={12} className='text-center'>
+          <h1>School Management System</h1>
+        Sign in to start your session
+        </Col>
         <Col md={6}>
      
 
-          <h3>Login</h3>
+        
           {error && <Message variant='danger'>{error}</Message>}
       {message && <Message variant='danger'>{message}</Message>}
 
@@ -114,29 +120,60 @@ const LoginScreen = ({ location, history }) => {
       />
     </Form.Item>
 
-    <Form.Item
-      name="remember"
-      valuePropName="checked"
-      wrapperCol={{
-        offset: 0,
-        span: 32,
-      }}
-    >
-      <Checkbox>Remember me</Checkbox>
-    </Form.Item>
+    <Row>
+      <Col md={6}>
+      <Form.Item
+  name="remember"
+  valuePropName="checked"
+  wrapperCol={{
+    offset: 0,
+    span: 32,
+  }}
+  style={{ marginBottom: 0 }}  // Add this style to remove the bottom margin
+>
+  <Checkbox>Remember me</Checkbox>
+</Form.Item>
+      </Col>
 
-    <Form.Item
-      wrapperCol={{
-        offset: 0,
-        span: 32,
-      }}
-    >
-      <Button variant='success' className='w-100' type="submit" htmlType="submit" data-cy="login-btn">
-        Login
-      </Button>
-    </Form.Item>
+      <Col md={6}>
+      <Form.Item
+  wrapperCol={{
+    offset: 0,
+    span: 32,
+  }}
+  style={{ marginBottom: 0 }}  // Add this style to remove the bottom margin
+>
+  <Button variant='primary' className='w-100' type="submit" htmlType="submit" data-cy="login-btn">
+    Login
+  </Button>
+</Form.Item>
+</Col>
+    </Row>
+ 
+
+
+
   </Form>
-  <Link to="/lost-password">Lost Your Password</Link>
+
+
+
+                    <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
+                        <div class="border-bottom w-100 ml-5"></div>
+                        <span class="px-2 small text-muted font-weight-bold text-muted">OR</span>
+                        <div class="border-bottom w-100 mr-5"></div>
+                    </div>
+
+                    <div class="d-grid mb-2">
+                <button class="btn  btn-google w-100  btn-login fw-bold text-uppercase" type="submit" style={{
+  color: "white",backgroundColor: "#ea4335"}}>
+                  <i class="fab fa-google me-2"></i> Sign up with Google
+                </button>
+              </div>
+
+<div className="text-center">
+<Link to="/lost-password">Lost Your Password?</Link>
+
+</div>
 
 
         </Col>
@@ -147,11 +184,13 @@ const LoginScreen = ({ location, history }) => {
           </Col>
 
       </Row>
-      </> : (
-      <>Profile Screen Goes Here</>)}
+
+      </div>
+      </Container> : (
+      <ProfileScreen/>)}
     
       
-    </Container>
+    </>
   )
 }
 

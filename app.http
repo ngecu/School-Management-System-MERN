@@ -8,7 +8,7 @@ Content-Type: application/json
     "secondName":"Ngecu",
     "email":"devngecu@gmail.com",
     "password": "3W!W.:srzc4r^!P",
-    "userType":"admin",
+    "userType":"teacher",
     "isAdmin":true
 }
 
