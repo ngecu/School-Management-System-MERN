@@ -170,7 +170,7 @@ const ProfileScreen = () => {
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" onClick={logoutHandler} role="button">
+        <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true"  role="button">
           <i class="fas fa-th-large"></i>
           <i class="fas fa-right-from-bracket"></i>
         </a>

@@ -10,6 +10,7 @@ import LostPasswordScreen from './screens/LostPasswordScreen'
 import NewPasswordScreen from './screens/NewPasswordScreen'
 import ChatScreen from './screens/ChatScreen'
 import AllStudents from './screens/Admin/AllStudentsScreen';
+import AdmissionScreen from './screens/Admin/AdmissionScreen';
 
 const App = () => {
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/new-password/:id/:token" component={NewPasswordScreen} />
           
           <Route path="/allStudents" component={AllStudents} />
+          <Route path="/admission" component={AdmissionScreen} />
           
           <Route path="/chat" component={ChatScreen} />
 

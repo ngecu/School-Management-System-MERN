@@ -1,0 +1,16 @@
+###
+## REGISTER PARENT
+POST http://localhost:5000/api/parents/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+
+{
+    "firstName": "Bernard",
+    "secondName":"Nyamu",
+    "surName":"Ngechu",
+    "email":"bernard@gmail.com",
+    "password": "3W!W.:srzc4r^!P",
+    "dob":"1990-01-01",
+    "phone":"0722304537",
+    "gender":"Male"
+}

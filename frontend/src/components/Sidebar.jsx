@@ -97,10 +97,10 @@ const Sidebar = () => {
                 </NavLink>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+              <NavLink to="/admission" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admission Form</p>
-                </a>
+                </NavLink>
               </li>
              
               

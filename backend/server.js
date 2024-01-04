@@ -7,6 +7,10 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import {connectDB} from './config/db.js'
 
 import userRoutes from './routes/userRoutes.js'
+import parentRoutes from './routes/parentRoutes.js'
+import studentRoutes from './routes/studentRoutes.js'
+
+
 
 import cors from 'cors'
 
@@ -25,6 +29,8 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json())
 
 app.use('/api/users', userRoutes)
+app.use('/api/parents', parentRoutes)
+app.use('/api/students', studentRoutes)
 
 
 const __dirname = path.resolve()
