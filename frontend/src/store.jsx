@@ -57,6 +57,14 @@ import {
   parentDeleteReducer,
 } from './reducers/parentReducers';
 
+import {
+  // Attendance reducers
+  attendanceCreateReducer,
+  attendanceListReducer,
+  attendanceDetailsReducer,
+} from './reducers/attendanceReducers';
+
+
 const reducer = combineReducers({
   // User reducers
   userLogin: userLoginReducer,
@@ -103,6 +111,11 @@ const reducer = combineReducers({
   parentDetails: parentDetailsReducer,
   parentUpdate: parentUpdateReducer,
   parentDelete: parentDeleteReducer,
+
+    // Attendance reducers
+    attendanceCreate: attendanceCreateReducer,
+    attendanceList: attendanceListReducer,
+    attendanceDetails: attendanceDetailsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

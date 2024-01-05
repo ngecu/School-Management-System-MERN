@@ -1,0 +1,15 @@
+###
+## SIGN ATTENDACE
+POST http://localhost:5000/api/attendance/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+
+{
+    "studentId": "65980cad68536503a7b4df5a",
+    "courseId": "6597e3fb97d4d9309e9e3493"
+  }
+
+###
+GET http://localhost:5000/api/attendance/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI

@@ -191,13 +191,13 @@ const Sidebar = () => {
           </li>
 
           <li class="nav-item">
-            <a  class="nav-link">
+          <NavLink to="/allAttedance" class={`nav-link ${location.pathname === '/allAttedance' ? 'active' : ''}`}>
             <i class="nav-icon fas fa-person"></i>
               <p>
                 Attendance
                 
               </p>
-            </a>
+            </NavLink>
           
           </li>
 

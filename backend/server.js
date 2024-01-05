@@ -15,6 +15,7 @@ import courseUnitsRoutes from './routes/courseUnitRoutes.js'
 
 import lecturerRoutes from './routes/lecturerRoutes.js'
 import accountRoutes from './routes/accountantRoutes.js'
+import attendanceRoutes from './routes/attendanceRoutes.js'
 
 
 
@@ -42,7 +43,7 @@ app.use('/api/courses', courseRoutes)
 app.use('/api/courseunits', courseUnitsRoutes)
 app.use('/api/lecturers', lecturerRoutes)
 app.use('/api/accountants', accountRoutes)
-
+app.use('/api/attendance', attendanceRoutes)
 
 
 const __dirname = path.resolve()
