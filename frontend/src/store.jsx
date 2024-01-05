@@ -39,6 +39,15 @@ import {
   studentDeleteReducer,
 } from './reducers/studentReducers';
 
+import {
+  // Lecturer reducers
+  lecturerCreateReducer,
+  lecturerListReducer,
+  lecturerDetailsReducer,
+  lecturerUpdateReducer,
+  lecturerDeleteReducer,
+} from './reducers/lecturerReducers';
+
 const reducer = combineReducers({
   // User reducers
   userLogin: userLoginReducer,
@@ -71,6 +80,13 @@ const reducer = combineReducers({
   studentDetails: studentDetailsReducer,
   studentUpdate: studentUpdateReducer,
   studentDelete: studentDeleteReducer,
+
+  // Lecturer reducers
+  lecturerCreate: lecturerCreateReducer,
+  lecturerList: lecturerListReducer,
+  lecturerDetails: lecturerDetailsReducer,
+  lecturerUpdate: lecturerUpdateReducer,
+  lecturerDelete: lecturerDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

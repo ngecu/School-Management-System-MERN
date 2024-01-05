@@ -11,6 +11,7 @@ import parentRoutes from './routes/parentRoutes.js'
 import studentRoutes from './routes/studentRoutes.js'
 import schoolRoutes from './routes/schoolRoutes.js'
 import courseRoutes from './routes/courseRoutes.js'
+import lecturerRoutes from './routes/lecturerRoutes.js'
 
 
 
@@ -35,6 +36,8 @@ app.use('/api/parents', parentRoutes)
 app.use('/api/students', studentRoutes)
 app.use('/api/schools', schoolRoutes)
 app.use('/api/courses', courseRoutes)
+app.use('/api/lecturers', lecturerRoutes)
+
 
 
 const __dirname = path.resolve()

@@ -110,22 +110,22 @@ const Sidebar = () => {
             <a  class="nav-link">
             <i class="nav-icon fas fa-person"></i>
               <p>
-                Teachers
+                Lecturers
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+              <NavLink to="/allLecturers" class={`nav-link ${location.pathname === '/allLecturers' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
-                  <p>All Teachers</p>
-                </a>
+                  <p>All Lecturers</p>
+                </NavLink>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
+              <NavLink to="/add_lecturer" class={`nav-link ${location.pathname === '/add_lecturer' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add Teacher</p>
-                </a>
+                  <p>Add Lecturer</p>
+                </NavLink>
               </li>
              
               
