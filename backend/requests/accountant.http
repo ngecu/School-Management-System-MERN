@@ -1,0 +1,24 @@
+###
+## REGISTER STUDENT
+POST http://localhost:5000/api/accountants/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+
+{
+  "email": "dummy@example.com",
+  "password": "dummyPassword123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gender": "male",
+  "nationalID":"36701260",
+  "dob": "1990-01-01",
+  "phone": "123-456-7890",
+  "status": true,
+  "lastLoginDate": "2023-12-31T23:59:59.999Z",
+  "lastLoginIp": "192.168.1.1"
+}
+
+###
+GET http://localhost:5000/api/accountants/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI

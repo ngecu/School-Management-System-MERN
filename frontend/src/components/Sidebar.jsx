@@ -146,41 +146,12 @@ const Sidebar = () => {
                   <p>All Parents</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/UI/icons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Icons</p>
-                </a>
-              </li>
+             
             
            
             </ul>
           </li>
-          <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Library
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Books</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add New Book</p>
-                </a>
-              </li>
-              
-             
-            </ul>
-          </li>
+        
           <li class="nav-item">
             <a  class="nav-link">
             <i class="nav-icon fas fa-person"></i>
@@ -190,6 +161,14 @@ const Sidebar = () => {
               </p>
             </a>
             <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <NavLink to="/add_accountant" class={`nav-link ${location.pathname === '/add_accountant' ? 'active' : ''}`}>
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Accountant</p>
+                </NavLink>
+              </li>
+
               <li class="nav-item">
                 <a href="pages/tables/simple.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
