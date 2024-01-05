@@ -1,0 +1,5 @@
+###
+GET http://localhost:5000/api/schools/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+
