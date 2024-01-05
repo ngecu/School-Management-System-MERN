@@ -16,6 +16,11 @@ const courseSchema = mongoose.Schema(
       ref: 'School',
       required: true,
     },
+    units:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CourseUnit',
+        required: true,
+    }]
   },
   {
     timestamps: true,

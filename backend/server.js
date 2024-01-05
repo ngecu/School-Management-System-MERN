@@ -11,6 +11,8 @@ import parentRoutes from './routes/parentRoutes.js'
 import studentRoutes from './routes/studentRoutes.js'
 import schoolRoutes from './routes/schoolRoutes.js'
 import courseRoutes from './routes/courseRoutes.js'
+import courseUnitsRoutes from './routes/courseUnitRoutes.js'
+
 import lecturerRoutes from './routes/lecturerRoutes.js'
 import accountRoutes from './routes/accountantRoutes.js'
 
@@ -37,6 +39,7 @@ app.use('/api/parents', parentRoutes)
 app.use('/api/students', studentRoutes)
 app.use('/api/schools', schoolRoutes)
 app.use('/api/courses', courseRoutes)
+app.use('/api/courseunits', courseUnitsRoutes)
 app.use('/api/lecturers', lecturerRoutes)
 app.use('/api/accountants', accountRoutes)
 
