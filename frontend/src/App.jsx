@@ -13,6 +13,7 @@ import AllStudents from './screens/Admin/AllStudentsScreen';
 import AdmissionScreen from './screens/Admin/AdmissionScreen';
 import AddLecturerScreen from './screens/Admin/AddLecturerScreen';
 import AllLecturers from './screens/Admin/AllTeachersScreen';
+import AllParentsScreen from './screens/Admin/AllParentsScreen';
 
 const App = () => {
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/admission" component={AdmissionScreen} />
           <Route path="/add_lecturer" component={AddLecturerScreen} />
           <Route path="/allLecturers" component={AllLecturers} />
+          <Route path="/allParents" component={AllParentsScreen} />
           
           <Route path="/chat" component={ChatScreen} />
 

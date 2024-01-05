@@ -48,6 +48,15 @@ import {
   lecturerDeleteReducer,
 } from './reducers/lecturerReducers';
 
+import {
+  // Parent reducers
+  parentCreateReducer,
+  parentListReducer,
+  parentDetailsReducer,
+  parentUpdateReducer,
+  parentDeleteReducer,
+} from './reducers/parentReducers';
+
 const reducer = combineReducers({
   // User reducers
   userLogin: userLoginReducer,
@@ -87,6 +96,13 @@ const reducer = combineReducers({
   lecturerDetails: lecturerDetailsReducer,
   lecturerUpdate: lecturerUpdateReducer,
   lecturerDelete: lecturerDeleteReducer,
+
+  // Parent reducers
+  parentCreate: parentCreateReducer,
+  parentList: parentListReducer,
+  parentDetails: parentDetailsReducer,
+  parentUpdate: parentUpdateReducer,
+  parentDelete: parentDeleteReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

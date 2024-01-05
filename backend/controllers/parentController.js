@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Parent from '../models/parentModel.js';
 
-const addParent = asyncHandler(async (req, res) => {
+export const addParent = asyncHandler(async (req, res) => {
   const {
     email,
     password,
@@ -48,4 +48,13 @@ console.log(req.body);
   }
 });
 
-export { addParent };
+export const getAllParents = async (req, res) => {
+  try {
+    console.log("fetching all Parents");
+    const parents = await Parent.find().populate('students');
+    console.log(parents);
+    res.status(200).json({ success: true, data: parents });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
