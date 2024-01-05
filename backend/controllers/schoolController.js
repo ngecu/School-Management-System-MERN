@@ -15,6 +15,7 @@ export const createSchool = async (req, res) => {
 // Controller to get all schools with populated courses
 export const getAllSchools = async (req, res) => {
   try {
+    console.log("fetching all schools");
     const schools = await School.find().populate('courses');
     res.status(200).json({ success: true, data: schools });
   } catch (error) {

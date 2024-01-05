@@ -1,14 +1,29 @@
-import React from 'react';
-import { Form, Input, Select, DatePicker, Button, Upload, message } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Input, Select, DatePicker, Button, Upload, message, Col, Row } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import Sidebar from '../../components/Sidebar';
+import { useSelector, useDispatch } from 'react-redux';
+import { listSchools } from '../../actions/schoolActions';
+import { listCourses } from '../../actions/courseActions';
+import { createStudent } from '../../actions/studentActions';
+
 
 const { Option } = Select;
 
 const AdmissionScreen = () => {
   const onFinish = (values) => {
     console.log('Received values:', values);
-    // Handle form submission logic here
+
+    // Dispatch the createStudent action
+    dispatch(createStudent(values)).then((response) => {
+      if (response.success) {
+        // Handle success, you may redirect the user or show a success message
+        message.success('Student created successfully!');
+      } else {
+        // Handle failure, show an error message
+        message.error(response.error);
+      }
+    });
   };
 
   const normFile = (e) => {
@@ -25,6 +40,21 @@ const AdmissionScreen = () => {
     }
     return isJpgOrPng;
   };
+
+  const dispatch = useDispatch();
+
+// Fetch schools and courses when the component mounts
+useEffect(() => {
+  dispatch(listSchools());
+  dispatch(listCourses());
+}, [dispatch]);
+
+const schoolsList = useSelector((state) => state.schoolList);
+const { loading: loadingSchools, schools, error: errorSchools } = schoolsList;
+
+const coursesList = useSelector((state) => state.courseList);
+const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
+
 
   return (
 
@@ -176,19 +206,24 @@ const AdmissionScreen = () => {
             <section class="content">
           <div class="container-fluid">
     
-            <div class="row pt-3">
-         
+            <div class="pt-3 w-100">
+            <div className="w-100 text-center">
+              <h1>STUDENT APPLICATION FORM</h1>
+            </div>
             <Form
       name="admissionForm"
       onFinish={onFinish}
+      layout="vertical"
       labelCol={{
-        span: 8,
+        span: 32,
       }}
       wrapperCol={{
-        span: 16,
+        span: 32,
       }}
     >
-      <Form.Item
+      <Row gutter={[16, 16]}>
+                    <Col span={6}>
+                    <Form.Item
         label="First Name"
         name="firstName"
         rules={[
@@ -200,8 +235,10 @@ const AdmissionScreen = () => {
       >
         <Input />
       </Form.Item>
+                    </Col>
 
-      <Form.Item
+                    <Col span={6}>
+                    <Form.Item
         label="Last Name"
         name="lastName"
         rules={[
@@ -213,8 +250,10 @@ const AdmissionScreen = () => {
       >
         <Input />
       </Form.Item>
+                    </Col>
 
-      <Form.Item
+                    <Col span={6}>
+                    <Form.Item
         label="Gender"
         name="gender"
         rules={[
@@ -229,21 +268,27 @@ const AdmissionScreen = () => {
           <Option value="female">Female</Option>
         </Select>
       </Form.Item>
+                    </Col>
 
-      <Form.Item
-        label="Date Of Birth"
-        name="dob"
-        rules={[
-          {
-            required: true,
-            message: 'Please select the date of birth!',
-          },
-        ]}
-      >
-        <DatePicker format="DD/MM/YYYY" />
-      </Form.Item>
 
-      <Form.Item
+                    <Col span={6}>
+                              <Form.Item
+                  label="Date Of Birth"
+                  name="dob"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select the date of birth!',
+                    },
+                  ]}
+                >
+                  <DatePicker format="DD/MM/YYYY" />
+                </Form.Item>
+                    </Col>
+
+
+                    <Col span={6}>
+                    <Form.Item
         label="Religion"
         name="religion"
         rules={[
@@ -261,8 +306,10 @@ const AdmissionScreen = () => {
 
         </Select>
       </Form.Item>
+                      </Col>
 
-      <Form.Item
+                      <Col md={6}>
+                      <Form.Item
         label="E-Mail"
         name="email"
         rules={[
@@ -274,25 +321,52 @@ const AdmissionScreen = () => {
       >
         <Input />
       </Form.Item>
+                      </Col>
 
+                      <Col md={6}>
+                      <Form.Item
+  label="School"
+  name="school"
+  rules={[
+    {
+      required: true,
+      message: 'Please select the school!',
+    },
+  ]}
+>
+  <Select loading={loadingSchools}>
+    {schools && schools.map((school) => (
+      <Option key={school._id} value={school._id}>
+        {school.name}
+      </Option>
+    ))}
+  </Select>
+</Form.Item>
+                      </Col>
 
-      <Form.Item
-        label="Course"
-        name="course"
-        rules={[
-          {
-            required: true,
-            message: 'Please select the religion!',
-          },
-        ]}
-      >
-        <Select>
-          <Option value="Computer Science">Computer Science</Option>
-        </Select>
-      </Form.Item>
+                      <Col md={6}>
+                      <Form.Item
+  label="Course"
+  name="course"
+  rules={[
+    {
+      required: true,
+      message: 'Please select the course!',
+    },
+  ]}
+>
+  <Select loading={loadingCourses}>
+    {courses && courses.map((course) => (
+      <Option key={course._id} value={course._id}>
+        {course.name}
+      </Option>
+    ))}
+  </Select>
+</Form.Item>
+                      </Col>
 
-
-      <Form.Item
+                      <Col md={6}>
+                      <Form.Item
         label="Admission ID"
         name="adminID"
         rules={[
@@ -304,9 +378,10 @@ const AdmissionScreen = () => {
       >
         <Input />
       </Form.Item>
+                      </Col>
 
-
-      <Form.Item
+                      <Col md={6}>
+                      <Form.Item
         label="Phone"
         name="phone"
         rules={[
@@ -318,9 +393,10 @@ const AdmissionScreen = () => {
       >
         <Input />
       </Form.Item>
+                      </Col>
 
-
-      <Form.Item
+                      <Col md={6}>
+                      <Form.Item
         label="Upload Student Photo"
         name="photo"
         valuePropName="fileList"
@@ -335,14 +411,90 @@ const AdmissionScreen = () => {
           <Button icon={<UploadOutlined />}>Upload</Button>
         </Upload>
       </Form.Item>
+                      </Col>
+                    </Row>
+
+                    <div className="w-100 text-center">
+              <h1>PARENT/GUARDIAN DETAILS</h1>
+            </div>
+   
+            <Row gutter={[16, 16]}>
+                    <Col span={6}>
+                    <Form.Item
+        label="Full Name"
+        name="parentFullName"
+        rules={[
+          {
+            required: true,
+            message: 'Please input the parents name!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                    </Col>
+
+                
+
+                    <Col span={6}>
+                    <Form.Item
+        label="Relationship"
+        name="relationship"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter the relationship!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                    </Col>
+
+                    <Col md={6}>
+                      <Form.Item
+        label="Phone"
+        name="parentPhone"
+        rules={[
+          {
+            required: true,
+            message: 'Please input the Phone Number!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                      </Col>
+
+
+                      <Col md={6}>
+                      <Form.Item
+        label="Email"
+        name="parentEmail"
+        rules={[
+          {
+            required: true,
+            message: 'Please input the Email!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                      </Col>
+
+
+                    </Row>
+
+
+
 
       <Form.Item
         wrapperCol={{
-          offset: 8,
-          span: 16,
+          offset: 0,
+          span: 32,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" className='w-100' htmlType="submit">
           Submit
         </Button>
       </Form.Item>
