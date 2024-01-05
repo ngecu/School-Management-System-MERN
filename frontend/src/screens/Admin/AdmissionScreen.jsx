@@ -13,9 +13,26 @@ const { Option } = Select;
 const AdmissionScreen = () => {
   const onFinish = (values) => {
     console.log('Received values:', values);
-
+  
+    // Extract parent details from values
+  
+    const formattedParents = [{
+      fullName:values.parentFullName,
+      phone:values.parentPhone,
+      email:values.parentEmail,
+    }]
+   
+    
+  
+  
+    // Combine student data with formatted parent details
+    const dataToSend = {
+      ...values,
+      parents: formattedParents,
+    };
+  
     // Dispatch the createStudent action
-    dispatch(createStudent(values)).then((response) => {
+    dispatch(createStudent(dataToSend)).then((response) => {
       if (response.success) {
         // Handle success, you may redirect the user or show a success message
         message.success('Student created successfully!');
@@ -25,6 +42,7 @@ const AdmissionScreen = () => {
       }
     });
   };
+  
 
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -367,12 +385,12 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
                       <Col md={6}>
                       <Form.Item
-        label="Admission ID"
-        name="adminID"
+        label="National ID"
+        name="nationalID"
         rules={[
           {
             required: true,
-            message: 'Please input the Admission Number!',
+            message: 'Please input the National Number!',
           },
         ]}
       >

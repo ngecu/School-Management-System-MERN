@@ -48,7 +48,7 @@ const Sidebar = () => {
           <img src="https://avatars.githubusercontent.com/u/41146306?v=4" class="img-circle elevation-2" alt="User Image"/>
         </div>
         <div class="info">
-          <a href="#" class="d-block">{userInfo.firstName}</a>
+          <a  class="d-block">{userInfo.firstName}</a>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ const Sidebar = () => {
           </li>
         
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a  class="nav-link">
             <i class="nav-icon fas fa-person"></i>
             
               <p>
@@ -107,7 +107,7 @@ const Sidebar = () => {
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a  class="nav-link">
             <i class="nav-icon fas fa-person"></i>
               <p>
                 Teachers
@@ -132,7 +132,7 @@ const Sidebar = () => {
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a class="nav-link">
             <i class="nav-icon fas fa-person"></i>
               <p>
                 Parents
@@ -157,7 +157,7 @@ const Sidebar = () => {
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a  class="nav-link">
             <i class="nav-icon fas fa-person"></i>
               <p>
                 Library
@@ -182,7 +182,7 @@ const Sidebar = () => {
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a  class="nav-link">
             <i class="nav-icon fas fa-person"></i>
               <p>
                 Accountant
@@ -212,7 +212,7 @@ const Sidebar = () => {
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a  class="nav-link">
             <i class="nav-icon fas fa-person"></i>
               <p>
                 Attendance
@@ -223,7 +223,7 @@ const Sidebar = () => {
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a class="nav-link">
             <i class="nav-icon fas fa-person"></i>
               <p>
                 Exam

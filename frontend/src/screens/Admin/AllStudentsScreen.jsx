@@ -8,15 +8,12 @@ import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Collapse } from 'antd';
 import Sidebar from '../../components/Sidebar'
+import { listStudents } from '../../actions/studentActions';
 
 
 
 const AllStudents = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
+
   const match = useRouteMatch();
   const history = useHistory();
 
@@ -27,42 +24,32 @@ const AllStudents = () => {
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
+  useEffect(() => {
+    dispatch(listStudents());
+  }, [dispatch]);
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const studentList = useSelector((state) => state.studentList);
+  const { loading, error, students } = studentList;
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
+  if (loading) {
+    return <Loader />;
+  }
 
-  const students = [
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    { id: 1, name: 'John Doe', gender: 'Male', class: '10th', section: 'A', parents: 'Mr. and Mrs. Doe', address: '123 Main St', dateOfBirth: '2000-01-01', phone: '123-456-7890' },
-    
-    // Add more student data as needed
-  ];
+  if (error) {
+    return <Message variant="danger">{error}</Message>;
+  }
+
+
+
 
   const generateStudentData = () => {
     return students.map((student) => (
       <tr key={student.id}>
-        <td>{student.name}</td>
+        <td>{student.firstName} {student.lastName}</td>
         <td>{student.gender}</td>
-        <td>{student.class}</td>
-        <td>{student.section}</td>
-        <td>{student.parents}</td>
-        <td>{student.address}</td>
-        <td>{student.dateOfBirth}</td>
+        <td>{student.course.name}</td>     
+        <td>{student.email}</td>
+        <td>{student.dob}</td>
        
         <td>
         <a class="btn btn-success btn-sm" href="#">
@@ -220,7 +207,7 @@ const AllStudents = () => {
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" onClick={logoutHandler} role="button">
+        <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true"  role="button">
           <i class="fas fa-th-large"></i>
           <i class="fas fa-right-from-bracket"></i>
         </a>
@@ -251,9 +238,8 @@ const AllStudents = () => {
               <tr>
                 <th>Name</th>
                 <th>Gender</th>
-                <th>Class</th>
-                <th>Section</th>
-                <th>Parents</th>
+                <th>Course</th>
+         
                 <th>Address</th>
                 <th>Date Of Birth</th>
             

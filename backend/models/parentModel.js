@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
 
 const parentSchema = mongoose.Schema(
   {
@@ -8,43 +7,22 @@ const parentSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    password: {
+    fullName: {
       type: String,
-      required: true,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    secondName: {
-      type: String,
-      required: true,
-    },
-    surName: {
-      type: String,
-      required: false,
-    },
-    gender: {
-        type: String,
-        required: true,
-      },
-    dob: {
-      type: Date,
       required: true,
     },
     phone: {
       type: String,
       required: true,
     },
-    status: {
-      type: Boolean,
-      default: false,
-    },
-    lastLoginDate: {
-      type: Date,
-    },
-    lastLoginIp: {
+    students: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student',
+      required: true,
+    }],
+    password: {
       type: String,
+      required: true,
     },
   },
   {
@@ -52,18 +30,20 @@ const parentSchema = mongoose.Schema(
   }
 );
 
+
 parentSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
+  return await bcrypt.compare(enteredPassword, this.password)
+}
 
 parentSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
-    next();
+    next()
   }
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
+  const salt = await bcrypt.genSalt(10)
+  this.password = await bcrypt.hash(this.password, salt)
+})
+
 
 const Parent = mongoose.model('Parent', parentSchema);
 

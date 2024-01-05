@@ -3,6 +3,15 @@ import bcrypt from 'bcryptjs';
 
 const studentSchema = mongoose.Schema(
   {
+    nationalID: {
+      type: String,
+      required: true,
+    },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -16,31 +25,31 @@ const studentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    secondName: {
+    lastName: {
       type: String,
       required: true,
     },
-    surName: {
+    gender: {
       type: String,
-      required: false,
+      required: true,
     },
     dob: {
       type: Date,
+      required: true,
+    },
+    religion: {
+      type: String,
       required: true,
     },
     phone: {
       type: String,
       required: true,
     },
-    parent: {
+    parents: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Parent', 
+      ref: 'Parent',
       required: true,
-    },
-    dateOfJoin: {
-      type: Date,
-      required: true,
-    },
+    }],
     status: {
       type: Boolean,
       default: false,
@@ -51,6 +60,13 @@ const studentSchema = mongoose.Schema(
     lastLoginIp: {
       type: String,
     },
+    photo: {
+      type: String,
+    },
+    password:{
+      type: String,
+      required:true
+    }
   },
   {
     timestamps: true,
