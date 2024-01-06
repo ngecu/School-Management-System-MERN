@@ -10,8 +10,8 @@ import { Checkbox, Form, Input } from 'antd'
 import logourl from '../assets/logo.png'
 import ProfileScreen from './ProfileScreen'
 import IndexAdminScreen from './Admin/IndexAdminScreen'
-import IndexAccountantScreen from './Accountant/IndexAdminScreen'
-import IndexLecturerScreen from './Lecturer/IndexParentScreen'
+import IndexAccountantScreen from './Accountant/IndexAccountantScreen'
+import IndexLecturerScreen from './Lecturer/IndexLecturerScreen'
 import IndexParentScreen from './Parent/IndexParentScreen'
 import IndexStudentScreen from './Student/IndexStudentScreen'
 
@@ -65,7 +65,7 @@ const LoginScreen = ({ location, history }) => {
 ) : (
   <>
     {userInfo.userType === 'admin' && <IndexAdminScreen />}
-    {userInfo.userType === 'accountant' && <IndexAccountantScreen />}
+    {userInfo.userType === 'Accountant' && <IndexAccountantScreen />}
     {userInfo.userType === 'lecturer' && <IndexLecturerScreen />}
     {userInfo.userType === 'student' && <IndexStudentScreen />}
     {userInfo.userType === 'parent' && <IndexParentScreen />}

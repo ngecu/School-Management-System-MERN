@@ -8,7 +8,7 @@ import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
 
-const IndexStudentScreen = () => {
+const IndexLecturerScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -258,4 +258,4 @@ const IndexStudentScreen = () => {
   );
 };
 
-export default IndexStudentScreen;
+export default IndexLecturerScreen;

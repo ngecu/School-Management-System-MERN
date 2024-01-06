@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
-import Loader from '../components/Loader';
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
 import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import Sidebar from '../components/Sidebar'
+import Sidebar from './components/Sidebar'
 
 const IndexParentScreen = () => {
   const [name, setName] = useState('');
