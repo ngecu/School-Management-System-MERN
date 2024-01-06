@@ -2,19 +2,41 @@
 ## REGISTER STUDENT
 POST http://localhost:5000/api/students/
 Content-Type: application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
 
 {
-    "firstName": "Anita",
-    "secondName":"Wamaitha",
-    "surName":"Nyamu",
-    "email":"ngecu16@gmail.com",
-    "password": "3W!W.:srzc4r^!P",
-    "dob":"1999-01-01",
-    "phone":"0722304537",
-    "parent":"659712b5179e1385f2f0c27c",
-    "gender":"Male"
+  "email": "student3@example.com",
+  "password": "password123",
+  "firstName": "Alice",
+  "lastName": "Johnson",
+  "gender": "Female",
+  "dob": "1985-08-25",
+  "religion": "Christian",
+  "phone": "9876543210",
+  "nationalID": "ABC123456",
+  "course": "6597e3fb97d4d9309e9e3493",
+  "parents": [
+
+    {
+  "email": "parent6@example.com",
+  "password": "password1234",
+  "fullName": "John Doe2",
+  "surname": "Smith2",
+  "dateOfJoin": "2023-01-10T12:00:00Z",
+  "dob": "1990-05-15",
+  "phone": "1234567891",
+  "gender": "Male",
+  "status": true,
+  "lastLoginDate": "2023-01-10T10:30:00Z",
+  "lastLoginIp": "192.168.0.1"
 }
+
+],
+  "status": true,
+  "lastLoginDate": "2023-01-12T08:45:00Z",
+  "lastLoginIp": "192.168.0.2"
+}
+
 
 ###
 GET http://localhost:5000/api/students/

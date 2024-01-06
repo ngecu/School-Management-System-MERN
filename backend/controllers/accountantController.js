@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Accountant from '../models/accountantModel.js';
+import User from '../models/userModel.js';
 
 export const addAccountant = asyncHandler(async (req, res) => {
   const {
@@ -15,6 +16,7 @@ export const addAccountant = asyncHandler(async (req, res) => {
     lastLoginDate,
     lastLoginIp,
   } = req.body;
+
   const dateOfJoin = new Date();
   const accountantExists = await Accountant.findOne({ email });
 
@@ -39,9 +41,32 @@ export const addAccountant = asyncHandler(async (req, res) => {
   });
 
   if (accountant) {
-    res.status(200).json({
-      message: 'Accountant added successfully',
-    });
+
+    const userExists = await User.findOne({ email })
+
+    if (userExists) {
+      res.status(400)
+      throw new Error('User already exists')
+    }
+
+    const user = await User.create({
+      firstName,
+      secondName:lastName,
+      email,
+      password,
+      userType:"Accountant",
+      
+    })
+
+    if (user) {
+      res.status(200).json({
+        message: "Accountant registered successfully",
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid user data')
+    }
+
   } else {
     res.status(400);
     throw new Error('Invalid accountant data');

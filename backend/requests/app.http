@@ -23,8 +23,8 @@ POST http://localhost:5000/api/users/login
 Content-Type: application/json
 
 {
-    "email":"devngecu@gmail.com",
-    "password": "3W!W.:srzc4r^!P"
+    "email":"admin@example.com",
+    "password": "adminPassword123"
 }
 
 ###

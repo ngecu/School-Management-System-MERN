@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler';
 import Student from '../models/studentModel.js';
 import Parent from '../models/parentModel.js';
 import {v4} from 'uuid'
+import User from '../models/userModel.js';
 
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
@@ -81,9 +82,31 @@ export const admitStudent = asyncHandler(async (req, res) => {
     // Update parent documents to include the student ID
     await Parent.updateMany({ _id: { $in: parentIds } }, { $push: { students: student._id } });
 
-    res.status(200).json({
-      message: 'Student admitted successfully',
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      res.status(400);
+      throw new Error('User already exists');
+    }
+
+    const user = await User.create({
+      firstName,
+      secondName:lastName, // Assuming you have a variable named secondName
+      email,
+      password,
+      userType: "Student",
+      // Add other relevant fields based on your User schema
     });
+
+    if (user) {
+      res.status(200).json({
+        message: "Student registered successfully",
+      });
+    } else {
+      res.status(400);
+      throw new Error('Invalid user data');
+    }
+
   } else {
     res.status(400);
     throw new Error('Invalid student data');

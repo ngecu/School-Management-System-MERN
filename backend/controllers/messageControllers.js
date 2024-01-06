@@ -1,57 +1,30 @@
 import asyncHandler from 'express-async-handler';
+import Message from '../models/messageModel.js';
 
-import Chat from '../models/chatModel.js';
-import User from '../models/userModel.js';
-import Message from '../models/messageModel.js'
+// Create a new message
 
-
-export const allMessages = asyncHandler(async (req, res) => {
+const createMessage = asyncHandler(async (req, res) => {
   try {
-    console.log(req.body);
-    const messages = await Message.find({ chat: req.params.chatId })
-      .populate("sender", "name email")
-      .populate("reciever")
-      .populate("chat");
-    res.json(messages);
+    const { from, message_text, conversation } = req.body;
+    const message = await Message.create({ from, message_text, conversation });
+    return res.status(201).json({ success: true, message });
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    return res.status(500).json({ success: false, error: error.message });
   }
-});
+})
 
-export const sendMessage = asyncHandler(async (req, res) => {
-  console.log(req.body);
-
-  const { content, chatId,user_id } = req.body;
-
-  if (!content || !chatId) {
-    // console.log("Invalid data passed into request");
-    return res.sendStatus(400);
-  }
-
-  var newMessage = {
-    sender: user_id,
-    content: content,
-    chat: chatId,
-  };
-
+// Get messages in a conversation
+const getMessagesByConversation = asyncHandler(async (req, res) => {
   try {
-    var message = await Message.create(newMessage);
-
-    // console.log(message);
-    message = await message.populate("sender", "name pic");
-    message = await message.populate("chat");
-    message = await message.populate("reciever");
-    message = await User.populate(message, {
-      path: "chat.users",
-      select: "name email",
-    });
-
-    await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
-    res.json(message);
+    const { conversationId } = req.params;
+    const messages = await Message.find({ conversation: conversationId }).populate('from');
+    return res.status(200).json({ success: true, messages });
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    return res.status(500).json({ success: false, error: error.message });
   }
-});
+})
+
+// Add more controllers as needed
+
+export { createMessage, getMessagesByConversation };
 

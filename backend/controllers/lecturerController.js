@@ -2,10 +2,9 @@ import asyncHandler from 'express-async-handler';
 import Lecturer from '../models/lecturerModel.js';
 import Parent from '../models/parentModel.js';
 import {v4} from 'uuid'
+import User from '../models/userModel.js';
 
 export const addLecturer = asyncHandler(async (req, res) => {
-  try {
-    console.log(req.body);
   const {
     email,
     password,
@@ -30,10 +29,6 @@ export const addLecturer = asyncHandler(async (req, res) => {
     throw new Error('Lecturer already exists');
   }
 
-  
-
-  console.log("password is ",password);
-
   const lecturer = await Lecturer.create({
     email,
     password,
@@ -49,23 +44,39 @@ export const addLecturer = asyncHandler(async (req, res) => {
     status,
     lastLoginDate,
     lastLoginIp,
-    password:v4()
   });
 
   if (lecturer) {
+    const userExists = await User.findOne({ email });
 
-    res.status(200).json({
-      message: 'Lecturer added successfully',
+    if (userExists) {
+      res.status(400);
+      throw new Error('User already exists');
+    }
+
+    const user = await User.create({
+      firstName,
+      secondName: lastName, // Assuming you have a variable named secondName
+      email,
+      password,
+      userType: "Lecturer",
+      // Add other relevant fields based on your User schema
     });
+
+    if (user) {
+      res.status(200).json({
+        message: "Lecturer registered successfully",
+      });
+    } else {
+      res.status(400);
+      throw new Error('Invalid user data');
+    }
   } else {
     res.status(400);
     throw new Error('Invalid lecturer data');
   }
-  } catch (error) {
-    console.log(error);
-  }
-  
 });
+
 
 
 export const getAllLecturers = async (req, res) => {

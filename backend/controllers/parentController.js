@@ -1,12 +1,12 @@
 import asyncHandler from 'express-async-handler';
 import Parent from '../models/parentModel.js';
+import User from '../models/userModel.js';
 
 export const addParent = asyncHandler(async (req, res) => {
   const {
     email,
     password,
-    firstName,
-    secondName,
+    fullName,
     surname,
     dob,
     phone,
@@ -26,8 +26,7 @@ console.log(req.body);
   const parent = await Parent.create({
     email,
     password,
-    firstName,
-    secondName,
+    fullName,
     surname,
     dateOfJoin,
     dob,
@@ -39,9 +38,30 @@ console.log(req.body);
   });
 
   if (parent) {
-    res.status(200).json({
-      message: 'Parent added successfully',
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      res.status(400);
+      throw new Error('User already exists');
+    }
+
+    const user = await User.create({
+      firstName:fullName,
+      secondName: fullName, // Assuming you have a variable named secondName
+      email,
+      password,
+      userType: "Parent",
+      // Add other relevant fields based on your User schema
     });
+
+    if (user) {
+      res.status(200).json({
+        message: "Parent registered successfully",
+      });
+    } else {
+      res.status(400);
+      throw new Error('Invalid user data');
+    }
   } else {
     res.status(400);
     throw new Error('Invalid parent data');

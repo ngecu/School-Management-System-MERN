@@ -2,18 +2,22 @@
 ## REGISTER PARENT
 POST http://localhost:5000/api/parents/
 Content-Type: application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
 
 {
-    "firstName": "Bernard",
-    "secondName":"Nyamu",
-    "surName":"Ngechu",
-    "email":"bernard@gmail.com",
-    "password": "3W!W.:srzc4r^!P",
-    "dob":"1990-01-01",
-    "phone":"0722304537",
-    "gender":"Male"
+  "email": "parent@example.com",
+  "password": "password123",
+  "fullName": "John Doe",
+  "surname": "Smith",
+  "dateOfJoin": "2023-01-10T12:00:00Z",
+  "dob": "1990-05-15",
+  "phone": "1234567890",
+  "gender": "Male",
+  "status": true,
+  "lastLoginDate": "2023-01-10T10:30:00Z",
+  "lastLoginIp": "192.168.0.1"
 }
+
 
 ###
 

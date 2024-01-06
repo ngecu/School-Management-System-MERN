@@ -20,6 +20,8 @@ import attendanceRoutes from './routes/attendanceRoutes.js'
 
 import chatRoutes from './routes/chatRoutes.js'
 import messageRoutes from './routes/messageRoutes.js'
+import conversationRoutes from './routes/conversationRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
 
 import cors from 'cors'
 
@@ -49,9 +51,10 @@ app.use('/api/courseunits', courseUnitsRoutes)
 app.use('/api/lecturers', lecturerRoutes)
 app.use('/api/accountants', accountRoutes)
 app.use('/api/attendance', attendanceRoutes)
-
+app.use('/api/admin', adminRoutes)
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/conversation", conversationRoutes);
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))

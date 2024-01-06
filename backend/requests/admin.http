@@ -1,0 +1,18 @@
+
+POST http://localhost:5000/api/admin/
+Content-Type: application/json
+
+
+{
+  "email": "admin@example.com",
+  "password": "adminPassword123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "gender": "Male",
+  "dob": "1990-01-01",
+  "phone": "1234567890",
+  "nationalID": "123456789",
+  "status": true,
+  "lastLoginDate": "2023-01-01T12:00:00Z",
+  "lastLoginIp": "192.168.0.1"
+}

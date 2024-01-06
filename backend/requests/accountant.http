@@ -1,11 +1,11 @@
 ###
-## REGISTER STUDENT
+## REGISTER ACCOUNTANT
 POST http://localhost:5000/api/accountants/
 Content-Type: application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
 
 {
-  "email": "dummy@example.com",
+  "email": "dummy3@example.com",
   "password": "dummyPassword123",
   "firstName": "John",
   "lastName": "Doe",

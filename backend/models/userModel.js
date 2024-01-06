@@ -5,11 +5,11 @@ const userSchema = mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true,
+      required: false,
     },
-    secondName: {
+    lastName: {
       type: String,
-      required: true,
+      required: false,
     },
     verified:{
       type:Boolean,
@@ -37,6 +37,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isWelcomed:{
+      type: Boolean,
+      default: false,
+    }
 
   },
   {
