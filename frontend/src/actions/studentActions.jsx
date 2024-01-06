@@ -67,6 +67,7 @@ export const listStudents = () => async (dispatch, getState) => {
       type: STUDENT_LIST_SUCCESS,
       payload: data.data,
     });
+    console.log("data is ",data.data);
   } catch (error) {
     dispatch({
       type: STUDENT_LIST_FAIL,

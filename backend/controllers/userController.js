@@ -202,21 +202,18 @@ const setNewPassword = asyncHandler(async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 })
-const fetchAllUsersController = asyncHandler(async (req, res) => {
-  const keyword = req.query.search
-    ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
-    : {};
 
-  const users = await UserModel.find(keyword).find({
-    _id: { $ne: req.user._id },
-  });
-  res.send(users);
-});
+
+const getAllUsers = async (req, res) => {
+  try {
+    console.log("fetching all students");
+    const students = await User.find();
+    console.log(students);
+    res.status(200).json({ success: true, data: students });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
 
 export {
   authUser,
@@ -224,5 +221,5 @@ export {
   sendRestPassword,
   verifyResetPassword,
   setNewPassword,
-  fetchAllUsersController
+  getAllUsers
 }

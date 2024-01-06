@@ -64,6 +64,13 @@ import {
   attendanceDetailsReducer,
 } from './reducers/attendanceReducers';
 
+import {
+  // Chat reducers
+  chatFetchMessagesReducer,
+  chatSendMessageReducer,
+  chatActiveConversationReducer,
+  chatEditDeleteMessageReducer,
+} from './reducers/chatReducers';  
 
 const reducer = combineReducers({
   // User reducers
@@ -116,6 +123,12 @@ const reducer = combineReducers({
     attendanceCreate: attendanceCreateReducer,
     attendanceList: attendanceListReducer,
     attendanceDetails: attendanceDetailsReducer,
+
+    // Chat reducers
+    chatFetchMessages: chatFetchMessagesReducer,
+    chatSendMessage: chatSendMessageReducer,
+    chatActiveConversation: chatActiveConversationReducer,
+    chatEditDeleteMessage: chatEditDeleteMessageReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

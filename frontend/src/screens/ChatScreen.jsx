@@ -5,57 +5,98 @@ import './ChatScreen.css'
 import { logout } from '../actions/userActions'
 import Sidebar from '../components/Sidebar'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import { NavLink } from 'react-router-dom/cjs/react-router-dom.min'
+import { listStudents } from '../actions/studentActions'
+import { useDispatch, useSelector } from 'react-redux'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import { sendMessageChat } from '../actions/chatActions'
 
 const ChatScreen = ({ location, history }) => {
   
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [client, setClient] = useState(null);
-
+  const [welcomeScreen,setWelcomeScreen] = useState(true)
+  const [conversations, setConversations] = useState([]);
+  const [chatId, setChatId] = useState(null);
+  const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(logout());
   };
 
   useEffect(() => {
-    const newClient = new W3CWebSocket("ws://localhost:5000");
+    dispatch(listStudents());
+  }, [dispatch]);
 
+  const studentList = useSelector((state) => state.studentList);
+  const { loading, error, students } = studentList;
+
+
+  useEffect(() => {
+    const newClient = new W3CWebSocket("ws://localhost:5000");
+  
     newClient.onopen = () => {
       console.log("WebSocket Client Connected");
     };
-
+  
     newClient.onmessage = (message) => {
-        const reader = new FileReader();
-      
-        reader.onload = (event) => {
-          const newMessage = event.target.result;
-          setMessages((prevMessages) => [...prevMessages, newMessage]);
-        };
-      
-        reader.readAsText(message.data);
+      const reader = new FileReader();
+  
+      reader.onload = (event) => {
+        const newMessage = event.target.result;
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
       };
-
-    setClient(newClient);
-
+  
+      reader.readAsText(message.data);
+    };
+  
     newClient.onerror = (error) => {
-        console.error('WebSocket Error:', error);
-      };
-
+      console.error('WebSocket Error:', error);
+    };
+  
+    setClient(newClient);
+  
     return () => {
       if (newClient) {
         newClient.close();
       }
     };
-  }, []);
-
+  }, [setMessages]);
+  
   
 
-  const sendMessage = () => {
-    if (client && client.readyState === WebSocket.OPEN && inputMessage.trim() !== "") {
-        client.send(inputMessage);
-        setInputMessage("");
-      }
-  };
+  useEffect(() => {
+    // Check if the URL has a chat ID
+    const extractedChatId = location.pathname.split('/')[2];
+    setChatId(extractedChatId);
+    setWelcomeScreen(false);
+    // Fetch other data or perform actions based on the chatId if needed
+    // ... rest of your code
+  }, [location.pathname]);
 
+
+  const sendMessage = () => {
+    
+    dispatch(sendMessageChat(chatId, inputMessage)).then((response) => {
+      console.log("responseis ",response);
+      if (response.success) {
+        // Handle success, you may redirect the user or show a success message
+      
+        if (client && client.readyState === WebSocket.OPEN && inputMessage.trim() !== "") {
+          client.send(inputMessage);
+          setInputMessage("");
+        }
+
+      } else {
+        // Handle failure, show an error message
+        
+       console.log(response);
+      }
+    });
+  
+  
+  };
 
   return (
 
@@ -210,97 +251,36 @@ const ChatScreen = ({ location, history }) => {
 
         <div className="bg-gray px-4 py-2 bg-light">
           <p className="h5 mb-0 py-1">Recent</p>
+          
+        </div>
+
+        <div className="bg-gray px-4 py-2 bg-light">
+        <div class="form-group">
+
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search User"/>
+  </div>
+          
         </div>
 
         <div className="messages-box">
           <div className="list-group rounded-0">
-            <a className="list-group-item list-group-item-action active text-white rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">25 Dec</small>
-                  </div>
-                  <p className="font-italic mb-0 text-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+            
+          {!loading && students.map((student, index) => (
+    <NavLink to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0">
+        <div className="media">
+            <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
+            <div className="media-body ml-4">
+                <div className="d-flex align-items-center justify-content-between mb-1">
+                    <h6 className="mb-0">{student.firstName}</h6>
+                    <small className="small font-weight-bold">25 Dec</small>
                 </div>
-              </div>
-            </a>
+                <p className="font-italic mb-0 text-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
+            </div>
+        </div>
+    </NavLink>
+))}
 
-            <a href="#" className="list-group-item list-group-item-action list-group-item-light rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">14 Dec</small>
-                  </div>
-                  <p className="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur. incididunt ut labore.</p>
-                </div>
-              </div>
-            </a>
 
-            <a href="#" className="list-group-item list-group-item-action list-group-item-light rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">9 Nov</small>
-                  </div>
-                  <p className="font-italic text-muted mb-0 text-small">consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="#" className="list-group-item list-group-item-action list-group-item-light rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">18 Oct</small>
-                  </div>
-                  <p className="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="#" className="list-group-item list-group-item-action list-group-item-light rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">17 Oct</small>
-                  </div>
-                  <p className="font-italic text-muted mb-0 text-small">consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="#" className="list-group-item list-group-item-action list-group-item-light rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">2 Sep</small>
-                  </div>
-                  <p className="font-italic text-muted mb-0 text-small">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="#" className="list-group-item list-group-item-action list-group-item-light rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">30 Aug</small>
-                  </div>
-                  <p className="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="#" className="list-group-item list-group-item-action list-group-item-light rounded-0">
-              <div className="media"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-                <div className="media-body ml-4">
-                  <div className="d-flex align-items-center justify-content-between mb-3">
-                    <h6 className="mb-0">Jason Doe</h6><small className="small font-weight-bold">21 Aug</small>
-                  </div>
-                  <p className="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                </div>
-              </div>
-            </a>
 
           </div>
         </div>
@@ -309,59 +289,11 @@ const ChatScreen = ({ location, history }) => {
    
     <div className="col-7 px-0">
       <div className="px-4 py-5 chat-box bg-white">
-       
-        <div className="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-          <div className="media-body ml-3">
-            <div className="bg-light rounded py-2 px-3 mb-2">
-              <p className="text-small mb-0 text-muted">Test which is a new approach all solutions</p>
-            </div>
-            <p className="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
+      {welcomeScreen && 
+      <img className='w-100' src="https://res.cloudinary.com/smartsupp/image/upload/w_1200,h_680,c_fill,q_auto,f_auto/v0/upload/mig_gy5unxi4_smartsupp-mobile-app-cover2x.png" alt="" />
+      }
 
-
-        <div className="media w-50 ml-auto mb-3">
-          <div className="media-body">
-            <div className="bg-primary rounded py-2 px-3 mb-2">
-              <p className="text-small mb-0 text-white">Test which is a new approach to have all solutions</p>
-            </div>
-            <p className="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-      
-        <div className="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-          <div className="media-body ml-3">
-            <div className="bg-light rounded py-2 px-3 mb-2">
-              <p className="text-small mb-0 text-muted">Test, which is a new approach to have</p>
-            </div>
-            <p className="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-
-        <div className="media w-50 ml-auto mb-3">
-          <div className="media-body">
-            <div className="bg-primary rounded py-2 px-3 mb-2">
-              <p className="text-small mb-0 text-white">Apollo University, Delhi, India Test</p>
-            </div>
-            <p className="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-       
-        <div className="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle"/>
-          <div className="media-body ml-3">
-            <div className="bg-light rounded py-2 px-3 mb-2">
-              <p className="text-small mb-0 text-muted">Test, which is a new approach</p>
-            </div>
-            <p className="small text-muted">12:00 PM | Aug 13</p>
-          </div>
-        </div>
-
-      
-       
-
+      {!welcomeScreen && <>
         {messages.map((message, index) => (
           <p key={index}>
              <div className="media w-50 ml-auto mb-3">
@@ -374,8 +306,7 @@ const ChatScreen = ({ location, history }) => {
         </div>
           </p>
         ))}
-
-
+      </>}
       </div>
 
      

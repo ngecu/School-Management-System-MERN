@@ -7,6 +7,7 @@ import Message from '../models/messageModel.js'
 
 export const allMessages = asyncHandler(async (req, res) => {
   try {
+    console.log(req.body);
     const messages = await Message.find({ chat: req.params.chatId })
       .populate("sender", "name email")
       .populate("reciever")
@@ -19,7 +20,9 @@ export const allMessages = asyncHandler(async (req, res) => {
 });
 
 export const sendMessage = asyncHandler(async (req, res) => {
-  const { content, chatId } = req.body;
+  console.log(req.body);
+
+  const { content, chatId,user_id } = req.body;
 
   if (!content || !chatId) {
     // console.log("Invalid data passed into request");
@@ -27,7 +30,7 @@ export const sendMessage = asyncHandler(async (req, res) => {
   }
 
   var newMessage = {
-    sender: req.user._id,
+    sender: user_id,
     content: content,
     chat: chatId,
   };

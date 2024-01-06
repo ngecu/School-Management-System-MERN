@@ -14,10 +14,10 @@ const messageModel = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    chat: {
+    chat: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Chat",
-    },
+      ref: "User",
+    }],
   },
   {
     timeStamp: true,

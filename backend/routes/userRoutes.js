@@ -6,14 +6,15 @@ import {
   registerUser,
   authUser,
   sendRestPassword,
-  fetchAllUsersController
+  getAllUsers
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
 router.route('/').post(registerUser)
+router.route('/').get(getAllUsers)
+
 router.route('/reset-password').post(sendRestPassword)
 router.route('/change-password/:id/:token').post(setNewPassword)
-router.route("/fetchUsers").get(protect, fetchAllUsersController);
 
 
 
