@@ -64,189 +64,64 @@ const Sidebar = () => {
       </div> */}
 
   
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column"  data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item menu-open">
-            <NavLink to="/" class={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-               
-              </p>
-            </NavLink>
-        
-          </li>
-        
-          <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-            
-              <p>
-                Students
-                <i class="fas fa-angle-left right"></i>
-                {/* <span class="badge badge-info right">6</span> */}
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-              <NavLink to="/allStudents" class={`nav-link ${location.pathname === '/allStudents' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Students</p>
-                </NavLink>
-              </li>
-              <li class="nav-item">
-              <NavLink to="/admission" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Admission Form</p>
-                </NavLink>
-              </li>
-             
-              
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Lecturers
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-              <NavLink to="/allLecturers" class={`nav-link ${location.pathname === '/allLecturers' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Lecturers</p>
-                </NavLink>
-              </li>
-              <li class="nav-item">
-              <NavLink to="/add_lecturer" class={`nav-link ${location.pathname === '/add_lecturer' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Lecturer</p>
-                </NavLink>
-              </li>
-             
-              
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Parents
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Parents</p>
-                </a>
-              </li>
-             
-            
-           
-            </ul>
-          </li>
-        
-          <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Accountant
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
+<nav className="mt-2">
+  <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <li className="nav-item">
+      <NavLink to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-tachometer-alt"></i>
+        <p>Dashboard </p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/courses" className={`nav-link ${location.pathname === '/courses' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-book"></i>
+        <p>Courses Assigned</p>
+      </NavLink>
+    </li>
+  
+    <li className="nav-item">
+      <NavLink to="/students" className={`nav-link ${location.pathname === '/students' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-users"></i>
+        <p>My Students</p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/announcements" className={`nav-link ${location.pathname === '/announcements' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-bullhorn"></i>
+        <p>Announcements</p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/assignments" className={`nav-link ${location.pathname === '/assignments' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-tasks"></i>
+        <p>Assignments</p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/grades" className={`nav-link ${location.pathname === '/grades' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-clipboard"></i>
+        <p>Grades</p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-user"></i>
+        <p>Profile</p>
+      </NavLink>
+    </li>
 
-            <li class="nav-item">
-              <NavLink to="/add_accountant" class={`nav-link ${location.pathname === '/add_accountant' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Accountant</p>
-                </NavLink>
-              </li>
+  
 
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Fees Collection</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Expenses</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Expenses</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-          <NavLink to="/allAttedance" class={`nav-link ${location.pathname === '/allAttedance' ? 'active' : ''}`}>
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Attendance
-                
-              </p>
-            </NavLink>
-          
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Exam
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Exam Schedule</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Exam Grade</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Expenses</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-          <NavLink to="/chat" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
-            <i class="nav-icon fas fa-person"></i>
-            <p>Message</p>
-          </NavLink>
-        </li>
-
-
-        <li class="nav-item">
+    <li class="nav-item">
           <Button variant="danger" className="w-100" onClick={logoutHandler}>
-            <i class="nav-icon fas fa-person"></i>
+          <i className="nav-icon fas fa-sign-out-alt"></i>
             <p>LOGOUT</p>
           </Button>
         </li>
-        
-        
-        </ul>
-      </nav>
+
+  </ul>
+</nav>
+
       
     </div>
   

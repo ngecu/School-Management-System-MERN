@@ -64,73 +64,49 @@ const Sidebar = () => {
       </div> */}
 
   
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column"  data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item menu-open">
-            <NavLink to="/" class={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-               
-              </p>
-            </NavLink>
-        
-          </li>
-     
-        
-          <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Accountant
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
+<nav className="mt-2">
+  <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    <li className="nav-item">
+      <NavLink to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-tachometer-alt"></i>
+        <p>Dashboard</p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/fees" className={`nav-link ${location.pathname === '/fees' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-money-bill"></i>
+        <p>Fees Collection</p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/expenses" className={`nav-link ${location.pathname === '/expenses' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-chart-line"></i>
+        <p>Expenses</p>
+      </NavLink>
+    </li>
+    <li className="nav-item">
+      <NavLink to="/add_expense" className={`nav-link ${location.pathname === '/add_expense' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-plus"></i>
+        <p>Add Expense</p>
+      </NavLink>
+    </li>
 
-         
-
-              <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Fees Collection</p>
-                </a>
-              </li>
-              <li class="nav-item">
-              <NavLink to="/expenses" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Expenses</p>
-                </NavLink>
-              </li>
-              <li class="nav-item">
-              <NavLink to="/add_expenses" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Expenses</p>
-                </NavLink>
-              </li>
-            </ul>
-          </li>
-
-       
-
-          <li class="nav-item">
-          <NavLink to="/chat" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
-            <i class="nav-icon fas fa-person"></i>
-            <p>Message</p>
-          </NavLink>
-        </li>
-
-
-        <li class="nav-item">
+    <li className="nav-item">
+      <NavLink to="/chat" className={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-envelope"></i>
+        <p>Messages</p>
+      </NavLink>
+    </li>
+    <li class="nav-item">
           <Button variant="danger" className="w-100" onClick={logoutHandler}>
             <i class="nav-icon fas fa-person"></i>
             <p>LOGOUT</p>
           </Button>
         </li>
-        
-        
-        </ul>
-      </nav>
+
+  </ul>
+</nav>
+
       
     </div>
   
