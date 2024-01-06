@@ -17,7 +17,7 @@ const ChatScreen = ({ location, history }) => {
   };
 
   useEffect(() => {
-    const newClient = new W3CWebSocket("ws://localhost:8080");
+    const newClient = new W3CWebSocket("ws://localhost:5000");
 
     newClient.onopen = () => {
       console.log("WebSocket Client Connected");

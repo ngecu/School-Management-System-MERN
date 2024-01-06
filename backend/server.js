@@ -5,7 +5,7 @@ import colors from 'colors'
 import morgan from 'morgan'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import {connectDB} from './config/db.js'
-
+import { WebSocketServer } from 'ws';
 import userRoutes from './routes/userRoutes.js'
 import parentRoutes from './routes/parentRoutes.js'
 import studentRoutes from './routes/studentRoutes.js'
@@ -18,6 +18,8 @@ import accountRoutes from './routes/accountantRoutes.js'
 import attendanceRoutes from './routes/attendanceRoutes.js'
 
 
+import chatRoutes from './routes/chatRoutes.js'
+import messageRoutes from './routes/messageRoutes.js'
 
 import cors from 'cors'
 
@@ -27,8 +29,11 @@ connectDB()
 
 const app = express()
 
-app.use(cors())
-
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
@@ -45,6 +50,8 @@ app.use('/api/lecturers', lecturerRoutes)
 app.use('/api/accountants', accountRoutes)
 app.use('/api/attendance', attendanceRoutes)
 
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
@@ -66,9 +73,34 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
 
-app.listen(
+const server = app.listen(
   PORT,
   console.log(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
   )
 )
+
+const wss = new WebSocketServer({server});
+
+
+wss.on("connection", (connection, req) => {
+  console.log("WebSocket connected...");
+
+  // Listen for messages from clients
+  connection.on("message", (message) => {
+    console.log(`Received message: ${message}`);
+
+    // Broadcast the received message to all connected clients
+    wss.clients.forEach((client) => {
+     
+        client.send(message);
+        console.log("sent  ", message);
+      
+    });
+  });
+
+  // Listen for the connection to close
+  connection.on("close", () => {
+    console.log("WebSocket disconnected...");
+  });
+});
