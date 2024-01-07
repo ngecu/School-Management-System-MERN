@@ -7,14 +7,7 @@ const schoolFeesSchema = mongoose.Schema(
       ref: 'Student',
       required: true,
     },
-    term: {
-      type: String,
-      required: true,
-    },
-    academicYear: {
-      type: String,
-      required: true,
-    },
+
     amount: {
       type: Number,
       required: true,
@@ -24,7 +17,7 @@ const schoolFeesSchema = mongoose.Schema(
       enum: ['Paid', 'Pending'],
       default: 'Pending',
     },
-    paymentDate: {
+    dueDate: {
       type: Date,
     },
     transactionId: {
