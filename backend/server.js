@@ -24,7 +24,7 @@ import conversationRoutes from './routes/conversationRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import feeRoutes from './routes/feeRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
-
+import timetableRoutes from './routes/timetableRoutes.js';
 
 import cors from 'cors'
 
@@ -60,6 +60,7 @@ app.use("/api/message", messageRoutes);
 app.use("/api/conversation", conversationRoutes);
 app.use("/api/fee", feeRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use('/api/timetable', timetableRoutes);
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))

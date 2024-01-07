@@ -14,16 +14,59 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
-const MyCalendar = (props) => (
-  <div style={{height:"100vh"}}>
-    <Calendar
-      localizer={localizer}
-      // events={myEventsList}
-      startAccessor="start"
-      endAccessor="end"
-    />
-  </div>
-)
+const MyCalendar = (props) => {
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  // Generate events for today, tomorrow, and this week
+  const events = [
+
+    {
+      title: 'S for Today',
+      start: moment(today).set({ hour: 10, minute: 0, second: 0 }).toDate(),
+      end: moment(today).set({ hour: 11, minute: 0, second: 0 }).toDate(),
+    },
+
+    {
+      title: 'Event for Today',
+      start: today,
+      end: today,
+    },
+    {
+      title: 'Event for Today',
+      start: today,
+      end: today,
+    },
+    {
+      title: 'Event for Today',
+      start: today,
+      end: today,
+    },
+    {
+      title: 'Event for Tomorrow',
+      start: tomorrow,
+      end: tomorrow,
+    },
+    {
+      title: 'Event for This Week',
+      start: moment().startOf('week').toDate(),
+      end: moment().endOf('week').toDate(),
+    },
+    // Add more events as needed
+  ];
+
+  return (
+    <div style={{ height: '100vh' }}>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+      />
+    </div>
+  );
+};
 
 const studentAttendanceScreen = () => {
   const [name, setName] = useState('');

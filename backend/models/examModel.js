@@ -11,8 +11,7 @@ const examSchema = mongoose.Schema(
       required: true,
     },
     examType: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'ExamType',
+      type: String,
       required: true,
     },
     courseUnit: {

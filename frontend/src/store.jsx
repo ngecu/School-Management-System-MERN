@@ -72,6 +72,7 @@ import {
   chatEditDeleteMessageReducer,
 } from './reducers/chatReducers';  
 import { uploadFileReducer } from './reducers/uploadReducers';
+import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReducer, timetableDetailsReducer, timetableListReducer, timetableUpdateReducer } from './reducers/timetableReducers';
 
 const reducer = combineReducers({
   // User reducers
@@ -131,6 +132,14 @@ const reducer = combineReducers({
     chatActiveConversation: chatActiveConversationReducer,
     chatEditDeleteMessage: chatEditDeleteMessageReducer,
     
+      // Timetable reducers
+  timetableList: timetableListReducer,
+  timetableDetails: timetableDetailsReducer,
+  timetableCreate: timetableCreateReducer,
+  timetableUpdate: timetableUpdateReducer,
+  timetableDelete: timetableDeleteReducer,
+  timetableByCourse: timetableByCourseReducer,
+
     // Upload reducers
     uploadFile: uploadFileReducer,
 });

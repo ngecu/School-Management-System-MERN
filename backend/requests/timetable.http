@@ -1,0 +1,53 @@
+###
+## CREATE TIMETABLE ENTRY
+POST http://localhost:5000/api/timetable
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
+
+{
+  "course": "6597e3fb97d4d9309e9e3495",
+  "courseUnit": "659abb37895c1f00ed3064b3",
+  "lecturer": "6599a7fa4665f369c9399843",
+  "year": 2022,
+  "dayOfWeek": "Monday",
+  "lecturerRoom": "Room 101",
+  "startTime": "08:00",
+  "endTime": "10:00"
+}
+
+###
+## GET ALL TIMETABLE ENTRIES
+GET http://localhost:5000/api/timetable
+
+###
+## GET TIMETABLE ENTRY BY ID
+GET http://localhost:5000/api/timetable/659abb8f895c1f00ed3064b9
+
+###
+## UPDATE TIMETABLE ENTRY
+PUT http://localhost:5000/api/timetable/TIMETABLE_ID
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
+
+{
+  "course": "NEW_COURSE_ID",
+  "courseUnit": "NEW_COURSE_UNIT_ID",
+  "lecturer": "NEW_LECTURER_ID",
+  "year": 2023,
+  "dayOfWeek": "Wednesday",
+  "lecturerRoom": "Room 102",
+  "startTime": "09:00",
+  "endTime": "11:00"
+}
+
+###
+## DELETE TIMETABLE ENTRY
+DELETE http://localhost:5000/api/timetable/TIMETABLE_ID
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
+
+
+###
+## GET TIMETABLE ENTRIES BY COURSE
+GET http://localhost:5000/api/timetable/byCourse/6597e3fb97d4d9309e9e3495
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI

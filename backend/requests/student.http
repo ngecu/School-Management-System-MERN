@@ -2,17 +2,17 @@
 ## REGISTER STUDENT
 POST http://localhost:5000/api/students/
 Content-Type: application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWFjNTg4N2RkNGNlYzIyM2ExMGVmZCIsImlhdCI6MTcwNDY0MTk1MCwiZXhwIjoxNzA3MjMzOTUwfQ.zXWPCc2w3a1n_2d6o_8ReuhTW3vzgNbFFSr3DrzzB1o
 
 {
-  "email": "student3@example.com",
+  "email": "devngecu@gmail.com",
   "password": "password123",
-  "firstName": "Alice",
-  "lastName": "Johnson",
-  "gender": "Female",
-  "dob": "1985-08-25",
+  "firstName": "Robinson",
+  "lastName": "Nyamu",
+  "gender": "Mmale",
+  "dob": "1999-07-07",
   "religion": "Christian",
-  "phone": "9876543210",
+  "phone": "0707583092",
   "nationalID": "ABC123456",
   "course": "6597e3fb97d4d9309e9e3493",
   "parents": [
@@ -41,4 +41,4 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyND
 ###
 GET http://localhost:5000/api/students/
 Content-Type: application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDYzOTI1OCwiZXhwIjoxNzA3MjMxMjU4fQ.LHNov2kgVD1l40FaABhVLej-kF8VRmIHmFS8rlAufyw

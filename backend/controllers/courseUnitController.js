@@ -5,12 +5,13 @@ import CourseUnit from '../models/courseUnitModel.js';
 // @route   POST /api/courseunits
 // @access  Private (if authentication is required)
 export const createCourseUnit = asyncHandler(async (req, res) => {
-  const { name, code, description } = req.body;
+  const { name, code, description,course } = req.body;
 
   const courseUnit = await CourseUnit.create({
     name,
     code,
     description,
+    course
   });
 
   res.status(201).json({
