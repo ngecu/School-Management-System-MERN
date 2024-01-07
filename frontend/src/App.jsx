@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
 
 
-import Header from './components/Header'
 import Footer from './components/Footer'
 import LoginScreen from './screens/LoginScreen'
 import LostPasswordScreen from './screens/LostPasswordScreen'
@@ -15,6 +14,11 @@ import AddLecturerScreen from './screens/Admin/AddLecturerScreen';
 import AllLecturers from './screens/Admin/AllTeachersScreen';
 import AllParentsScreen from './screens/Admin/AllParentsScreen';
 import AttedanceScreen from './screens/Admin/AttendanceScreen';
+import studentAttendanceScreen from './screens/Student/studentAttendanceScreen';
+import studentExamResultScreen from './screens/Student/studentExamResultScreen';
+import studentTimeTableScreen from './screens/Student/studentTimetableScreen';
+import studentFeeScreen from './screens/Student/studentFeeScreen';
+import StudentProfileScreen from './screens/Student/studentProfileScreen';
 
 const App = () => {
 
@@ -36,6 +40,14 @@ const App = () => {
           <Route path="/allAttedance" component={AttedanceScreen} />
           
           <Route path="/chat" component={ChatScreen} />
+
+
+          {/* students routes  */}
+          <Route path="/my_attendance" component={studentAttendanceScreen} />
+          <Route path="/my_exam" component={studentExamResultScreen} />
+          <Route path="/my_timetable" component={studentTimeTableScreen} />
+          <Route path="/my_fees" component={studentFeeScreen} />
+          <Route path="/my_profile" component={StudentProfileScreen} />
 
        
       </main>

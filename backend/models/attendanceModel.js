@@ -12,6 +12,11 @@ const attendanceSchema = mongoose.Schema(
       ref: 'Course',
       required: true,
     },
+
+    courseUnit: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CourseUnit',
+      required: true,    },
   
     signInTime: {
       type: Date,

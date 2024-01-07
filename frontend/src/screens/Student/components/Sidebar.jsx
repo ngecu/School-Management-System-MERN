@@ -67,46 +67,61 @@ const Sidebar = () => {
 <nav className="mt-2">
       <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li className="nav-item">
-          <NavLink to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
+          <NavLink to="/" className={`nav-link ${location.pathname === '/' ? 'active' : '/'}`}>
             <i className="nav-icon fas fa-tachometer-alt"></i>
             <p>Dashboard</p>
           </NavLink>
         </li>
 
         <li className="nav-item">
-          <NavLink to="/attendance" className={`nav-link ${location.pathname === '/attendance' ? 'active' : ''}`}>
+          <NavLink to="/my_attendance" className={`nav-link ${location.pathname === '/my_attendance' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-calendar-check"></i>
             <p>Attendance</p>
           </NavLink>
         </li>
 
         <li className="nav-item">
-          <NavLink to="/exam-results" className={`nav-link ${location.pathname === '/exam-results' ? 'active' : ''}`}>
+          <NavLink to="/my_exam" className={`nav-link ${location.pathname === '/my_exam_results' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-poll"></i>
-            <p>Exam Results</p>
+            <p>Exam</p>
           </NavLink>
         </li>
 
         <li className="nav-item">
-          <NavLink to="/timetable" className={`nav-link ${location.pathname === '/timetable' ? 'active' : ''}`}>
+          <NavLink to="/my_timetable" className={`nav-link ${location.pathname === '/my_timetable' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-table"></i>
             <p>Timetable</p>
           </NavLink>
         </li>
 
         <li className="nav-item">
-          <NavLink to="/school-fees" className={`nav-link ${location.pathname === '/school-fees' ? 'active' : ''}`}>
+          <NavLink to="/my_fees" className={`nav-link ${location.pathname === '/my_fees' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-money-bill"></i>
             <p>School Fees</p>
           </NavLink>
         </li>
 
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <NavLink to="/courses" className={`nav-link ${location.pathname === '/courses' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-book"></i>
             <p>Courses</p>
           </NavLink>
-        </li>
+        </li> */}
+
+        <li className="nav-item">
+  <NavLink to="/chats" className={`nav-link ${location.pathname === '/chats' ? 'active' : ''}`}>
+    <i className="nav-icon fas fa-comments"></i>
+    <p>Messages</p>
+  </NavLink>
+</li>
+
+<li className="nav-item">
+  <NavLink to="/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
+    <i className="nav-icon fas fa-user"></i>
+    <p>Profile</p>
+  </NavLink>
+</li>
+
 
         <li class="nav-item">
           <Button variant="danger" className="w-100" onClick={logoutHandler}>

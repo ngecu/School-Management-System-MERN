@@ -7,8 +7,25 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const IndexStudentScreen = () => {
+
+const localizer = momentLocalizer(moment) // or globalizeLocalizer
+
+const MyCalendar = (props) => (
+  <div style={{height:"100vh"}}>
+    <Calendar
+      localizer={localizer}
+      // events={myEventsList}
+      startAccessor="start"
+      endAccessor="end"
+    />
+  </div>
+)
+
+const studentExamResultScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,8 +51,19 @@ const IndexStudentScreen = () => {
     dispatch(logout());
   };
 
+  const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
-  return (
+  const MyCalendar = (props) => (
+    <div style={{height:"100vh"}}>
+      <Calendar
+        localizer={localizer}
+        // events={myEventsList}
+        startAccessor="start"
+        endAccessor="end"
+      />
+    </div>
+  )
+    return (
     <div class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -186,168 +214,10 @@ const IndexStudentScreen = () => {
 
         <div class="row pt-3">
      
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col-xl-12 col-md-12 mr-2">
-                    <div class="row no-gutters align-items-center">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">
-                        <img src="https://www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/img/figure/student.png" alt="" />
-                      </div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{userInfo.firstName}</div>
-                      <div class="mt-2 mb-0 text-muted text-xs">
-                       
-                      </div>
-                      </div>
-                    </div>
-                    <div class="col-xl-12 col-md-12 mr-2">
-                    <table className='w-100'>
-      <tbody>
-        <tr>
-          <td>Email:</td>
-          <th>{userInfo.email}</th>
-        </tr>
-        <tr>
-          <td>Password:</td>
-          <th>{userInfo.password}</th>
-        </tr>
-        <tr>
-          <td>First Name:</td>
-          <th>{userInfo.firstName}</th>
-        </tr>
-        <tr>
-          <td>Last Name:</td>
-          <th>{userInfo.lastName}</th>
-        </tr>
-        <tr>
-          <td>Gender:</td>
-          <th>{userInfo.gender}</th>
-        </tr>
-        <tr>
-          <td>Date of Birth:</td>
-          <th>{userInfo.dob}</th>
-        </tr>
-        {/* <tr>
-          <td>Religion:</td>
-          <th>{userInfo.religion}</th>
-        </tr>
-        <tr>
-          <td>Phone:</td>
-          <th>{userInfo.phone}</th>
-        </tr>
-        <tr>
-          <td>National ID:</td>
-          <th>{userInfo.nationalID}</th>
-        </tr>
-        <tr>
-          <td>Course:</td>
-          <th>{userInfo.course}</th>
-        </tr>
-        <tr>
-          <td>Parents:</td>
-          <th>
-            {userInfo.parents.map((parent, index) => (
-              <div key={index}>
-                <p>Email: {parent.email}</p>
-                <p>Full Name: {parent.fullName}</p>
-                <p>Surname: {parent.surname}</p>
-                <p>Date of Join: {parent.dateOfJoin}</p>
-                <p>Date of Birth: {parent.dob}</p>
-                <p>Phone: {parent.phone}</p>
-                <p>Gender: {parent.gender}</p>
-                <p>Status: {parent.status ? 'Active' : 'Inactive'}</p>
-                <p>Last Login Date: {parent.lastLoginDate}</p>
-                <p>Last Login IP: {parent.lastLoginIp}</p>
-              </div>
-            ))}
-          </th>
-        </tr>
-        <tr>
-          <td>Status:</td>
-          <th>{userInfo.status ? 'Active' : 'Inactive'}</th>
-        </tr>
-        <tr>
-          <td>Last Login Date:</td>
-          <th>{userInfo.lastLoginDate}</th>
-        </tr>
-        <tr>
-          <td>Last Login IP:</td>
-          <th>{userInfo.lastLoginIp}</th>
-        </tr> */}
-      </tbody>
-    </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xl-8 col-md-6 mb-4">
-              <div className="row">
-              <div class="col-xl-12 col-md-6 mb-4">
-                <div className="row">
-                
-                <div class="col-xl-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Notifications</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                    <div class="mt-2 mb-0 text-muted text-xs">
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-bell fa-2x text-warning"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xl-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Events</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                    <div class="mt-2 mb-0 text-muted text-xs">
-
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-calendar-alt fa-2x text-success"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xl-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Attendance</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                    <div class="mt-2 mb-0 text-muted text-xs">
-
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-user-check fa-2x text-info"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xl-12 col-md-6 mb-4">
+        <div class="col-xl-12 col-md-6 mb-4">
     <div class="card">
         <div class="card-header">
-            <h5 class="mb-0">Exams</h5>
+            <h5 class="mb-0">Exam Results</h5>
         </div>
         <div class="card-body">
             <div class="row mb-3">
@@ -411,11 +281,21 @@ const IndexStudentScreen = () => {
 </div>
 
 
+<div class="col-xl-12 col-md-6 mb-4">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Exam Schedule</h5>
+        </div>
+        <div class="card-body">
+            <MyCalendar />
 
-                </div>
-                </div>
-              </div>
             </div>
+
+            </div>
+
+            </div>
+
+           
        
         </div>
 
@@ -433,4 +313,4 @@ const IndexStudentScreen = () => {
   );
 };
 
-export default IndexStudentScreen;
+export default studentExamResultScreen;

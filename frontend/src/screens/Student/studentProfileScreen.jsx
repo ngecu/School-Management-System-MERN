@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import { Table,  ListGroup, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -7,8 +7,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
+import { Form, Input, Select, DatePicker, Button, Upload, message, Col, Row } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { listSchools } from '../../actions/schoolActions';
+import { listCourses } from '../../actions/courseActions';
+const { Option } = Select;
 
-const IndexStudentScreen = () => {
+const StudentProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +38,69 @@ const IndexStudentScreen = () => {
   const logoutHandler = () => {
     dispatch(logout());
   };
+
+  const onFinish = (values) => {
+    console.log('Received values:', values);
+  
+    // Extract parent details from values
+  
+    const formattedParents = [{
+      fullName:values.parentFullName,
+      phone:values.parentPhone,
+      email:values.parentEmail,
+    }]
+   
+    
+  
+  
+    // Combine student data with formatted parent details
+    const dataToSend = {
+      ...values,
+      parents: formattedParents,
+    };
+  
+    // Dispatch the createStudent action
+    dispatch(createStudent(dataToSend)).then((response) => {
+      if (response.success) {
+        // Handle success, you may redirect the user or show a success message
+        message.success('Student created successfully!');
+      } else {
+        // Handle failure, show an error message
+        message.error(response.error);
+      }
+    });
+  };
+  
+
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
+  const beforeUpload = (file) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    return isJpgOrPng;
+  };
+
+
+// Fetch schools and courses when the component mounts
+useEffect(() => {
+  dispatch(listSchools());
+  dispatch(listCourses());
+}, [dispatch]);
+
+const schoolsList = useSelector((state) => state.schoolList);
+const { loading: loadingSchools, schools, error: errorSchools } = schoolsList;
+
+const coursesList = useSelector((state) => state.courseList);
+const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
+
+
 
 
   return (
@@ -284,137 +352,229 @@ const IndexStudentScreen = () => {
             </div>
 
             <div class="col-xl-8 col-md-6 mb-4">
-              <div className="row">
-              <div class="col-xl-12 col-md-6 mb-4">
-                <div className="row">
-                
-                <div class="col-xl-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Notifications</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                    <div class="mt-2 mb-0 text-muted text-xs">
+            <div class="card h-100">
+                <div class="card-body">
+                <Form
+      name="admissionForm"
+      onFinish={onFinish}
+      layout="vertical"
+      labelCol={{
+        span: 32,
+      }}
+      wrapperCol={{
+        span: 32,
+      }}
+    >
+      <Row gutter={[16, 16]}>
+                    <Col span={6}>
+                    <Form.Item
+        label="First Name"
+        name="firstName"
+        rules={[
+          {
+            required: true,
+            message: 'Please input the first name!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                    </Col>
+
+                    <Col span={6}>
+                    <Form.Item
+        label="Last Name"
+        name="lastName"
+        rules={[
+          {
+            required: true,
+            message: 'Please input the last name!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                    </Col>
+
+                    <Col span={6}>
+                    <Form.Item
+        label="Gender"
+        name="gender"
+        rules={[
+          {
+            required: true,
+            message: 'Please select the gender!',
+          },
+        ]}
+      >
+        <Select>
+          <Option value="male">Male</Option>
+          <Option value="female">Female</Option>
+        </Select>
+      </Form.Item>
+                    </Col>
+
+
+                    <Col span={6}>
+                              <Form.Item
+                  label="Date Of Birth"
+                  name="dob"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please select the date of birth!',
+                    },
+                  ]}
+                >
+                  <DatePicker format="DD/MM/YYYY" />
+                </Form.Item>
+                    </Col>
+
+
+                    <Col span={6}>
+                    <Form.Item
+        label="Religion"
+        name="religion"
+        rules={[
+          {
+            required: true,
+            message: 'Please select the religion!',
+          },
+        ]}
+      >
+        <Select>
+          <Option value="islam">Islam</Option>
+          <Option value="hindu">Hindu</Option>
+          <Option value="christian">Christian</Option>
+          <Option value="buddish">Buddish</Option>
+
+        </Select>
+      </Form.Item>
+                      </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+        label="E-Mail"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Please input Your EMail',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                      </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+  label="School"
+  name="school"
+  rules={[
+    {
+      required: true,
+      message: 'Please select the school!',
+    },
+  ]}
+>
+  <Select loading={loadingSchools}>
+    {schools && schools.map((school) => (
+      <Option key={school._id} value={school._id}>
+        {school.name}
+      </Option>
+    ))}
+  </Select>
+</Form.Item>
+                      </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+  label="Course"
+  name="course"
+  rules={[
+    {
+      required: true,
+      message: 'Please select the course!',
+    },
+  ]}
+>
+  <Select loading={loadingCourses}>
+    {courses && courses.map((course) => (
+      <Option key={course._id} value={course._id}>
+        {course.name}
+      </Option>
+    ))}
+  </Select>
+</Form.Item>
+                      </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+        label="National ID"
+        name="nationalID"
+        rules={[
+          {
+            required: true,
+            message: 'Please input the National Number!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                      </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+        label="Phone"
+        name="phone"
+        rules={[
+          {
+            required: true,
+            message: 'Please input the Phone Number!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                      </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+        label="Upload Student Photo"
+        name="photo"
+        valuePropName="fileList"
+        getValueFromEvent={normFile}
+        extra="Please upload a photo with dimensions 150px X 150px."
+      >
+        <Upload
+          name="photo"
+          beforeUpload={beforeUpload}
+          listType="picture"
+        >
+          <Button icon={<UploadOutlined />}>Upload</Button>
+        </Upload>
+      </Form.Item>
+                      </Col>
+                    </Row>
+
+
+
+
+
+      <Form.Item
+        wrapperCol={{
+          offset: 0,
+          span: 32,
+        }}
+      >
+        <Button type="primary" className='w-100' htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
                     </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-bell fa-2x text-warning"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xl-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Events</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                    <div class="mt-2 mb-0 text-muted text-xs">
-
                     </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-calendar-alt fa-2x text-success"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xl-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Attendance</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                    <div class="mt-2 mb-0 text-muted text-xs">
-
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-user-check fa-2x text-info"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xl-12 col-md-6 mb-4">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Exams</h5>
-        </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Exam Name"/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Course Unit"/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Grade"/>
-                </div>
-                <div class="col-md-3 ">
-                    <button class="btn btn-primary w-100">Search</button>
-                </div>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Exam Name</th>
-                        <th>Course Unit</th>
-                        <th>Grade</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Exam 1</td>
-                        <td>Mathematics</td>
-                        <td>A</td>
-                        <td>2023-01-01</td>
-                    </tr>
-                    <tr>
-                        <td>Exam 2</td>
-                        <td>Science</td>
-                        <td>B</td>
-                        <td>2023-02-01</td>
-                    </tr>
-
-                    <tr>
-                        <td>Exam 2</td>
-                        <td>Science</td>
-                        <td>B</td>
-                        <td>2023-02-01</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-end">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-                </div>
-                </div>
-              </div>
             </div>
        
         </div>
@@ -433,4 +593,4 @@ const IndexStudentScreen = () => {
   );
 };
 
-export default IndexStudentScreen;
+export default StudentProfileScreen;

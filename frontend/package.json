@@ -11,11 +11,10 @@
     "cypress:open": "cypress open"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.11.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
+    "react-big-calendar": "^1.8.5",
     "react-bootstrap-table-next": "^4.0.3",
     "websocket": "^1.0.34"
   },
