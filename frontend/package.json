@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^14.4.3",
     "react-big-calendar": "^1.8.5",
     "react-bootstrap-table-next": "^4.0.3",
+    "react-dropzone": "^14.2.3",
     "websocket": "^1.0.34"
   },
   "devDependencies": {

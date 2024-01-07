@@ -187,15 +187,18 @@ const IndexStudentScreen = () => {
         <div class="row pt-3">
      
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card h-100">
+
+              <div className="row">
+                <div className="col-xl-12 col-md-6 mb-4">
+                <div class="card h-100">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col-xl-12 col-md-12 mr-2">
-                    <div class="row no-gutters align-items-center">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">
-                        <img src="https://www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/img/figure/student.png" alt="" />
+                    <div class="no-gutters align-items-center">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
+                        <img src={userInfo.userData.photo} width={100} alt="" />
                       </div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{userInfo.firstName}</div>
+
                       <div class="mt-2 mb-0 text-muted text-xs">
                        
                       </div>
@@ -203,84 +206,95 @@ const IndexStudentScreen = () => {
                     </div>
                     <div class="col-xl-12 col-md-12 mr-2">
                     <table className='w-100'>
-      <tbody>
-        <tr>
-          <td>Email:</td>
-          <th>{userInfo.email}</th>
-        </tr>
-        <tr>
-          <td>Password:</td>
-          <th>{userInfo.password}</th>
-        </tr>
-        <tr>
-          <td>First Name:</td>
-          <th>{userInfo.firstName}</th>
-        </tr>
-        <tr>
-          <td>Last Name:</td>
-          <th>{userInfo.lastName}</th>
-        </tr>
-        <tr>
-          <td>Gender:</td>
-          <th>{userInfo.gender}</th>
-        </tr>
-        <tr>
-          <td>Date of Birth:</td>
-          <th>{userInfo.dob}</th>
-        </tr>
-        {/* <tr>
-          <td>Religion:</td>
-          <th>{userInfo.religion}</th>
-        </tr>
-        <tr>
-          <td>Phone:</td>
-          <th>{userInfo.phone}</th>
-        </tr>
-        <tr>
-          <td>National ID:</td>
-          <th>{userInfo.nationalID}</th>
-        </tr>
-        <tr>
-          <td>Course:</td>
-          <th>{userInfo.course}</th>
-        </tr>
-        <tr>
-          <td>Parents:</td>
-          <th>
-            {userInfo.parents.map((parent, index) => (
-              <div key={index}>
-                <p>Email: {parent.email}</p>
-                <p>Full Name: {parent.fullName}</p>
-                <p>Surname: {parent.surname}</p>
-                <p>Date of Join: {parent.dateOfJoin}</p>
-                <p>Date of Birth: {parent.dob}</p>
-                <p>Phone: {parent.phone}</p>
-                <p>Gender: {parent.gender}</p>
-                <p>Status: {parent.status ? 'Active' : 'Inactive'}</p>
-                <p>Last Login Date: {parent.lastLoginDate}</p>
-                <p>Last Login IP: {parent.lastLoginIp}</p>
-              </div>
-            ))}
-          </th>
-        </tr>
-        <tr>
-          <td>Status:</td>
-          <th>{userInfo.status ? 'Active' : 'Inactive'}</th>
-        </tr>
-        <tr>
-          <td>Last Login Date:</td>
-          <th>{userInfo.lastLoginDate}</th>
-        </tr>
-        <tr>
-          <td>Last Login IP:</td>
-          <th>{userInfo.lastLoginIp}</th>
-        </tr> */}
-      </tbody>
+                    <tbody>
+  <tr>
+    <td>Email:</td>
+    <th>{userInfo.email}</th>
+  </tr>
+
+  <tr>
+    <td>First Name:</td>
+    <th>{userInfo.userData.firstName}</th>
+  </tr>
+  <tr>
+    <td>Last Name:</td>
+    <th>{userInfo.userData.lastName}</th>
+  </tr>
+  <tr>
+    <td>Gender:</td>
+    <th>{userInfo.userData.gender}</th>
+  </tr>
+  <tr>
+    <td>Date of Birth:</td>
+    <th>{userInfo.userData.dob}</th>
+  </tr>
+
+  <tr>
+    <td>Religion:</td>
+    <th>{userInfo.userData.religion}</th>
+  </tr>
+
+  <tr>
+    <td>Phone Number:</td>
+    <th>{userInfo.userData.phone}</th>
+  </tr>
+
+</tbody>
+
     </table>
                     </div>
                   </div>
                 </div>
               </div>
+                </div>
+
+                <div className="col-xl-12 col-md-6 mb-4">
+                <div class="card h-100">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                 
+                    <div class="col-xl-12 col-md-12 mr-2">
+                    <table className='w-100'>
+                    <tbody>
+  <tr>
+    <td>Rem School Fees:</td>
+    <th>Ksh.100</th>
+  </tr>
+
+  <tr>
+    <td>Year of Study:</td>
+    <th>1</th>
+  </tr>
+  <tr>
+    <td>Yeah:</td>
+    <th>2024</th>
+  </tr>
+  <tr>
+    <td>Gender:</td>
+    <th>{userInfo.userData.gender}</th>
+  </tr>
+  <tr>
+    <td>Date of Birth:</td>
+    <th>{userInfo.userData.dob}</th>
+  </tr>
+
+  <tr>
+    <td>Religion:</td>
+    <th>{userInfo.userData.religion}</th>
+  </tr>
+
+
+
+</tbody>
+
+    </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                </div>
+              </div>
+             
             </div>
 
             <div class="col-xl-8 col-md-6 mb-4">
@@ -380,12 +394,7 @@ const IndexStudentScreen = () => {
                         <td>A</td>
                         <td>2023-01-01</td>
                     </tr>
-                    <tr>
-                        <td>Exam 2</td>
-                        <td>Science</td>
-                        <td>B</td>
-                        <td>2023-02-01</td>
-                    </tr>
+                  
 
                     <tr>
                         <td>Exam 2</td>

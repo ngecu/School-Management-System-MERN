@@ -71,6 +71,7 @@ import {
   chatActiveConversationReducer,
   chatEditDeleteMessageReducer,
 } from './reducers/chatReducers';  
+import { uploadFileReducer } from './reducers/uploadReducers';
 
 const reducer = combineReducers({
   // User reducers
@@ -129,6 +130,9 @@ const reducer = combineReducers({
     chatSendMessage: chatSendMessageReducer,
     chatActiveConversation: chatActiveConversationReducer,
     chatEditDeleteMessage: chatEditDeleteMessageReducer,
+    
+    // Upload reducers
+    uploadFile: uploadFileReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

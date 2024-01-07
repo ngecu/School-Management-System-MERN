@@ -7,6 +7,11 @@ import fs from 'fs';
 import handlebars from 'handlebars'
 import useragent from 'useragent'
 import sendEmail from '../utils/sendEmail.js'
+import Student from '../models/studentModel.js';
+import Parent from '../models/parentModel.js';
+import Admin from '../models/adminModel.js';
+import Accountant from '../models/accountantModel.js';
+import Lecturer from '../models/lecturerModel.js'
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
@@ -14,7 +19,7 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email })
 
   if (user && (await user.matchPassword(password))) {
-    res.json({
+    const userDetails = {
       _id: user._id,
       firstName: user.firstName,
       secondName: user.secondName,
@@ -24,11 +29,31 @@ const authUser = asyncHandler(async (req, res) => {
       userType: user.userType,
       verified: user.verified,
       token: generateToken(user._id),
-    })
+    };
+  
+    const modelMap = {
+      Student: Student,
+      Lecturer: Lecturer,
+      Accountant: Accountant,
+      Admin: Admin,
+      Parent: Parent,
+    };
+  
+    if (modelMap[user.userType]) {
+      const userData = await modelMap[user.userType].findOne({ email: user.email });
+      if (userData) {
+        userDetails.userData = userData.toObject();
+      }
+    }
+
+    console.log(userDetails);
+  
+    res.json(userDetails);
   } else {
-    res.status(401)
-    throw new Error('Invalid email or password')
+    res.status(401);
+    throw new Error('Invalid email or password');
   }
+  
 })
 
 
@@ -215,11 +240,74 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const updateProfile = asyncHandler(async (req, res) => {
+
+  const { firstName, secondName, email, password, userType,photo,phone, isAdmin, profileData } = req.body;
+  console.log(req.body);
+  // Update common user details in User model
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  user.firstName = firstName || user.firstName;
+  user.secondName = secondName || user.secondName;
+  user.email = email || user.email;
+
+  if (password) {
+    user.password = password;
+  }
+
+  const updatedUser = await user.save();
+
+  // Update user type specific details
+  const modelMap = {
+    Student: Student,
+    Lecturer: Lecturer,
+    Accountant: Accountant,
+    Admin: Admin,
+    Parent: Parent,
+  };
+
+  if (modelMap[userType]) {
+    const userTypeModelUpdating = await modelMap[userType].findOne({email});
+
+    const userTypeModel = await modelMap[userType].findOneAndUpdate(
+      { email: updatedUser.email },
+      {
+        $set: {
+          photo: photo || userTypeModelUpdating.photo,
+          email: email || userTypeModelUpdating.email,
+          phone: phone || userTypeModelUpdating.phone,
+        },
+      },
+
+      { new: true, upsert: true }
+    );
+
+    if (userTypeModel) {
+      const userDetails = updatedUser.toObject()
+      userDetails.userData = userTypeModel.toObject()
+      userDetails.token = generateToken(user._id)
+      res.status(200).json(userDetails);
+    } else {
+      res.status(500);
+      throw new Error('Failed to update user type specific details');
+    }
+  } else {
+    res.status(400);
+    throw new Error('Invalid user type');
+  }
+});
+
 export {
   authUser,
   registerUser,
   sendRestPassword,
   verifyResetPassword,
   setNewPassword,
-  getAllUsers
+  getAllUsers,
+  updateProfile
 }

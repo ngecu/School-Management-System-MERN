@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, {useCallback, useState, useEffect } from 'react';
 import { Table,  ListGroup, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { Link, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
-import { Form, Input, Select, DatePicker, Button, Upload, message, Col, Row } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Form, Input, Select,  Button, Col, Row } from 'antd';
 import { listSchools } from '../../actions/schoolActions';
 import { listCourses } from '../../actions/courseActions';
-const { Option } = Select;
+import {useDropzone} from 'react-dropzone'
+import { uploadFile } from '../../actions/cloudinaryAtions';
+import { updateUserProfile } from '../../actions/userActions';
+
 
 const StudentProfileScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
-  const match = useRouteMatch();
-  const history = useHistory();
+  const [errorMsg, setErrorMsg] = useState('');
 
   const location = useLocation();
   const { pathname } = location;
@@ -39,68 +33,93 @@ const StudentProfileScreen = () => {
     dispatch(logout());
   };
 
-  const onFinish = (values) => {
+  const initialValues = {
+    firstName: userInfo.userData.firstName,
+    lastName: userInfo.userData.lastName,
+    gender: userInfo.userData.gender,
+    dob: moment(userInfo.userData.dob), // You may need to use a date library like moment for proper date formatting
+    religion: userInfo.userData.religion,
+    email: userInfo.email,
+    nationalID: userInfo.userData.nationalID,
+    phone: userInfo.userData.phone,
+    // ... (other form fields)
+  };
+  console.log(initialValues);
+
+
+  const onFinish = async (values) => {
     console.log('Received values:', values);
-  
-    // Extract parent details from values
-  
-    const formattedParents = [{
-      fullName:values.parentFullName,
-      phone:values.parentPhone,
-      email:values.parentEmail,
-    }]
-   
-    
-  
-  
-    // Combine student data with formatted parent details
-    const dataToSend = {
-      ...values,
-      parents: formattedParents,
-    };
-  
-    // Dispatch the createStudent action
-    dispatch(createStudent(dataToSend)).then((response) => {
-      if (response.success) {
-        // Handle success, you may redirect the user or show a success message
-        message.success('Student created successfully!');
+
+    if (values.password && values.password !== values.confirmPassword) {
+      setErrorMsg(`Password and Confirm Password do not match`);
+      return;
+    } else {
+      if (selectedImages.length > 0) {
+        const uploadedFileUrl = await dispatch(uploadFile(selectedImages[0]));
+
+        if (uploadedFileUrl !== null) {
+          // If the file is uploaded successfully, add the secure_url to the values
+          values.photo = uploadedFileUrl;
+          values.userType = userInfo.userType
+          dispatch(updateUserProfile(values))
+            .then(() => {
+              // Handle success
+              message.success('Profile updated successfully!');
+            })
+            .catch((error) => {
+              // Handle failure
+              console.log('Error updating profile:', error);
+            });
+        } else {
+          // Handle failure to upload file
+          console.log('Error uploading file');
+        }
       } else {
-        // Handle failure, show an error message
-        message.error(response.error);
+        // If no file is selected, proceed with updating the profile without a photo
+        values.userType = userInfo.userType
+
+        dispatch(updateUserProfile(values))
+          .then(() => {
+            // Handle success
+            message.success('Profile updated successfully!');
+          })
+          .catch((error) => {
+            // Handle failure
+            console.log('Error updating profile:', error);
+          });
       }
-    });
+    }
   };
   
 
-  const normFile = (e) => {
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
 
-  const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
-    }
-    return isJpgOrPng;
-  };
-
-
-// Fetch schools and courses when the component mounts
 useEffect(() => {
   dispatch(listSchools());
   dispatch(listCourses());
 }, [dispatch]);
 
-const schoolsList = useSelector((state) => state.schoolList);
-const { loading: loadingSchools, schools, error: errorSchools } = schoolsList;
 
-const coursesList = useSelector((state) => state.courseList);
-const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
+const [selectedImages, setSelectedImages] = useState([]);
+    // Add this
+    const [uploadStatus, setUploadStatus] = useState("");
+    const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+        acceptedFiles.forEach((file) => {
+          setSelectedImages((prevState) => [...prevState, file]);
+        });
+      }, []);
 
+      const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
+    const {
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        isDragAccept,
+        isDragReject,
+    } = useDropzone({
+    onDrop,
+    accept: acceptedImageTypes.join(','), 
+  });
 
 
   return (
@@ -259,11 +278,11 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col-xl-12 col-md-12 mr-2">
-                    <div class="row no-gutters align-items-center">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">
-                        <img src="https://www.radiustheme.com/demo/html/psdboss/akkhor/akkhor/img/figure/student.png" alt="" />
+                    <div class="no-gutters align-items-center">
+                      <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
+                      <img src={userInfo.userData.photo} width={100} alt="" />
                       </div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{userInfo.firstName}</div>
+                      
                       <div class="mt-2 mb-0 text-muted text-xs">
                        
                       </div>
@@ -271,80 +290,43 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
                     </div>
                     <div class="col-xl-12 col-md-12 mr-2">
                     <table className='w-100'>
-      <tbody>
-        <tr>
-          <td>Email:</td>
-          <th>{userInfo.email}</th>
-        </tr>
-        <tr>
-          <td>Password:</td>
-          <th>{userInfo.password}</th>
-        </tr>
-        <tr>
-          <td>First Name:</td>
-          <th>{userInfo.firstName}</th>
-        </tr>
-        <tr>
-          <td>Last Name:</td>
-          <th>{userInfo.lastName}</th>
-        </tr>
-        <tr>
-          <td>Gender:</td>
-          <th>{userInfo.gender}</th>
-        </tr>
-        <tr>
-          <td>Date of Birth:</td>
-          <th>{userInfo.dob}</th>
-        </tr>
-        {/* <tr>
-          <td>Religion:</td>
-          <th>{userInfo.religion}</th>
-        </tr>
-        <tr>
-          <td>Phone:</td>
-          <th>{userInfo.phone}</th>
-        </tr>
-        <tr>
-          <td>National ID:</td>
-          <th>{userInfo.nationalID}</th>
-        </tr>
-        <tr>
-          <td>Course:</td>
-          <th>{userInfo.course}</th>
-        </tr>
-        <tr>
-          <td>Parents:</td>
-          <th>
-            {userInfo.parents.map((parent, index) => (
-              <div key={index}>
-                <p>Email: {parent.email}</p>
-                <p>Full Name: {parent.fullName}</p>
-                <p>Surname: {parent.surname}</p>
-                <p>Date of Join: {parent.dateOfJoin}</p>
-                <p>Date of Birth: {parent.dob}</p>
-                <p>Phone: {parent.phone}</p>
-                <p>Gender: {parent.gender}</p>
-                <p>Status: {parent.status ? 'Active' : 'Inactive'}</p>
-                <p>Last Login Date: {parent.lastLoginDate}</p>
-                <p>Last Login IP: {parent.lastLoginIp}</p>
-              </div>
-            ))}
-          </th>
-        </tr>
-        <tr>
-          <td>Status:</td>
-          <th>{userInfo.status ? 'Active' : 'Inactive'}</th>
-        </tr>
-        <tr>
-          <td>Last Login Date:</td>
-          <th>{userInfo.lastLoginDate}</th>
-        </tr>
-        <tr>
-          <td>Last Login IP:</td>
-          <th>{userInfo.lastLoginIp}</th>
-        </tr> */}
-      </tbody>
+                    <tbody>
+  <tr>
+    <td>Email:</td>
+    <th>{userInfo.email}</th>
+  </tr>
+
+  <tr>
+    <td>First Name:</td>
+    <th>{userInfo.userData.firstName}</th>
+  </tr>
+  <tr>
+    <td>Last Name:</td>
+    <th>{userInfo.userData.lastName}</th>
+  </tr>
+  <tr>
+    <td>Gender:</td>
+    <th>{userInfo.userData.gender}</th>
+  </tr>
+  <tr>
+    <td>Date of Birth:</td>
+    <th>{userInfo.userData.dob}</th>
+  </tr>
+
+  <tr>
+    <td>Religion:</td>
+    <th>{userInfo.userData.religion}</th>
+  </tr>
+
+  <tr>
+    <td>Phone Number:</td>
+    <th>{userInfo.userData.phone}</th>
+  </tr>
+
+</tbody>
     </table>
+
+  
                     </div>
                   </div>
                 </div>
@@ -364,93 +346,31 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
       wrapperCol={{
         span: 32,
       }}
+      initialValues={initialValues} 
     >
+         {errorMsg && <Message variant='danger'> <div className="text-center"> {errorMsg} </div></Message>}
+
+         <div className='drop-zone-cotainer'>
+          <div className='dropzone' {...getRootProps()}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <p>Drop file(s) here ...</p>
+            ) : (
+              <p>Drag and drop file(s) here, or click to select files</p>
+            )}
+          </div>
+
+          <div className='images'>
+        {selectedImages.length > 0 &&
+          selectedImages.map((image, index) => (
+            <img src={`${URL.createObjectURL(image)}`} key={index} alt="" />
+          ))}
+      </div>
+
+        </div>
+
       <Row gutter={[16, 16]}>
-                    <Col span={6}>
-                    <Form.Item
-        label="First Name"
-        name="firstName"
-        rules={[
-          {
-            required: true,
-            message: 'Please input the first name!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-                    </Col>
 
-                    <Col span={6}>
-                    <Form.Item
-        label="Last Name"
-        name="lastName"
-        rules={[
-          {
-            required: true,
-            message: 'Please input the last name!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-                    </Col>
-
-                    <Col span={6}>
-                    <Form.Item
-        label="Gender"
-        name="gender"
-        rules={[
-          {
-            required: true,
-            message: 'Please select the gender!',
-          },
-        ]}
-      >
-        <Select>
-          <Option value="male">Male</Option>
-          <Option value="female">Female</Option>
-        </Select>
-      </Form.Item>
-                    </Col>
-
-
-                    <Col span={6}>
-                              <Form.Item
-                  label="Date Of Birth"
-                  name="dob"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please select the date of birth!',
-                    },
-                  ]}
-                >
-                  <DatePicker format="DD/MM/YYYY" />
-                </Form.Item>
-                    </Col>
-
-
-                    <Col span={6}>
-                    <Form.Item
-        label="Religion"
-        name="religion"
-        rules={[
-          {
-            required: true,
-            message: 'Please select the religion!',
-          },
-        ]}
-      >
-        <Select>
-          <Option value="islam">Islam</Option>
-          <Option value="hindu">Hindu</Option>
-          <Option value="christian">Christian</Option>
-          <Option value="buddish">Buddish</Option>
-
-        </Select>
-      </Form.Item>
-                      </Col>
 
                       <Col md={6}>
                       <Form.Item
@@ -467,62 +387,6 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
       </Form.Item>
                       </Col>
 
-                      <Col md={6}>
-                      <Form.Item
-  label="School"
-  name="school"
-  rules={[
-    {
-      required: true,
-      message: 'Please select the school!',
-    },
-  ]}
->
-  <Select loading={loadingSchools}>
-    {schools && schools.map((school) => (
-      <Option key={school._id} value={school._id}>
-        {school.name}
-      </Option>
-    ))}
-  </Select>
-</Form.Item>
-                      </Col>
-
-                      <Col md={6}>
-                      <Form.Item
-  label="Course"
-  name="course"
-  rules={[
-    {
-      required: true,
-      message: 'Please select the course!',
-    },
-  ]}
->
-  <Select loading={loadingCourses}>
-    {courses && courses.map((course) => (
-      <Option key={course._id} value={course._id}>
-        {course.name}
-      </Option>
-    ))}
-  </Select>
-</Form.Item>
-                      </Col>
-
-                      <Col md={6}>
-                      <Form.Item
-        label="National ID"
-        name="nationalID"
-        rules={[
-          {
-            required: true,
-            message: 'Please input the National Number!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-                      </Col>
 
                       <Col md={6}>
                       <Form.Item
@@ -541,21 +405,35 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
                       <Col md={6}>
                       <Form.Item
-        label="Upload Student Photo"
-        name="photo"
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-        extra="Please upload a photo with dimensions 150px X 150px."
+        label="Password"
+        name="password"
+        rules={[
+          {
+            required: false,
+            message: 'Please input the Password',
+          },
+        ]}
       >
-        <Upload
-          name="photo"
-          beforeUpload={beforeUpload}
-          listType="picture"
-        >
-          <Button icon={<UploadOutlined />}>Upload</Button>
-        </Upload>
+        <Input />
       </Form.Item>
                       </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+        label="Confirm Password"
+        name="c_password"
+        rules={[
+          {
+            required: false,
+            message: 'Please input the Password Again',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+                      </Col>
+
+                 
                     </Row>
 
 
