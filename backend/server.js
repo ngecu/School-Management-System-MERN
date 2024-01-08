@@ -59,7 +59,7 @@ app.use('/api/admin', adminRoutes)
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/conversation", conversationRoutes);
-app.use("/api/fee", feeRoutes);
+app.use("/api/schoolfees", feeRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use('/api/timetable', timetableRoutes);
 

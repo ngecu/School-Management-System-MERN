@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import { Table, Form,Row, Col, ListGroup, Container,Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -10,20 +10,11 @@ import Sidebar from './components/Sidebar'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
+import { getFeesByStudent } from '../../actions/feeActions';
+import { Modal } from 'antd';
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
-const MyCalendar = (props) => (
-  <div style={{height:"100vh"}}>
-    <Calendar
-      localizer={localizer}
-      // events={myEventsList}
-      startAccessor="start"
-      endAccessor="end"
-    />
-  </div>
-)
 
 const studentFeeScreen = () => {
   const [name, setName] = useState('');
@@ -31,6 +22,17 @@ const studentFeeScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const match = useRouteMatch();
   const history = useHistory();
 
@@ -41,17 +43,26 @@ const studentFeeScreen = () => {
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
+  // const userDetails = useSelector((state) => state.userDetails);
+  // const { loading, error, user } = userDetails;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const feesByStudent = useSelector((state) => state.getFeesByStudent); // Assuming you have a fees reducer
+  const { loading, error, fees } = feesByStudent;
 
   const logoutHandler = () => {
     dispatch(logout());
   };
 
-  const localizer = momentLocalizer(moment) // or globalizeLocalizer
+  
+  useEffect(() => {
+    if (userInfo && userInfo._id) {
+      dispatch(getFeesByStudent(userInfo.userData._id)); // Dispatch the action with the student's ID
+    }
+  }, [dispatch, userInfo]);
+
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -207,7 +218,17 @@ const studentFeeScreen = () => {
         <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
                                 FEE DASHBOARD
-                                <a href="/transactions" class="btn btn-sm btn-primary">MAKE PAYMENT</a>
+
+                                <Button  className='btn btn-primary' onClick={showModal}>
+        MAKE PAYMENT
+      </Button>
+
+      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
+
                             </div>
 
             <h5 class="mb-0"></h5>
@@ -218,11 +239,20 @@ const studentFeeScreen = () => {
             <div class="col-md-12 mb-4">
                     <div class="card">
                         <div class="card-body">
+
+                        {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <>
                             <h5 class="card-title">This Semester</h5>
                             
-                            <p class="card-text">Fee Amount: $5000</p>
-                            <p class="card-text">Amount Paid: $3000</p>
-                            <p class="card-text">Amount Remaining: $2000</p>
+                            <p class="card-text">Fee Amount: {fees[0].amount}</p>
+                            <p class="card-text">Amount Paid: 0</p>
+                            <p class="card-text">Amount Remaining: {fees[0].amount}</p>
+
+                            </>)}
                         </div>
                     </div>
                 </div>

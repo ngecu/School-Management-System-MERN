@@ -1,0 +1,30 @@
+###
+POST http://localhost:5000/api/schoolfees/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWFjNTg4N2RkNGNlYzIyM2ExMGVmZCIsImlhdCI6MTcwNDY0MTk1MCwiZXhwIjoxNzA3MjMzOTUwfQ.zXWPCc2w3a1n_2d6o_8ReuhTW3vzgNbFFSr3DrzzB1o
+
+{
+  "student": "studentIdHere",
+  "amount": 30000,
+  "dueDate": "2024-12-30"
+}
+
+###
+GET http://localhost:5000/api/schoolfees/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWFjNTg4N2RkNGNlYzIyM2ExMGVmZCIsImlhdCI6MTcwNDY0MTk1MCwiZXhwIjoxNzA3MjMzOTUwfQ.zXWPCc2w3a1n_2d6o_8ReuhTW3vzgNbFFSr3DrzzB1o
+
+###
+GET http://localhost:5000/api/schoolfees/student/659ac6107dd4cec223a10f08
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWFjNTg4N2RkNGNlYzIyM2ExMGVmZCIsImlhdCI6MTcwNDY0MTk1MCwiZXhwIjoxNzA3MjMzOTUwfQ.zXWPCc2w3a1n_2d6o_8ReuhTW3vzgNbFFSr3DrzzB1o
+
+
+###
+PUT http://localhost:5000/api/schoolfees/student/659ac6107dd4cec223a10f08
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWFjNTg4N2RkNGNlYzIyM2ExMGVmZCIsImlhdCI6MTcwNDY0MTk1MCwiZXhwIjoxNzA3MjMzOTUwfQ.zXWPCc2w3a1n_2d6o_8ReuhTW3vzgNbFFSr3DrzzB1o
+
+{
+  "paid": true
+}

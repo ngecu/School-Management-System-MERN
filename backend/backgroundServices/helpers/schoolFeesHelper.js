@@ -8,8 +8,7 @@ export const createFees = async () => {
       const students = await Student.find();
   
       for (const student of students) {
-        console.log("student");
-
+    
         const studentId = student._id;
   
         // Check if school fees already exist for the student

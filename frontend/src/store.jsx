@@ -73,6 +73,7 @@ import {
 } from './reducers/chatReducers';  
 import { uploadFileReducer } from './reducers/uploadReducers';
 import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReducer, timetableDetailsReducer, timetableListReducer, timetableUpdateReducer } from './reducers/timetableReducers';
+import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
 
 const reducer = combineReducers({
   // User reducers
@@ -139,6 +140,13 @@ const reducer = combineReducers({
   timetableUpdate: timetableUpdateReducer,
   timetableDelete: timetableDeleteReducer,
   timetableByCourse: timetableByCourseReducer,
+
+
+  //Fee Reducers
+  createFees: createFeesReducer,
+  getAllFees: getAllFeesReducer,
+  getFeesByStudent: getFeesByStudentReducer,
+  markFeesAsPaid: markFeesAsPaidReducer,
 
     // Upload reducers
     uploadFile: uploadFileReducer,
