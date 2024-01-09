@@ -12,7 +12,7 @@ import studentRoutes from './routes/studentRoutes.js'
 import schoolRoutes from './routes/schoolRoutes.js'
 import courseRoutes from './routes/courseRoutes.js'
 import courseUnitsRoutes from './routes/courseUnitRoutes.js'
-
+import mpesaRoutes from "./routes/mpesaRoutes.js"
 import lecturerRoutes from './routes/lecturerRoutes.js'
 import accountRoutes from './routes/accountantRoutes.js'
 import attendanceRoutes from './routes/attendanceRoutes.js'
@@ -62,6 +62,7 @@ app.use("/api/conversation", conversationRoutes);
 app.use("/api/schoolfees", feeRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use('/api/timetable', timetableRoutes);
+app.use('/api/mpesa',mpesaRoutes)
 
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
