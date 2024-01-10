@@ -1,0 +1,9 @@
+###
+POST http://localhost:5000/api/mpesa/stkPush
+Content-Type: application/json
+
+{
+    "phone":"254707583092",
+    "amount":20,
+    "Order_ID":"asdadasd"
+}

@@ -10,18 +10,20 @@ import ngrok from 'ngrok'
 export const initiateSTKPush = async (req, res) => {
     try {
       const { amount, phone, Order_ID } = req.body;
-      console.log("req body is ", req.body);
+    //   console.log("req body is ", req.body);
       const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
       const auth = "Bearer " + req.safaricom_access_token;
   
       const timestamp = getTimestamp();
       console.log("time stamp is ", timestamp);
-      //shortcode + passkey + timestamp
+      const pass_key ="bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
+      const bus_short_code = 174379
       const password = new Buffer.from(
-        process.env.BUSINESS_SHORT_CODE + process.env.PASS_KEY + timestamp
+        bus_short_code + pass_key + timestamp
       ).toString("base64");
       // create callback url
-      const callback_url = await ngrok.connect(process.env.SAFARICOM_PORT);
+      const callback_url = await ngrok.connect(6000);
+      console.log("call back is ",callback_url)
       const api = ngrok.getApi();
       await api.listTunnels();
   
@@ -42,7 +44,7 @@ export const initiateSTKPush = async (req, res) => {
           PartyB: process.env.BUSINESS_SHORT_CODE,
           PhoneNumber: phone,
           CallBackURL: `${callback_url}/api/stkPushCallback/${Order_ID}`,
-          AccountReference: "Drinks And Chill",
+          AccountReference: "School Manage System",
           TransactionDesc: "Paid online",
         },
       };

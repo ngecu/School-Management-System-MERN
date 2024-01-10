@@ -3,33 +3,42 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import request from "request";
 import 'dotenv/config'
+import axios from 'axios'
 
 export const safaricomAccessToken = (req, res, next)=> {
     try{
 
         const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-        const auth = new Buffer.from(`${process.env.SAFARICOM_CONSUMER_KEY}:${process.env.SAFARICOM_CONSUMER_SECRET}`).toString('base64');
+        const auth = new Buffer.from(`Ymd4CxVpsTxSpaNGophpW4GLDaP73GH1:AX4Vzxi97QrlmmmR`).toString('base64');
 
-        request(
-            {
-                url: url,
-                headers: {
-                    "Authorization": "Basic " + auth
-                }
-            },
-            (error, response, body) => {
-                if (error) {
-                    res.status(401).send({
-                        "message": 'Something went wrong when trying to process your payment',
-                        "error":error.message
-                    })
-                }
-                else {
-                    req.safaricom_access_token = JSON.parse(body).access_token
-                    next()
-                }
+        console.log(process.env.SAFARICOM_CONSUMER_KEY);
+        console.log(auth);
+
+        axios({
+          method: 'get',
+          url: url,
+          headers: {
+            "Authorization": "Basic " + auth
+          },
+          query:{
+             "grant_type": "client_credentials"
             }
-        )
+        })
+          .then(response => {
+            console.log(response.data);
+
+            // Access the response data
+            const responseBody = response.data;
+            req.safaricom_access_token = responseBody.access_token;
+            next();
+          })
+          .catch(error => {
+            console.error("error is ", error);
+            res.status(401).send({
+              "message": 'Something went wrong when trying to process your payment',
+              "error": error.message
+            });
+          });
     }catch (error) {
 
         console.error("Access token error ", error)
