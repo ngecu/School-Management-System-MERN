@@ -4,7 +4,7 @@ import {
     initiateSTKPush,
     stkPushCallback,
     confirmPayment
-} from "../controllers/lipanampesaControlller.js";
+} from "../controllers/mpesaControllers.js";
 import { safaricomAccessToken} from '../middleware/authMiddleware.js'
 
 router.route('/stkPush').post(safaricomAccessToken,initiateSTKPush)

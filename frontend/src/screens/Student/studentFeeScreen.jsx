@@ -12,9 +12,10 @@ import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { getFeesByStudent } from '../../actions/feeActions';
 import { Modal } from 'antd';
+import { Modal, Form, Input, Button, DatePicker, Select } from 'antd';
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
-
+const { Option } = Select;
 
 const studentFeeScreen = () => {
   const [name, setName] = useState('');
@@ -62,6 +63,13 @@ const studentFeeScreen = () => {
       dispatch(getFeesByStudent(userInfo.userData._id)); // Dispatch the action with the student's ID
     }
   }, [dispatch, userInfo]);
+
+  const [form] = Form.useForm();
+
+  const onFinish = (values) => {
+    // Handle the form submission, e.g., send the payment details to the backend
+    makePayment(values);
+  };
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -219,15 +227,51 @@ const studentFeeScreen = () => {
         <div class="d-flex justify-content-between align-items-center">
                                 FEE DASHBOARD
 
-                                <Button  className='btn btn-primary' onClick={showModal}>
-        MAKE PAYMENT
-      </Button>
+                            <Modal title="Make Payment" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+      <Form form={form} onFinish={onFinish} layout="vertical">
+        <Form.Item
+          name="amount"
+          label="Amount"
+          rules={[{ required: true, message: 'Please enter the payment amount' }]}
+        >
+          <Input type="number" />
+        </Form.Item>
 
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
+        <Form.Item
+          name="paymentMethod"
+          label="Payment Method"
+          rules={[{ required: true, message: 'Please select the payment method' }]}
+        >
+          <Select>
+            <Select.Option value="creditCard">Credit Card</Select.Option>
+            <Select.Option value="debitCard">Debit Card</Select.Option>
+            {/* Add more payment methods as needed */}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          name="transactionDate"
+          label="Transaction Date"
+          rules={[{ required: true, message: 'Please select the transaction date' }]}
+        >
+          <DatePicker style={{ width: '100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          name="transactionId"
+          label="Transaction ID"
+          rules={[{ required: true, message: 'Please enter the transaction ID' }]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Make Payment
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
 
                             </div>
 
