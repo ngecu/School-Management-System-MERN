@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form,Row, Col, ListGroup, Container,Button } from 'react-bootstrap';
+import {  Row, Col, ListGroup, Container, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -11,18 +11,21 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { getFeesByStudent } from '../../actions/feeActions';
-import { Modal } from 'antd';
-import { Modal, Form, Input, Button, DatePicker, Select } from 'antd';
+import { Modal, Form, Input, DatePicker, Select,Table } from 'antd';
+import { createPaymentTransaction, listPaymentTransactionsByFee } from '../../actions/paymentActions';
+import {v4} from 'uuid'
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 const { Option } = Select;
 
 const studentFeeScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
+ const [isCheque, setIsCheque] = useState(false);
+  const [isMpesa, setIsMpesa] = useState(false);
+
+  const handlePaymentMethodChange = (value) => {
+    setIsCheque(value === 'cheque');
+    setIsMpesa(value === 'mpesa');
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -53,6 +56,11 @@ const studentFeeScreen = () => {
   const feesByStudent = useSelector((state) => state.getFeesByStudent); // Assuming you have a fees reducer
   const { loading, error, fees } = feesByStudent;
 
+  const paymentTransactionsByFee = useSelector((state) => state.paymentTransactionByFee);
+  const { loading: paymentTransactionsLoading, error: paymentTransactionsError, paymentTransactions } = paymentTransactionsByFee;
+
+
+  console.log("fees is ",fees)
   const logoutHandler = () => {
     dispatch(logout());
   };
@@ -64,12 +72,68 @@ const studentFeeScreen = () => {
     }
   }, [dispatch, userInfo]);
 
+  useEffect(() => {
+    if (fees && fees._id) {
+      console.log("school fees is as followins ",fees)
+      dispatch(listPaymentTransactionsByFee(fees._id));
+    }
+  }, [dispatch, fees,userInfo]);
+
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
     // Handle the form submission, e.g., send the payment details to the backend
-    makePayment(values);
+    values.schoolFees = fees._id
+    values.transactionId = v4()
+    // makePayment(values);
+    console.log(values)
+    dispatch(createPaymentTransaction(values))
   };
+
+
+  const columns = [
+    {
+      title: 'Transaction ID',
+      dataIndex: 'transactionId',
+      key: 'transactionId',
+    },
+    {
+      title: 'Amount Paid',
+      dataIndex: 'amountPaid',
+      key: 'amountPaid',
+    },
+    {
+      title: 'approved',
+      dataIndex: 'approved',
+      key: 'approved',
+    },
+    {
+      title: 'Amount Remaining',
+      dataIndex: 'amountRemaining',
+      key: 'amountRemaining',
+    },
+    {
+      title: 'Payment Method',
+      dataIndex: 'paymentMethod',
+      key: 'paymentMethod',
+    },
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+    },
+  ];
+
+  const data = paymentTransactions.map((transaction) => ({
+    key: transaction._id,
+    transactionId: transaction.transactionId,
+    amountPaid: transaction.amount,
+    approved: transaction.approved,
+    amountRemaining:(fees.amount - transaction.amount),
+    // amountRemaining: transaction.amountRemaining,
+    paymentMethod: transaction.paymentMethod,
+    date: moment(transaction.createdAt).format('YYYY-MM-DD'),
+  }));
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -225,7 +289,16 @@ const studentFeeScreen = () => {
     <div class="card">
         <div class="card-header">
         <div class="d-flex justify-content-between align-items-center">
-                                FEE DASHBOARD
+
+   
+        FEE DASHBOARD
+        {!error && !loading && fees && 
+                                        <Button class="btn btn-sm btn-primary" onClick={showModal}>Make Payment</Button>
+
+        }
+                         
+
+                               
 
                             <Modal title="Make Payment" visible={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
       <Form form={form} onFinish={onFinish} layout="vertical">
@@ -242,28 +315,48 @@ const studentFeeScreen = () => {
           label="Payment Method"
           rules={[{ required: true, message: 'Please select the payment method' }]}
         >
-          <Select>
-            <Select.Option value="creditCard">Credit Card</Select.Option>
-            <Select.Option value="debitCard">Debit Card</Select.Option>
+          <Select onChange={handlePaymentMethodChange}>
+            <Select.Option value="cash">Paypal</Select.Option>
+            <Select.Option value="mpesa">Mpesa</Select.Option>
+            <Select.Option value="cheque">Cheque</Select.Option>
+
             {/* Add more payment methods as needed */}
           </Select>
         </Form.Item>
 
-        <Form.Item
-          name="transactionDate"
-          label="Transaction Date"
-          rules={[{ required: true, message: 'Please select the transaction date' }]}
-        >
-          <DatePicker style={{ width: '100%' }} />
-        </Form.Item>
+        {isCheque && (
+          <>
+            <Form.Item
+              name="chequeNumber"
+              label="Cheque Number"
+              rules={[{ required: true, message: 'Please enter the cheque number' }]}
+            >
+              <Input />
+            </Form.Item>
 
-        <Form.Item
-          name="transactionId"
-          label="Transaction ID"
-          rules={[{ required: true, message: 'Please enter the transaction ID' }]}
-        >
-          <Input />
-        </Form.Item>
+            <Form.Item
+              name="bankName"
+              label="Bank Name"
+              rules={[{ required: true, message: 'Please select the bank name' }]}
+            >
+              <Select>
+                <Select.Option value="kcb">KCB </Select.Option>
+                <Select.Option value="copb">Coperative Bank</Select.Option>
+                {/* Add more banks as needed */}
+              </Select>
+            </Form.Item>
+          </>
+        )}
+
+        {isMpesa && (
+          <Form.Item
+            name="phoneNumber"
+            label="Phone Number"
+            rules={[{ required: true, message: 'Please enter the phone number' }]}
+          >
+            <Input />
+          </Form.Item>
+        )}
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
@@ -292,9 +385,9 @@ const studentFeeScreen = () => {
         <>
                             <h5 class="card-title">This Semester</h5>
                             
-                            <p class="card-text">Fee Amount: {fees[0].amount}</p>
+                            <p class="card-text">Fee Amount: {fees && fees.amount} </p>
                             <p class="card-text">Amount Paid: 0</p>
-                            <p class="card-text">Amount Remaining: {fees[0].amount}</p>
+                            <p class="card-text">Amount Remaining: </p>
 
                             </>)}
                         </div>
@@ -310,28 +403,7 @@ const studentFeeScreen = () => {
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Transaction ID</th>
-                                        <th>Amount Paid</th>
-                                        <th>Amount Rem</th>
-
-                                        <th>Payment Method</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>123456</td>
-                                        <td>$500</td>
-                                        <td>$500</td>
-
-                                        <td>Credit Card</td>
-                                        <td>2023-01-15</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <Table columns={columns} dataSource={data} />
                         </div>
                     </div>
                 </div>

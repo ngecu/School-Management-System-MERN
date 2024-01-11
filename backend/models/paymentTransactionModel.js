@@ -15,9 +15,18 @@ const paymentTransactionSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    bank: {
+      type: String,
+      required: false,
+    },
+    phone: {
+      type: String,
+      required: false,
+    },
     transactionDate: {
       type: Date,
       required: true,
+      default: Date.now
     },
     transactionId: {
       type: String,

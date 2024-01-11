@@ -22,8 +22,8 @@ const run = async()=>{
     cron.schedule('*/2 * * * * *', async()=>{
         console.log('Checking for a new user');
         
-        // await welcomeUser();
-       await createFees();
+        await welcomeUser();
+      //  await createFees();
 
     })
     

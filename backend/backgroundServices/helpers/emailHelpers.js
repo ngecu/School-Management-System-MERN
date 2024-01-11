@@ -15,8 +15,8 @@ let configurations = ({
     port: 587,
     requireTLS: true,
     auth: {
-        user: process.env.USER,
-        pass: process.env.PASS 
+        user: "devngecu@gmail.com",
+        pass: "falvxbsapmgowzel" 
     }
 })
 

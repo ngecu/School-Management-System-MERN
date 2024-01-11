@@ -1,0 +1,4 @@
+###
+GET http://localhost:5000/api/schoolfees/student/659ac6107dd4cec223a10f08
+Content-Type: application/json
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWFjNjExN2RkNGNlYzIyM2ExMGYwYyIsImlhdCI6MTcwNDkwODQ2NywiZXhwIjoxNzA3NTAwNDY3fQ.0tMAkWcD8BhEbDj3uan4b7ojIIBMZjPFs3l9PlRUpv8

@@ -71,6 +71,17 @@ import {
   chatActiveConversationReducer,
   chatEditDeleteMessageReducer,
 } from './reducers/chatReducers';  
+
+import {
+  // Payment Transaction reducers
+  paymentTransactionListReducer,
+  paymentTransactionDetailsReducer,
+  paymentTransactionCreateReducer,
+  paymentTransactionUpdateReducer,
+  paymentTransactionDeleteReducer,
+  paymentTransactionByFeeReducer,
+} from './reducers/paymentReducers';
+
 import { uploadFileReducer } from './reducers/uploadReducers';
 import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReducer, timetableDetailsReducer, timetableListReducer, timetableUpdateReducer } from './reducers/timetableReducers';
 import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
@@ -148,6 +159,13 @@ const reducer = combineReducers({
   getFeesByStudent: getFeesByStudentReducer,
   markFeesAsPaid: markFeesAsPaidReducer,
 
+    // Payment Transaction reducers
+    paymentTransactionList: paymentTransactionListReducer,
+    paymentTransactionDetails: paymentTransactionDetailsReducer,
+    paymentTransactionCreate: paymentTransactionCreateReducer,
+    paymentTransactionUpdate: paymentTransactionUpdateReducer,
+    paymentTransactionDelete: paymentTransactionDeleteReducer,
+    paymentTransactionByFee: paymentTransactionByFeeReducer,
     // Upload reducers
     uploadFile: uploadFileReducer,
 });
