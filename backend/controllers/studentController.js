@@ -129,3 +129,18 @@ export const getAllStudents = async (req, res) => {
   }
 };
 
+// @desc    Delete a student by ID
+// @route   DELETE /api/students/:id
+// @access  Private (Admin)
+export const deleteStudent = asyncHandler(async (req, res) => {
+  const student = await Student.findById(req.params.id);
+
+  if (student) {
+    await student.remove();
+    res.json({ success: true, message: 'Student removed' });
+  } else {
+    res.status(404);
+    throw new Error('Student not found');
+  }
+});
+

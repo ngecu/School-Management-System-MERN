@@ -11,7 +11,6 @@ export const createPaymentTransaction = asyncHandler(async (req, res) => {
     schoolFees: schoolFeesId,
     amount,
     paymentMethod,
-    transactionDate,
     transactionId,
   });
 

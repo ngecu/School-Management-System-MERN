@@ -7,3 +7,7 @@ Content-Type: application/json
     "amount":20,
     "Order_ID":"asdadasd"
 }
+
+###
+POST https://sandbox.safaricom.co.ke/mpesa/qrcode/v1/generate
+Content-Type: application/json

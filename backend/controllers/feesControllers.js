@@ -30,8 +30,8 @@ export const getAllSchoolFees = asyncHandler(async (req, res) => {
 // @access  Private
 export const getSchoolFeesByStudentId = asyncHandler(async (req, res) => {
   const studentId = req.params.id;
-  const schoolFees = await SchoolFees.find({ student: studentId });
-
+  const schoolFees = await SchoolFees.findOne({ student: studentId });
+  
   res.json(schoolFees);
 });
 
