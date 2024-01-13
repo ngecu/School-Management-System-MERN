@@ -5,7 +5,7 @@ import { protect } from '../middleware/authMiddleware.js';
 import { createMessage, getMessagesByConversation } from '../controllers/messageControllers.js';
 
 // Create a new message
-router.route('/').post(protect, createMessage);
+router.route('/').post(createMessage);
 
 // Get messages in a conversation
 router.route('/:conversationId').get(protect, getMessagesByConversation);

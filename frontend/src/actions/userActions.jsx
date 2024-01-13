@@ -33,6 +33,7 @@ import {
   USER_CHANGE_PASSWORD_FAIL
 } from '../constants/userConstants'
 const base_url = `http://localhost:5000/api/users`
+
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -265,3 +266,36 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     })
   }
 }
+
+export const listUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`${base_url}/`, config);
+
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

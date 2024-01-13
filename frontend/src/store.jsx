@@ -97,7 +97,7 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   userResetPassword: userResetPasswordReducer,
   userChangePassword: userChangePasswordReducer,
-
+  
   // Course reducers
   courseCreate: courseCreateReducer,
   courseList: courseListReducer,

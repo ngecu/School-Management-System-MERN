@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {  Button, Row, Col, Container } from 'react-bootstrap'
 import './ChatScreen.css'
-import { logout } from '../actions/userActions'
+import { listUsers, logout } from '../actions/userActions'
 import Sidebar from '../components/Sidebar'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min'
@@ -26,11 +26,11 @@ const ChatScreen = ({ location, history }) => {
   };
 
   useEffect(() => {
-    dispatch(listStudents());
+    dispatch(listUsers());
   }, [dispatch]);
 
-  const studentList = useSelector((state) => state.studentList);
-  const { loading, error, students } = studentList;
+  const userList = useSelector((state) => state.userList);
+  const { loading, error, users } = userList;
 
 
   useEffect(() => {
@@ -265,7 +265,7 @@ const ChatScreen = ({ location, history }) => {
         <div className="messages-box">
           <div className="list-group rounded-0">
             
-          {!loading && students.map((student, index) => (
+          {!loading && users && users.map((student, index) => (
     <NavLink to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0">
         <div className="media">
             <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
