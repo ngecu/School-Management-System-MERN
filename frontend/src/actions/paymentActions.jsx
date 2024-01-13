@@ -25,11 +25,22 @@ import {
 const base_url = 'http://localhost:5000/api/payment';
 
 // Action creator to fetch all payment transactions
-export const listPaymentTransactions = () => async (dispatch) => {
+export const listPaymentTransactions = () => async (dispatch,getState) => {
   try {
     dispatch({ type: PAYMENT_TRANSACTION_LIST_REQUEST });
 
-    const { data } = await axios.get(`${base_url}`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`${base_url}/`,config);
 
     dispatch({
       type: PAYMENT_TRANSACTION_LIST_SUCCESS,
@@ -44,11 +55,22 @@ export const listPaymentTransactions = () => async (dispatch) => {
 };
 
 // Action creator to fetch a single payment transaction by ID
-export const getPaymentTransactionDetails = (id) => async (dispatch) => {
+export const getPaymentTransactionDetails = (id) => async (dispatch,getState) => {
   try {
     dispatch({ type: PAYMENT_TRANSACTION_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`${base_url}/${id}`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`${base_url}/${id}`,config);
 
     dispatch({
       type: PAYMENT_TRANSACTION_DETAILS_SUCCESS,
@@ -97,7 +119,47 @@ export const updatePaymentTransaction = (id, paymentTransactionData) => async (d
   try {
     dispatch({ type: PAYMENT_TRANSACTION_UPDATE_REQUEST });
 
-    const { data } = await axios.put(`${base_url}/${id}`, paymentTransactionData);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`${base_url}/${id}`, paymentTransactionData,config);
+
+    dispatch({
+      type: PAYMENT_TRANSACTION_UPDATE_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PAYMENT_TRANSACTION_UPDATE_FAIL,
+      payload: error.response ? error.response.data.error : error.message,
+    });
+  }
+};
+
+export const togglePaymentApproval = (id,school_fee_id) => async (dispatch,getState) => {
+  try {
+    dispatch({ type: PAYMENT_TRANSACTION_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const { data } = await axios.put(`${base_url}/${id}/toggle-approval`, {school_fee_id},config);
 
     dispatch({
       type: PAYMENT_TRANSACTION_UPDATE_SUCCESS,
@@ -116,7 +178,18 @@ export const deletePaymentTransaction = (id) => async (dispatch) => {
   try {
     dispatch({ type: PAYMENT_TRANSACTION_DELETE_REQUEST });
 
-    await axios.delete(`${base_url}//${id}`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`${base_url}//${id}`,config);
 
     dispatch({ type: PAYMENT_TRANSACTION_DELETE_SUCCESS });
   } catch (error) {

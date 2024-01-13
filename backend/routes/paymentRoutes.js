@@ -7,20 +7,22 @@ import {
   getPaymentTransactionById,
   updatePaymentTransaction,
   deletePaymentTransaction,
-  getPaymentTransactionByFee
+  getPaymentTransactionByFee,
+  togglePaymentApproval
 } from '../controllers/paymentTransactionControllers.js';
 const router = express.Router();
 // Route to create payment transaction
 router.route('/').post(protect, createPaymentTransaction);
 
 // Route to get all payment transactions
-router.route('/').get(protect, admin, getAllPaymentTransactions);
+router.route('/').get(protect, getAllPaymentTransactions);
 
 // Route to get a payment transaction by ID
 router.route('/:id').get(protect,  getPaymentTransactionById);
 router.route('/fee/:fee_id').get(protect,  getPaymentTransactionByFee);
 // Route to update a payment transaction by ID
 router.route('/:id').put(protect, admin, updatePaymentTransaction);
+router.route('/:id/toggle-approval').put(protect,togglePaymentApproval);
 
 // Route to delete a payment transaction by ID
 router.route('/:id').delete(protect, admin, deletePaymentTransaction);

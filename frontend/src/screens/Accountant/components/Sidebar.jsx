@@ -79,6 +79,13 @@ const Sidebar = () => {
       </NavLink>
     </li>
 
+    <li className="nav-item">
+      <NavLink to="/accountant/payments" className={`nav-link ${location.pathname === '/fees' ? 'active' : ''}`}>
+        <i className="nav-icon fas fa-money-bill"></i>
+        <p>Payment History</p>
+      </NavLink>
+    </li>
+
 
     <li className="nav-item">
       <NavLink to="/chat" className={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>

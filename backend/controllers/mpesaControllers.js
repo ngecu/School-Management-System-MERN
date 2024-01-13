@@ -22,7 +22,7 @@ export const initiateSTKPush = async (req, res) => {
     ).toString("base64");
     
     // create callback url
-    const callback_url = await ngrok.connect(6000);
+    const callback_url = await ngrok.connect(5000);
     console.log("call back is ", callback_url);
     const api = ngrok.getApi();
     await api.listTunnels();

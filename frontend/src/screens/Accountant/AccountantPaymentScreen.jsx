@@ -8,8 +8,9 @@ import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
 import { AllFees } from '../../actions/feeActions';
+import { listPaymentTransactions, togglePaymentApproval } from '../../actions/paymentActions';
 
-const AccountantFeeScreen = () => {
+const AccountantPaymentScreen = () => {
  const [studentId, setStudentId] = useState('');
   const dispatch = useDispatch();
 
@@ -17,9 +18,8 @@ const AccountantFeeScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-    const getAllFees = useSelector((state) => state.getAllFees); // Assuming you have a fees reducer
-  const { loading, error, fees } = getAllFees;
-
+  const paymentTransactionList = useSelector((state) => state.paymentTransactionList); // Assuming you have a fees reducer
+  const { loading, error, paymentTransactions } = paymentTransactionList;
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -39,9 +39,19 @@ const AccountantFeeScreen = () => {
 
   useEffect(() => {
     if (userInfo && userInfo._id) {
-      dispatch(AllFees());
+      dispatch(listPaymentTransactions());
     }
   }, [dispatch, userInfo]);
+
+  const ApprovePayment =(id,school_fee_id)=>{
+    console.log(school_fee_id);
+    console.log(id);
+
+    dispatch(togglePaymentApproval(id,school_fee_id));
+    dispatch(listPaymentTransactions());
+
+    
+  }
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -203,7 +213,7 @@ const AccountantFeeScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <div>
-          <h1>All Fees Collection</h1>
+          <h1>All Payment Collection</h1>
           <Form>
             <Row>
               <Col md={10}>
@@ -236,34 +246,30 @@ const AccountantFeeScreen = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {fees.map((fee) => (
-                    <tr key={fee._id}>
-                      <td>{fee.student.firstName}</td>
-                      <td>{fee.amount}</td>
-                      <td>
-  <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>
-    {fee.status}
-  </span>
-</td>
-                      <td>{fee.dueDate}</td>
-                     
-                      <td>{fee.updatedAt}</td>
-                       <td>
-                        {/* View Button */}
-                        <Button variant="info" size="sm" onClick={() => handleView(fee._id)}>
-                          View
-                        </Button>{' '}
-                        {/* Edit Button */}
-                        <Button variant="warning" size="sm" onClick={() => handleEdit(fee._id)}>
-                           Edit
-                        </Button>{' '}
-                        {/* Delete Button */}
-                        <Button variant="danger" size="sm" onClick={() => handleDelete(fee._id)}>
-                           Delete
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                {paymentTransactions && paymentTransactions.map((transaction) => (
+  <tr key={transaction._id}>
+    <td>{transaction.schoolFees.student.firstName}</td>
+    <td>{transaction.amount}</td>
+    <td>
+      <span className={`badge ${transaction.approved != true ? 'badge-danger' : 'badge-success'}`}>
+        {`${transaction.approved}`}
+      </span>
+    </td>
+    <td>{transaction.schoolFees.dueDate}</td>
+    <td>{transaction.schoolFees.updatedAt}</td>
+    <td>
+      {/* View Button */}
+      <Button variant="info" size="sm" onClick={() => handleView(transaction.schoolFees._id)}>
+        View
+      </Button>{' '}
+      {/* Edit Button */}
+      {transaction.approved != true ? <> <Button variant="warning" size="sm" onClick={() => ApprovePayment(transaction._id,transaction.schoolFees._id)}>
+        APPROVE
+      </Button>{' '}</> : <></>}
+    </td>
+  </tr>
+))}
+
                 </tbody>
               </Table> 
         </div>
@@ -288,4 +294,4 @@ const AccountantFeeScreen = () => {
   );
 };
 
-export default AccountantFeeScreen;
+export default AccountantPaymentScreen;
