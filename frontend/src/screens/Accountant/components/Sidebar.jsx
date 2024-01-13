@@ -73,23 +73,12 @@ const Sidebar = () => {
       </NavLink>
     </li>
     <li className="nav-item">
-      <NavLink to="/fees" className={`nav-link ${location.pathname === '/fees' ? 'active' : ''}`}>
+      <NavLink to="/accountant/fee" className={`nav-link ${location.pathname === '/fees' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-money-bill"></i>
         <p>Fees Collection</p>
       </NavLink>
     </li>
-    <li className="nav-item">
-      <NavLink to="/expenses" className={`nav-link ${location.pathname === '/expenses' ? 'active' : ''}`}>
-        <i className="nav-icon fas fa-chart-line"></i>
-        <p>Expenses</p>
-      </NavLink>
-    </li>
-    <li className="nav-item">
-      <NavLink to="/add_expense" className={`nav-link ${location.pathname === '/add_expense' ? 'active' : ''}`}>
-        <i className="nav-icon fas fa-plus"></i>
-        <p>Add Expense</p>
-      </NavLink>
-    </li>
+
 
     <li className="nav-item">
       <NavLink to="/chat" className={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>

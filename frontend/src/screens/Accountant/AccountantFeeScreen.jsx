@@ -7,33 +7,41 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
+import { AllFees } from '../../actions/feeActions';
 
-const IndexAccountantScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
-  const match = useRouteMatch();
-  const history = useHistory();
-
-  const location = useLocation();
-  const { pathname } = location;
-
-  console.log(pathname);
-
+const AccountantFeeScreen = () => {
+ const [studentId, setStudentId] = useState('');
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+    const getAllFees = useSelector((state) => state.getAllFees); // Assuming you have a fees reducer
+  const { loading, error, fees } = getAllFees;
+
 
   const logoutHandler = () => {
     dispatch(logout());
   };
 
+   const [message, setMessage] = useState(null);
+  const match = useRouteMatch();
+  const history = useHistory();
+  const location = useLocation();
+  const { pathname } = location;
+``
+  const handleSearch = () => {
+    if (studentId.trim() !== '') {
+      dispatch(getFeesByStudent(studentId));
+    }
+  };
+
+  useEffect(() => {
+    if (userInfo && userInfo._id) {
+      dispatch(AllFees());
+    }
+  }, [dispatch, userInfo]);
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -186,62 +194,80 @@ const IndexAccountantScreen = () => {
 
         <div class="row pt-3">
      
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-12 col-md-12 mb-4">
               <div class="card h-100">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">Students</div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">20</div>
-                      <div class="mt-2 mb-0 text-muted text-xs">
-                       
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-users fa-2x text-info"></i>
-                    </div>
-                  </div>
+               {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <div>
+          <h1>All Fees Collection</h1>
+          <Form>
+            <Row>
+              <Col md={10}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter student Name"
+                  value={studentId}
+                  onChange={(e) => setStudentId(e.target.value)}
+                />
+              </Col>
+              <Col md={2}>
+                <Button variant="primary" className="w-100" onClick={handleSearch}>
+                  Search
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+
+         <Table striped bordered hover responsive className="table-sm">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Transaction ID</th>
+                    <th>Updated At</th>
+                    <th></th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {fees.map((fee) => (
+                    <tr key={fee._id}>
+                      <td>{fee.student.firstName}</td>
+                      <td>{fee.amount}</td>
+                      <td>{fee.status}</td>
+                      <td>{fee.dueDate}</td>
+                      <td>{fee.transactionId}</td>
+                      <td>{fee.updatedAt}</td>
+                       <td>
+                        {/* View Button */}
+                        <Button variant="info" size="sm" onClick={() => handleView(fee._id)}>
+                          <BsEye /> View
+                        </Button>{' '}
+                        {/* Edit Button */}
+                        <Button variant="warning" size="sm" onClick={() => handleEdit(fee._id)}>
+                          <BsPencil /> Edit
+                        </Button>{' '}
+                        {/* Delete Button */}
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(fee._id)}>
+                          <BsTrash /> Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table> 
+        </div>
+      )}
                 </div>
               </div>
             </div>
 
-            <div class="col-xl-4 col-md-6 mb-4">
-                          <div class="card h-100">
-                            <div class="card-body">
-                              <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                  <div class="text-xs font-weight-bold text-uppercase mb-1">Teachers</div>
-                                  <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                                  <div class="mt-2 mb-0 text-muted text-xs">
-                                 
-                                  </div>
-                                </div>
-                                <div class="col-auto">
-                                  <i class="fas fa-chalkboard-teacher fa-2x text-danger"></i>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-          
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">Classes</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
-                      <div class="mt-2 mb-0 text-muted text-xs">
-                      
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-chalkboard fa-2x text-primary"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
         </div>
 
         
@@ -258,4 +284,4 @@ const IndexAccountantScreen = () => {
   );
 };
 
-export default IndexAccountantScreen;
+export default AccountantFeeScreen;

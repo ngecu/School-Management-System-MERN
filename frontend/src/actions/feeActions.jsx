@@ -16,14 +16,21 @@ import {
 
 const BASE_URL = 'http://localhost:5000/api/schoolfees'; // Replace with your actual base URL
 
-export const createFees = () => async (dispatch) => {
+export const createFees = () => async (dispatch,getState) => {
   try {
     dispatch({ type: CREATE_FEES_REQUEST });
 
-    // Your logic to create fees goes here
-    // ...
-
-    const response = await axios.post(`${BASE_URL}/fees/create`);
+      const {
+        userLogin: { userInfo },
+      } = getState();
+  
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+    const response = await axios.post(`${BASE_URL}/fees/create`,config);
     
     dispatch({ type: CREATE_FEES_SUCCESS });
   } catch (error) {
@@ -34,18 +41,25 @@ export const createFees = () => async (dispatch) => {
   }
 };
 
-export const getAllFees = () => async (dispatch) => {
+export const AllFees = () => async (dispatch,getState) => {
   try {
     dispatch({ type: GET_ALL_FEES_REQUEST });
 
-    // Your logic to fetch all fees goes here
-    // ...
-
-    const {data} = await axios.get(`${BASE_URL}/fees`);
+      const {
+        userLogin: { userInfo },
+      } = getState();
+  
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+    const {data} = await axios.get(`${BASE_URL}/`,config);
     
     dispatch({ 
         type: GET_ALL_FEES_SUCCESS, 
-        payload:data.data 
+        payload:data 
     });
   } catch (error) {
     dispatch({
@@ -81,7 +95,7 @@ export const getFeesByStudent = (studentId) => async (dispatch,getState) => {
   }
 };
 
-export const markFeesAsPaid = (studentId) => async (dispatch) => {
+export const markFeesAsPaid = (studentId) => async (dispatch,getState) => {
   try {
     dispatch({ type: MARK_FEES_AS_PAID_REQUEST });
 

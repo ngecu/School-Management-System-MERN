@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {  Button, Row, Col, Container } from 'react-bootstrap'
 import './ChatScreen.css'
-import { logout } from '../actions/userActions'
+import { listUsers, logout } from '../actions/userActions'
 import Sidebar from '../components/Sidebar'
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min'
@@ -17,6 +17,8 @@ const ChatScreen = ({ location, history }) => {
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [client, setClient] = useState(null);
+  const [conversationName, setConversationName] = useState(null);
+
   const [welcomeScreen,setWelcomeScreen] = useState(true)
   const [conversations, setConversations] = useState([]);
   const [chatId, setChatId] = useState(null);
@@ -26,12 +28,14 @@ const ChatScreen = ({ location, history }) => {
   };
 
   useEffect(() => {
-    dispatch(listStudents());
+    dispatch(listUsers());
   }, [dispatch]);
 
-  const studentList = useSelector((state) => state.studentList);
-  const { loading, error, students } = studentList;
+const userList = useSelector((state) => state.userList);
+const { loading: userListLoading, error: userListError, users } = userList;
 
+const userLogin = useSelector((state) => state.userLogin);
+const { loading: loginLoading, error: loginError, userInfo } = userLogin;
 
   useEffect(() => {
     const newClient = new W3CWebSocket("ws://localhost:5000");
@@ -97,6 +101,10 @@ const ChatScreen = ({ location, history }) => {
   
   
   };
+
+  const loadChat = (user,chatId,me) => {
+    console.log("i am rich");
+  }
 
   return (
 
@@ -265,8 +273,8 @@ const ChatScreen = ({ location, history }) => {
         <div className="messages-box">
           <div className="list-group rounded-0">
             
-          {!loading && students.map((student, index) => (
-    <NavLink to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0">
+          {!userListLoading && users && users.map((student, index) => (
+    <NavLink onClick={loadChat(student.firstName,chatId,userInfo.firstName)} to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0">
         <div className="media">
             <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
             <div className="media-body ml-4">

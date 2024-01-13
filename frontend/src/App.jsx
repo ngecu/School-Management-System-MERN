@@ -19,6 +19,7 @@ import studentExamResultScreen from './screens/Student/studentExamResultScreen';
 import studentTimeTableScreen from './screens/Student/studentTimetableScreen';
 import studentFeeScreen from './screens/Student/studentFeeScreen';
 import StudentProfileScreen from './screens/Student/studentProfileScreen';
+import AccountantFeeScreen from './screens/Accountant/AccountantFeeScreen';
 
 const App = () => {
 
@@ -48,6 +49,9 @@ const App = () => {
           <Route path="/my_timetable" component={studentTimeTableScreen} />
           <Route path="/my_fees" component={studentFeeScreen} />
           <Route path="/my_profile" component={StudentProfileScreen} />
+
+          {/* account routes  */}
+          <Route path="/accountant/fee" component={AccountantFeeScreen} />
 
        
       </main>
