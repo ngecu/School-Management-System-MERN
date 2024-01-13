@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const memberSchema = new mongoose.Schema(
   {
-    users: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
@@ -33,5 +33,5 @@ const conversationSchema = mongoose.Schema(
   }
 );
 
-const Conversation = mongoose.model('MessageGroup', conversationSchema);
+const Conversation = mongoose.model('Conversation', conversationSchema);
 export default Conversation;

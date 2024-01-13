@@ -240,7 +240,7 @@ const Sidebar = () => {
 
 
         <li class="nav-item">
-          <Button variant="danger" className="w-100" onClick={logoutHandler}>
+          <Button variant="danger" className="w-100 nav-link text-light" onClick={logoutHandler}>
             <i class="nav-icon fas fa-person"></i>
             <p>LOGOUT</p>
           </Button>
@@ -251,6 +251,8 @@ const Sidebar = () => {
       </nav>
       
     </div>
+  
+
   
   </aside>
 

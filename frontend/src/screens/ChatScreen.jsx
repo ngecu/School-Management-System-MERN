@@ -83,9 +83,9 @@ const { loading: loginLoading, error: loginError, userInfo } = userLogin;
   const sendMessage = () => {
     
     dispatch(sendMessageChat(chatId, inputMessage)).then((response) => {
-      console.log("responseis ",response);
       if (response.success) {
         // Handle success, you may redirect the user or show a success message
+        console.log("responseis ",response);
       
         if (client && client.readyState === WebSocket.OPEN && inputMessage.trim() !== "") {
           client.send(inputMessage);

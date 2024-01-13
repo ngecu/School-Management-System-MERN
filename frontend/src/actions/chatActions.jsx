@@ -14,12 +14,24 @@ import {
 const base_url = 'http://localhost:5000/api/message';
 
 // Fetch messages
-export const fetchMessages = (conversationId) => async (dispatch) => {
+export const fetchMessages = (conversationId) => async (dispatch,getState) => {
   try {
     dispatch({ type: CHAT_FETCH_MESSAGES_REQUEST });
 
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+
     // Perform the API call to fetch messages based on conversationId
-    const { data } = await axios.get(`${base_url}/${conversationId}`);
+    const { data } = await axios.get(`${base_url}/${conversationId}`,config);
 
     dispatch({
       type: CHAT_FETCH_MESSAGES_SUCCESS,
@@ -52,7 +64,7 @@ export const sendMessageChat = (conversationId, message) => async (dispatch,getS
 
   
       // Perform the API call to send a message
-      const response = await axios.post(`${base_url}/`, { content: message, chatId: conversationId, user_id: userInfo._id });
+      const response = await axios.post(`${base_url}/`, { content: message, to: conversationId, user_id: userInfo._id });
   
       dispatch({ type: CHAT_SEND_MESSAGE_SUCCESS, payload: { success: true } });
   
