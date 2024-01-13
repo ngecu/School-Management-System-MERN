@@ -5,7 +5,10 @@ import Message from '../models/messageModel.js';
 
 const createMessage = asyncHandler(async (req, res) => {
   try {
-    const { from, message_text, conversation } = req.body;
+    console.log(req.body);
+    
+    const message_text = req.body.content;
+    const { from, conversation } = req.body;
     const message = await Message.create({ from, message_text, conversation });
     return res.status(201).json({ success: true, message });
   } catch (error) {

@@ -17,6 +17,8 @@ const ChatScreen = ({ location, history }) => {
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [client, setClient] = useState(null);
+  const [conversationName, setConversationName] = useState(null);
+
   const [welcomeScreen,setWelcomeScreen] = useState(true)
   const [conversations, setConversations] = useState([]);
   const [chatId, setChatId] = useState(null);
@@ -29,9 +31,11 @@ const ChatScreen = ({ location, history }) => {
     dispatch(listUsers());
   }, [dispatch]);
 
-  const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
+const userList = useSelector((state) => state.userList);
+const { loading: userListLoading, error: userListError, users } = userList;
 
+const userLogin = useSelector((state) => state.userLogin);
+const { loading: loginLoading, error: loginError, userInfo } = userLogin;
 
   useEffect(() => {
     const newClient = new W3CWebSocket("ws://localhost:5000");
@@ -97,6 +101,10 @@ const ChatScreen = ({ location, history }) => {
   
   
   };
+
+  const loadChat = (user,chatId,me) => {
+    console.log("i am rich");
+  }
 
   return (
 
@@ -265,8 +273,8 @@ const ChatScreen = ({ location, history }) => {
         <div className="messages-box">
           <div className="list-group rounded-0">
             
-          {!loading && users && users.map((student, index) => (
-    <NavLink to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0">
+          {!userListLoading && users && users.map((student, index) => (
+    <NavLink onClick={loadChat(student.firstName,chatId,userInfo.firstName)} to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0">
         <div className="media">
             <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
             <div className="media-body ml-4">
