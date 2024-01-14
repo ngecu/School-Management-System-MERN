@@ -2,7 +2,7 @@
 ## REGISTER STUDENT
 POST http://localhost:5000/api/students/
 Content-Type: application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OWFjNTg4N2RkNGNlYzIyM2ExMGVmZCIsImlhdCI6MTcwNDY0MTk1MCwiZXhwIjoxNzA3MjMzOTUwfQ.zXWPCc2w3a1n_2d6o_8ReuhTW3vzgNbFFSr3DrzzB1o
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTQwZTQxM2YzY2E1NGViNWJhOTk1OCIsImlhdCI6MTcwNTI1MDQyMCwiZXhwIjoxNzA3ODQyNDIwfQ.GKFMSewseINWEqmPCMlN0BcqNRhya8GXWmX_5gNFq0w
 
 {
   "email": "devngecu@gmail.com",

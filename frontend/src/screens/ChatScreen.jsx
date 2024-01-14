@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { sendMessageChat } from '../actions/chatActions'
+import {  Drawer, Modal } from 'antd';
 
 const ChatScreen = ({ location, history }) => {
   
@@ -36,6 +37,19 @@ const { loading: userListLoading, error: userListError, users } = userList;
 
 const userLogin = useSelector((state) => state.userLogin);
 const { loading: loginLoading, error: loginError, userInfo } = userLogin;
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const newClient = new W3CWebSocket("ws://localhost:5000");
@@ -258,8 +272,25 @@ const { loading: loginLoading, error: loginError, userInfo } = userLogin;
       <div className="bg-white">
 
         <div className="bg-gray px-4 py-2 bg-light">
-          <p className="h5 mb-0 py-1">Recent</p>
           
+          <Button type="primary" className='w-100' onClick={showModal}>
+            New Chat
+      </Button>
+      <Modal title="New Chat" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      {!userListLoading && users && users.map((student, index) => (
+    <NavLink onClick={loadChat(student.firstName,chatId,userInfo.firstName)} to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0 mb-2">
+        <div className="media">
+            <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
+            <div className="media-body ml-4">
+                <div className="d-flex align-items-center justify-content-between mb-1">
+                    <h6 className="mb-0">{student.firstName}</h6>
+                </div>
+
+            </div>
+        </div>
+    </NavLink>
+))}
+      </Modal>
         </div>
 
         <div className="bg-gray px-4 py-2 bg-light">
@@ -272,21 +303,10 @@ const { loading: loginLoading, error: loginError, userInfo } = userLogin;
 
         <div className="messages-box">
           <div className="list-group rounded-0">
+
+        
             
-          {!userListLoading && users && users.map((student, index) => (
-    <NavLink onClick={loadChat(student.firstName,chatId,userInfo.firstName)} to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0">
-        <div className="media">
-            <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
-            <div className="media-body ml-4">
-                <div className="d-flex align-items-center justify-content-between mb-1">
-                    <h6 className="mb-0">{student.firstName}</h6>
-                    <small className="small font-weight-bold">25 Dec</small>
-                </div>
-                <p className="font-italic mb-0 text-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>
-            </div>
-        </div>
-    </NavLink>
-))}
+
 
 
 

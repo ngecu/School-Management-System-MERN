@@ -21,6 +21,7 @@ import {
   PAYMENT_TRANSACTION_BY_FEE_REQUEST,
   PAYMENT_TRANSACTION_BY_FEE_SUCCESS,
 } from '../constants/paymentConstants';
+import { INITIATE_STK_PUSH_FAIL, INITIATE_STK_PUSH_REQUEST, INITIATE_STK_PUSH_SUCCESS } from '../constants/mpesaContants';
 
 const base_url = 'http://localhost:5000/api/payment';
 
@@ -228,6 +229,33 @@ export const listPaymentTransactionsByFee = (feeId) => async (dispatch,getState)
       dispatch({
         type: PAYMENT_TRANSACTION_BY_FEE_FAIL,
         payload: error.response ? error.response.data.error : error.message,
+      });
+    }
+  };
+
+  export const initiateStkPush = (amount, phone) => async (dispatch) => {
+    try {
+      // Dispatch the request action
+      dispatch({
+        type: INITIATE_STK_PUSH_REQUEST,
+      });
+  
+      // Make the API request to initiate STK push
+      const response = await axios.post('http://localhost:5000/api/mpesa/stkPush', {
+        amount,
+        phone
+      });
+  
+      // Dispatch the success action
+      dispatch({
+        type: INITIATE_STK_PUSH_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      // Dispatch the fail action
+      dispatch({
+        type: INITIATE_STK_PUSH_FAIL,
+        payload: error.message || 'Failed to initiate STK push',
       });
     }
   };

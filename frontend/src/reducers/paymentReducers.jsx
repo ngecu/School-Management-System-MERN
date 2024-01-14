@@ -1,5 +1,6 @@
 // paymentTransactionReducers.js
 
+import { INITIATE_STK_PUSH_FAIL, INITIATE_STK_PUSH_REQUEST, INITIATE_STK_PUSH_SUCCESS } from '../constants/mpesaContants';
 import {
     PAYMENT_TRANSACTION_LIST_REQUEST,
     PAYMENT_TRANSACTION_LIST_SUCCESS,
@@ -99,6 +100,27 @@ import {
         return { loading: false, paymentTransactions: action.payload };
       case PAYMENT_TRANSACTION_BY_FEE_FAIL:
         return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  export const stkPushReducer = (state = {}, action) => {
+    switch (action.type) {
+      case INITIATE_STK_PUSH_REQUEST:
+        return {
+          loading: true,
+        };
+      case INITIATE_STK_PUSH_SUCCESS:
+        return {
+          loading: false,
+          success: action.payload,
+        };
+      case INITIATE_STK_PUSH_FAIL:
+        return {
+          loading: false,
+          error: action.payload,
+        };
       default:
         return state;
     }

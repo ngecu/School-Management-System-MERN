@@ -50,6 +50,7 @@ const accountantSchema = mongoose.Schema(
     },
     photo: {
       type: String,
+      default:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7nmvPuHivliG0y_2glZDqMW3aZ4pbd8pzw&usqp=CAU"
     },
     password:{
       type: String,

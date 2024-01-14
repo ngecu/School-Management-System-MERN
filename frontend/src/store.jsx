@@ -80,6 +80,7 @@ import {
   paymentTransactionUpdateReducer,
   paymentTransactionDeleteReducer,
   paymentTransactionByFeeReducer,
+  stkPushReducer,
 } from './reducers/paymentReducers';
 
 import { uploadFileReducer } from './reducers/uploadReducers';
@@ -166,6 +167,8 @@ const reducer = combineReducers({
     paymentTransactionUpdate: paymentTransactionUpdateReducer,
     paymentTransactionDelete: paymentTransactionDeleteReducer,
     paymentTransactionByFee: paymentTransactionByFeeReducer,
+    stkPush:stkPushReducer,
+    
     // Upload reducers
     uploadFile: uploadFileReducer,
 });
