@@ -4,10 +4,9 @@ const mongod = new MongoMemoryServer();
 
 export const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(`mongodb+srv://devngecu:vJqwB0P8gOLlBl7G@cluster0.krax7x4.mongodb.net/`)
+    const conn = await mongoose.connect(process.env.MONGO_URI)
 
-    console.log(`MongoDB Connected: ${conn.connection.host}`)
-  } catch (error) {
+    console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline)  } catch (error) {
    console.error(`Error: ${error.message}`)
     process.exit(1)
   }

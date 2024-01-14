@@ -1,6 +1,6 @@
 import { Form, Input, message } from 'antd';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { resetPassword } from '../actions/userActions';
 import { Button, Col, Container, Row } from 'react-bootstrap';
@@ -13,9 +13,31 @@ const LostPasswordScreen = () => {
   const [email, setEmail] = useState('');
   const dispatch = useDispatch();
   const [message,setMessage] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(10);
 
   const userResetPassword = useSelector((state) => state.userResetPassword)
   const { loading, error, success } = userResetPassword
+
+  useEffect(() => {
+    let timer;
+
+    if (success) {
+      setButtonDisabled(true);
+
+      timer = setInterval(() => {
+        setCountdown((prevCount) => prevCount - 1);
+      }, 1000);
+
+      setTimeout(() => {
+        setButtonDisabled(false);
+        setCountdown(10);
+        clearInterval(timer);
+      }, 10000);
+
+      return () => clearInterval(timer); // Clear the interval on component unmount
+    }
+  }, [success]);
 
 
   const submitPasswordHandler = async (values) => {
@@ -57,6 +79,13 @@ const LostPasswordScreen = () => {
           {success && <Message variant='success'>{success.message}</Message>}
           {loading && <Loader />}
 
+
+          {buttonDisabled && (
+          <p style={{ textAlign: 'center', color: 'gray' }}>
+            Button disabled for {countdown} seconds
+          </p>
+        )}
+        
           
           <Form
             initialValues={{ remember: true }}
@@ -94,9 +123,15 @@ const LostPasswordScreen = () => {
                 span: 32,
               }}
             >
-              <Button variant="primary" className='w-100' type="primary" htmlType="submit">
-                Reset Password
-              </Button>
+             <Button
+              variant="primary"
+              className='w-100'
+              type="primary"
+              htmlType="submit"
+              disabled={buttonDisabled}
+            >
+              Reset Password
+            </Button>
             </Form.Item>
           </Form>
         </div>

@@ -8,88 +8,76 @@ import ngrok from 'ngrok'
 // @route /stkPush
 // @access public
 export const initiateSTKPush = async (req, res) => {
-  try {
-    const { amount, phone, Order_ID } = req.body;
-    const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
-    const auth = "Bearer " + req.safaricom_access_token;
+    try {
+      const { amount, phone, Order_ID } = req.body;
+      console.log("req body is ", req.body);
+      const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+      const auth = "Bearer " + req.safaricom_access_token;
   
-    const timestamp = getTimestamp();
-    console.log("time stamp is ", timestamp);
-    const pass_key = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
-    const bus_short_code = 174379
-    const password = new Buffer.from(
-      bus_short_code + pass_key + timestamp
-    ).toString("base64");
+      const timestamp = getTimestamp();
+      console.log("time stamp is ", timestamp);
+      //shortcode + passkey + timestamp
+      const password = new Buffer.from(
+        process.env.BUSINESS_SHORT_CODE + process.env.PASS_KEY + timestamp
+      ).toString("base64");
+      // create callback url
+      const callback_url = `https://silent-glasses-jam.loca.lt`
+      
     
-    // create callback url
-    const callback_url = await ngrok.connect(5000);
-    console.log("call back is ", callback_url);
-    const api = ngrok.getApi();
-    await api.listTunnels();
+      const requestObject = {
+        url: url,
+        method: "POST",
+        headers: {
+          Authorization: auth,
+        },
+        json: {
+          BusinessShortCode: process.env.BUSINESS_SHORT_CODE,
+          Password: password,
+          Timestamp: timestamp,
+          TransactionType: "CustomerPayBillOnline",
+          Amount: amount,
+          PartyA: phone,
+          PartyB: process.env.BUSINESS_SHORT_CODE,
+          PhoneNumber: phone,
+          CallBackURL: `${callback_url}/api/stkPushCallback/${Order_ID}`,
+          AccountReference: "SCHOOL FEES",
+          TransactionDesc: "Paid online",
+        },
+      };
   
-    const requestObject = {
-      url: url,
-      method: "POST",
-      headers: {
-        Authorization: auth,
-      },
-      json: {
-        BusinessShortCode: process.env.BUSINESS_SHORT_CODE,
-        Password: password,
-        Timestamp: timestamp,
-        TransactionType: "CustomerPayBillOnline",
-        Amount: amount,
-        PartyA: phone,
-        PartyB: process.env.BUSINESS_SHORT_CODE,
-        PhoneNumber: phone,
-        CallBackURL: `${callback_url}/api/stkPushCallback/${Order_ID}`,
-        AccountReference: "School Manage System",
-        TransactionDesc: "Paid online",
-      },
-    };
-  
-    const reqInstance = request(requestObject, function (error, response, body) {
-      if (error) {
-        console.error(error);
-        res.status(503).send({
-          message: "Error with the STK push",
-          error: error,
-        });
-      } else if (body.ResponseCode === "0") {
-        // STK push request is successful
-        res.status(200).json(body);
-      } else if (body.ResponseCode === "1") {
-        console.log("user canceled");
-        // User canceled the STK push request
-        res.status(400).json({
-          message: "Payment request cancelled by the user.",
-        });
-      } else {
-        // Other error occurred
-        res.status(503).send({
-          message: "Error with the STK push",
-          error: body,
-        });
-      }
-    });
-
-    // Handle 'error' event on the request object
-    reqInstance.on('error', (err) => {
-      console.error("Request error:", err);
-      res.status(503).send({
-        message: "Error with the STK push",
-        error: err,
+      request(requestObject, function (error, response, body) {
+        if (error) {
+          console.error(error);
+          res.status(503).send({
+            message: "Error with the STK push",
+            error: error,
+          });
+        } else if (body.ResponseCode === "0") {
+          // STK push request is successful
+          res.status(200).json(body);
+        } else if (body.ResponseCode === "1") {
+            console.log("user canceled")
+          // User cancelled the STK push request
+          res.status(400).json({
+            message: "Payment request cancelled by the user.",
+          });
+        } else {
+          // Other error occurred
+          res.status(503).send({
+            message: "Error with the STK push",
+            error: body,
+          });
+        }
       });
-    });
-  } catch (error) {
-    console.error("Error while trying to create LipaNaMpesa details", error);
-    res.status(503).send({
-      message:
-        "Something went wrong while trying to create LipaNaMpesa details. Contact admin",
-      error: error,
-    });
-  }
-};
+    } catch (error) {
+      console.error("Error while trying to create LipaNaMpesa details", error);
+      res.status(503).send({
+        message:
+          "Something went wrong while trying to create LipaNaMpesa details. Contact admin",
+        error: error,
+      });
+    }
+  };
   
 
 
