@@ -24,13 +24,16 @@ const getAllConversations = asyncHandler(async (req, res) => {
 })
 
 const getUserConversations = asyncHandler(async (req, res) => {
-    const userId = req.user._id; // Assuming user ID is available in the request after authentication
-  
-    // Find conversations where the user is a member
-    const conversations = await Conversation.find({ 'group_members.user': userId });
-  
-    res.json(conversations);
-  });
+  console.log(req.user);
+  const userId = req.user._id; // Assuming user ID is available in the request after authentication
+
+  // Find conversations where the user is a member
+  const conversations = await Conversation.find({ 'group_members.user': userId })
+    .populate('group_members.user', 'firstName lastName email'); // Add the fields you want to populate
+
+  res.json(conversations);
+});
+
 
 // Add more controllers as needed
 

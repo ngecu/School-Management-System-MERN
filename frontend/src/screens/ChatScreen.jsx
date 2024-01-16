@@ -10,18 +10,19 @@ import { listStudents } from '../actions/studentActions'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { sendMessageChat } from '../actions/chatActions'
+import { fetchMessages, sendMessageChat } from '../actions/chatActions'
 import {  Drawer, Modal } from 'antd';
+import { getUserConversations } from '../actions/conversationActions'
 
 const ChatScreen = ({ location, history }) => {
   
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  
   const [client, setClient] = useState(null);
   const [conversationName, setConversationName] = useState(null);
 
   const [welcomeScreen,setWelcomeScreen] = useState(true)
-  const [conversations, setConversations] = useState([]);
   const [chatId, setChatId] = useState(null);
   const dispatch = useDispatch();
   const logoutHandler = () => {
@@ -30,16 +31,25 @@ const ChatScreen = ({ location, history }) => {
 
   useEffect(() => {
     dispatch(listUsers());
+    dispatch(getUserConversations())
   }, [dispatch]);
 
 const userList = useSelector((state) => state.userList);
 const { loading: userListLoading, error: userListError, users } = userList;
+
+const userConversations = useSelector((state) => state.userConversations);
+const { loading, error, conversations } = userConversations;
+
+
+const chatMessagesData = useSelector((state) => state.chatMessages);
+const { loading: chatMessagesLoading, error: chatMessagesError, messages: chatMessages } = chatMessagesData;
 
 const userLogin = useSelector((state) => state.userLogin);
 const { loading: loginLoading, error: loginError, userInfo } = userLogin;
 const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
+    console.log("i am opening");
     setIsModalOpen(true);
   };
 
@@ -93,8 +103,17 @@ const [isModalOpen, setIsModalOpen] = useState(false);
     // ... rest of your code
   }, [location.pathname]);
 
+  
 
   const sendMessage = () => {
+
+    const chatId = localStorage.getItem('currentConversationId');
+  
+    // Check if chatId is available
+    if (!chatId) {
+      console.error('No chatId found in localStorage');
+      return;
+    }
     
     dispatch(sendMessageChat(chatId, inputMessage)).then((response) => {
       if (response.success) {
@@ -116,8 +135,36 @@ const [isModalOpen, setIsModalOpen] = useState(false);
   
   };
 
-  const loadChat = (user,chatId,me) => {
-    console.log("i am rich");
+  const addConversation = (conversationId, conversationName) => {
+
+    // Check if the conversation already exists in the conversations array
+    const existingConversation = conversations.find((conv) => conv.id === conversationId);
+
+    if (!existingConversation) {
+      // If it doesn't exist, add the conversation to the array
+      setConversations((prevConversations) => [
+        ...prevConversations,
+        { id: conversationId, name: conversationName },
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    if (!chatMessagesLoading && !chatMessagesError && chatMessages) {
+      // Format sent_datetime to readable date time
+      const formattedMessages = chatMessages.map((message) => ({
+        ...message,
+        sent_datetime: new Date(message.sent_datetime).toLocaleString(),
+      }));
+
+      setMessages(formattedMessages);
+    }
+  }, [chatMessages, chatMessagesLoading, chatMessagesError]);
+
+  const loadConversationChat = (conversationId)=>{
+    
+    localStorage.setItem('currentConversationId', conversationId);
+    dispatch(fetchMessages(conversationId))
   }
 
   return (
@@ -276,9 +323,10 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           <Button type="primary" className='w-100' onClick={showModal}>
             New Chat
       </Button>
+
       <Modal title="New Chat" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
       {!userListLoading && users && users.map((student, index) => (
-    <NavLink onClick={loadChat(student.firstName,chatId,userInfo.firstName)} to={`/chat/${student._id}`} className="list-group-item list-group-item-action active text-white rounded-0 mb-2">
+    <div onClick={() => addConversation(student._id, student.firstName)} className="list-group-item list-group-item-action active text-white rounded-0 mb-2">
         <div className="media">
             <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
             <div className="media-body ml-4">
@@ -288,7 +336,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
             </div>
         </div>
-    </NavLink>
+    </div>
 ))}
       </Modal>
         </div>
@@ -301,17 +349,38 @@ const [isModalOpen, setIsModalOpen] = useState(false);
           
         </div>
 
-        <div className="messages-box">
-          <div className="list-group rounded-0">
+        {conversations && conversations.map((conversation) => {
+          
+  const isGroupChat = conversation.group_members.length > 2;
 
-        
-            
+  const otherMembers = conversation.group_members
+    .filter(member => {
+      console.log(member);
+      member.user._id.toString() !== userInfo._id.toString()})
+    .map(member => member.user.firstName)
+    .join(', ');
 
+  const displayName = isGroupChat ? conversation.name : otherMembers;
 
-
-
-          </div>
+  return (
+    <div
+      key={conversation._id}
+      onClick={()=>loadConversationChat(conversation._id)}
+      className="list-group-item list-group-item-action active text-white rounded-0 mb-2"
+    >
+      <div className="media">
+        <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
+        <div className="media-body ml-4">
+        <div className="d-flex align-items-center justify-content-between mb-1">
+                    <h6 className="mb-0">{displayName}</h6>
+                </div>
         </div>
+      </div>
+    </div>
+  );
+})}
+
+
       </div>
     </div>
    
@@ -327,9 +396,9 @@ const [isModalOpen, setIsModalOpen] = useState(false);
              <div className="media w-50 ml-auto mb-3">
           <div className="media-body">
             <div className="bg-primary rounded py-2 px-3 mb-2">
-              <p className="text-small mb-0 text-white">{message}</p>
+              <p className="text-small mb-0 text-white">{message.message_text}</p>
             </div>
-            <p className="small text-muted">12:00 PM | Aug 13</p>
+            <p className="small text-muted">{message.sent_datetime}</p>
           </div>
         </div>
           </p>
@@ -362,6 +431,8 @@ const [isModalOpen, setIsModalOpen] = useState(false);
     
     
     </div>
+
+
     
         </div>
 

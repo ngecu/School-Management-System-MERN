@@ -35,7 +35,7 @@ export const fetchMessages = (conversationId) => async (dispatch,getState) => {
 
     dispatch({
       type: CHAT_FETCH_MESSAGES_SUCCESS,
-      payload: data,
+      payload: data.messages,
     });
   } catch (error) {
     dispatch({

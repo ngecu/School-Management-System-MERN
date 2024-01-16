@@ -86,6 +86,7 @@ import {
 import { uploadFileReducer } from './reducers/uploadReducers';
 import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReducer, timetableDetailsReducer, timetableListReducer, timetableUpdateReducer } from './reducers/timetableReducers';
 import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
+import { createConversationReducer, getAllConversationsReducer, getUserConversationsReducer } from './reducers/conversationReducers';
 
 const reducer = combineReducers({
   // User reducers
@@ -140,7 +141,7 @@ const reducer = combineReducers({
     attendanceDetails: attendanceDetailsReducer,
 
     // Chat reducers
-    chatFetchMessages: chatFetchMessagesReducer,
+    chatMessages: chatFetchMessagesReducer,
     chatSendMessage: chatSendMessageReducer,
     chatActiveConversation: chatActiveConversationReducer,
     chatEditDeleteMessage: chatEditDeleteMessageReducer,
@@ -169,6 +170,12 @@ const reducer = combineReducers({
     paymentTransactionByFee: paymentTransactionByFeeReducer,
     stkPush:stkPushReducer,
     
+
+      // Reducers for conversation module
+  createConversation: createConversationReducer,
+  AllConversations: getAllConversationsReducer,
+  userConversations: getUserConversationsReducer,
+
     // Upload reducers
     uploadFile: uploadFileReducer,
 });

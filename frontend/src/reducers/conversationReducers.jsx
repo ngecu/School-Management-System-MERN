@@ -10,37 +10,25 @@ import {
     GET_USER_CONVERSATIONS_REQUEST,
     GET_USER_CONVERSATIONS_SUCCESS,
     GET_USER_CONVERSATIONS_FAIL,
-  } from '../constants/conversationConstants';
+  } from '../constants/conversationConstant';
   
-  // Initial state for creating a conversation
-  const initialStateCreateConversation = {
-    loading: false,
-    success: null,
-    error: null,
-    conversation: null,
-  };
+
   
   // Reducer for creating a conversation
-  export const createConversationReducer = (state = initialStateCreateConversation, action) => {
+  export const createConversationReducer = (state = {}, action) => {
     switch (action.type) {
       case CREATE_CONVERSATION_REQUEST:
         return {
-          ...state,
           loading: true,
-          success: null,
-          error: null,
         };
       case CREATE_CONVERSATION_SUCCESS:
         return {
-          ...state,
           loading: false,
           success: true,
-          error: null,
           conversation: action.payload.conversation,
         };
       case CREATE_CONVERSATION_FAIL:
         return {
-          ...state,
           loading: false,
           success: false,
           error: action.payload,
@@ -68,11 +56,11 @@ import {
   export const getUserConversationsReducer = (state = { userConversations: [] }, action) => {
     switch (action.type) {
       case GET_USER_CONVERSATIONS_REQUEST:
-        return { loading: true, userConversations: [] };
+        return { loading: true, conversations: [] };
       case GET_USER_CONVERSATIONS_SUCCESS:
-        return { loading: false, userConversations: action.payload.userConversations };
+        return { loading: false, conversations: action.payload };
       case GET_USER_CONVERSATIONS_FAIL:
-        return { loading: false, error: action.payload, userConversations: [] };
+        return { loading: false, error: action.payload, conversations: [] };
       default:
         return state;
     }

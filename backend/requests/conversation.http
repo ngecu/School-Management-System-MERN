@@ -1,0 +1,23 @@
+###
+POST http://localhost:5000/api/conversation/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+
+{
+  "name": "Test Conversation",
+  "group_members": [
+    {"user": "userId1"},
+    {"user": "userId2"}
+  ]
+}
+
+###
+
+GET http://localhost:5000/api/conversation/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
+
+###
+GET http://localhost:5000/api/conversation/user-conversations
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTQwZjQwMDA3NmI1MDcwOWJmZjE5NiIsImlhdCI6MTcwNTI1MDY0OSwiZXhwIjoxNzA3ODQyNjQ5fQ.H1MEPJtkg7fvtVIVG2ZKvxK8fgdN1qVMyqIdxGvjd0o

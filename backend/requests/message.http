@@ -1,0 +1,3 @@
+GET http://localhost:5000/api/message/65a62cc89bc2e05e3feb4719
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTZkZWE3YTQ3MjVmNzhlMjZlYjJjOSIsImlhdCI6MTcwNDM5OTI0NywiZXhwIjoxNzA2OTkxMjQ3fQ.ISxvmAuAXVYagKlXoKnEx3Ge0tXBhf81UpC0rVZbzKI
