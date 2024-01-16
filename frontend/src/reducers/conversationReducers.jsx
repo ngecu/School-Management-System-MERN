@@ -56,11 +56,11 @@ import {
   export const getUserConversationsReducer = (state = { userConversations: [] }, action) => {
     switch (action.type) {
       case GET_USER_CONVERSATIONS_REQUEST:
-        return { loading: true, conversations: [] };
+        return { loading: true, userConversations: [] };
       case GET_USER_CONVERSATIONS_SUCCESS:
-        return { loading: false, conversations: action.payload };
+        return { loading: false, userConversations: action.payload };
       case GET_USER_CONVERSATIONS_FAIL:
-        return { loading: false, error: action.payload, conversations: [] };
+        return { loading: false, error: action.payload, userConversations: [] };
       default:
         return state;
     }

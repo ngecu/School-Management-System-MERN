@@ -65,11 +65,11 @@ export const sendMessageChat = (conversationId, message) => async (dispatch,getS
   
       // Perform the API call to send a message
       const response = await axios.post(`${base_url}/`, { content: message, to: conversationId, user_id: userInfo._id });
-  
+      console.log("response from chat action is ",response);
       dispatch({ type: CHAT_SEND_MESSAGE_SUCCESS, payload: { success: true } });
-  
+      const x_id = response.data.message.conversation
       // Fetch updated messages after sending a message
-      dispatch(fetchMessages(conversationId));
+      dispatch(fetchMessages(x_id));
   
       return { success: true }; // Return success status
     } catch (error) {

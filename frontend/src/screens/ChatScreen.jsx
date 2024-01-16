@@ -12,13 +12,13 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { fetchMessages, sendMessageChat } from '../actions/chatActions'
 import {  Drawer, Modal } from 'antd';
-import { getUserConversations } from '../actions/conversationActions'
+import { createConversation, getUserConversations } from '../actions/conversationActions'
 
 const ChatScreen = ({ location, history }) => {
   
   const [inputMessage, setInputMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  
+  const [conversations, setConversations] = useState([]);
   const [client, setClient] = useState(null);
   const [conversationName, setConversationName] = useState(null);
 
@@ -34,11 +34,14 @@ const ChatScreen = ({ location, history }) => {
     dispatch(getUserConversations())
   }, [dispatch]);
 
+
+
+
 const userList = useSelector((state) => state.userList);
 const { loading: userListLoading, error: userListError, users } = userList;
 
-const userConversations = useSelector((state) => state.userConversations);
-const { loading, error, conversations } = userConversations;
+const userConversationR = useSelector((state) => state.userConversationR);
+let { loading, error, userConversations } = userConversationR;
 
 
 const chatMessagesData = useSelector((state) => state.chatMessages);
@@ -47,6 +50,14 @@ const { loading: chatMessagesLoading, error: chatMessagesError, messages: chatMe
 const userLogin = useSelector((state) => state.userLogin);
 const { loading: loginLoading, error: loginError, userInfo } = userLogin;
 const [isModalOpen, setIsModalOpen] = useState(false);
+
+useEffect(() => {
+  // Check if user conversations load successfully
+  if (!loading && !error && userConversations) {
+    // Update the local conversations state with the loaded data
+    setConversations(userConversations);
+  }
+}, [loading, error, userConversations]);
 
   const showModal = () => {
     console.log("i am opening");
@@ -108,6 +119,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
   const sendMessage = () => {
 
     const chatId = localStorage.getItem('currentConversationId');
+    console.log(chatId);
   
     // Check if chatId is available
     if (!chatId) {
@@ -135,19 +147,44 @@ const [isModalOpen, setIsModalOpen] = useState(false);
   
   };
 
-  const addConversation = (conversationId, conversationName) => {
+  const generateRandomName = () => {
+    // Implement your logic to generate a random name here
+    // For simplicity, let's use a basic example
+    const randomNames = ["Conversation 1", "Random Chat", "Chat Room A", "Meeting Room"];
+    const randomIndex = Math.floor(Math.random() * randomNames.length);
+  
+    return randomNames[randomIndex];
+  };
 
+  const addConversation = (conversationId, conversationName,receiver) => {
     // Check if the conversation already exists in the conversations array
     const existingConversation = conversations.find((conv) => conv.id === conversationId);
-
+  
     if (!existingConversation) {
-      // If it doesn't exist, add the conversation to the array
-      setConversations((prevConversations) => [
-        ...prevConversations,
-        { id: conversationId, name: conversationName },
-      ]);
+      
+      // If it doesn't exist, push the new conversation to the array
+      const updatedConversations = [...conversations];
+      const groupMembers = [
+        {
+        user:userInfo
+      },
+
+      {
+        user:receiver
+      },
+    
+    ]
+      updatedConversations.push({ id: conversationId, name: conversationName,group_members:groupMembers });
+      console.log("updated conversation is ",updatedConversations);
+
+      setConversations(updatedConversations);
+
+      // Dispatch an action to update the conversations in the Redux store
     }
+
+    handleCancel()
   };
+  
 
   useEffect(() => {
     if (!chatMessagesLoading && !chatMessagesError && chatMessages) {
@@ -161,10 +198,11 @@ const [isModalOpen, setIsModalOpen] = useState(false);
     }
   }, [chatMessages, chatMessagesLoading, chatMessagesError]);
 
-  const loadConversationChat = (conversationId)=>{
+  const loadConversationChat = (conversationId,person_to)=>{
+    console.log("person is ", person_to[0]._id);
     
-    localStorage.setItem('currentConversationId', conversationId);
-    dispatch(fetchMessages(conversationId))
+    localStorage.setItem('currentConversationId', person_to[0]._id);
+    dispatch(fetchMessages(conversationId._id))
   }
 
   return (
@@ -328,7 +366,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       {!userListLoading && users && users.map((student, index) => (
         <>
          { student._id !== userInfo._id && (
-    <div onClick={() => addConversation(student._id, student.firstName)} className="list-group-item list-group-item-action active text-white rounded-0 mb-2">
+    <div onClick={() => addConversation(student._id, student.firstName,student)} className="list-group-item list-group-item-action active text-white rounded-0 mb-2">
         <div className="media">
             <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
             <div className="media-body ml-4">
@@ -354,13 +392,14 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         </div>
 
         {conversations && conversations.map((conversation) => {
+          // console.log("convo is ",conversation);
 
   const isGroupChat = conversation.group_members.length > 2;
 
   const otherMembers = conversation.group_members
   .filter(member => {
     if (member.user) {
-      console.log("member is ", member);
+      // console.log("member is ", member);
       return member.user._id.toString() !== userInfo._id.toString();
     }
     return false;
@@ -370,11 +409,26 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   const displayName = isGroupChat ? conversation.name : otherMembers;
+  
+
+  const to_conv = conversation.group_members
+    .filter(member => {
+      if (member.user) {
+        // console.log("member is ", member.user);
+        return member.user._id.toString() !== userInfo._id.toString();
+      }
+      return false;
+    })
+    .map(member => member.user);
+  
+  // console.log("conversations ", to_conv);
+
+  
 
   return (
     <div
       key={conversation._id}
-      onClick={()=>loadConversationChat(conversation._id)}
+      onClick={()=>loadConversationChat(conversation,to_conv)}
       className="list-group-item list-group-item-action active text-white rounded-0 mb-2"
     >
       <div className="media">

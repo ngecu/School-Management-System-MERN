@@ -174,7 +174,7 @@ const reducer = combineReducers({
       // Reducers for conversation module
   createConversation: createConversationReducer,
   AllConversations: getAllConversationsReducer,
-  userConversations: getUserConversationsReducer,
+  userConversationR: getUserConversationsReducer,
 
     // Upload reducers
     uploadFile: uploadFileReducer,
