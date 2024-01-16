@@ -326,6 +326,8 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
       <Modal title="New Chat" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
       {!userListLoading && users && users.map((student, index) => (
+        <>
+         { student._id !== userInfo._id && (
     <div onClick={() => addConversation(student._id, student.firstName)} className="list-group-item list-group-item-action active text-white rounded-0 mb-2">
         <div className="media">
             <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" className="rounded-circle" />
@@ -337,6 +339,8 @@ const [isModalOpen, setIsModalOpen] = useState(false);
             </div>
         </div>
     </div>
+         )}
+         </>
 ))}
       </Modal>
         </div>
@@ -350,15 +354,20 @@ const [isModalOpen, setIsModalOpen] = useState(false);
         </div>
 
         {conversations && conversations.map((conversation) => {
-          
+
   const isGroupChat = conversation.group_members.length > 2;
 
   const otherMembers = conversation.group_members
-    .filter(member => {
-      console.log(member);
-      member.user._id.toString() !== userInfo._id.toString()})
-    .map(member => member.user.firstName)
-    .join(', ');
+  .filter(member => {
+    if (member.user) {
+      console.log("member is ", member);
+      return member.user._id.toString() !== userInfo._id.toString();
+    }
+    return false;
+  })
+  .map(member => member.user.firstName)
+  .join(', ');
+
 
   const displayName = isGroupChat ? conversation.name : otherMembers;
 
