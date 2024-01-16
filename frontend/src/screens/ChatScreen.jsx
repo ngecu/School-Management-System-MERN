@@ -454,18 +454,38 @@ useEffect(() => {
       }
 
       {!welcomeScreen && <>
-        {messages.map((message, index) => (
-          <p key={index}>
-             <div className="media w-50 ml-auto mb-3">
-          <div className="media-body">
-            <div className="bg-primary rounded py-2 px-3 mb-2">
-              <p className="text-small mb-0 text-white">{message.message_text}</p>
-            </div>
-            <p className="small text-muted">{message.sent_datetime}</p>
+        {messages.map((message, index) => {
+  console.log(message);
+  console.log(userInfo);
+  let isSender = false;
+
+  if (userInfo._id && message.from && message.from._id) {
+    isSender = message.from._id === userInfo._id;
+  }
+
+  return (
+    <p key={index}>
+      <div className={`media w-50 ${isSender ? 'ml-auto' : ''} mb-3`}>
+        <img
+          src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg"
+          alt="user"
+          width="50"
+          className="rounded-circle"
+        />
+        <div className="media-body ml-3">
+          <div className={`bg-${isSender ? 'light' : 'primary'} rounded py-2 px-3 mb-2`}>
+            <p className={`text-small mb-0 text-${isSender ? 'muted' : 'white'}`}>
+              {message.message_text}
+            </p>
           </div>
+          <p className="small text-muted">{message.sent_datetime}</p>
         </div>
-          </p>
-        ))}
+      </div>
+    </p>
+  );
+})}
+
+
       </>}
       </div>
 
