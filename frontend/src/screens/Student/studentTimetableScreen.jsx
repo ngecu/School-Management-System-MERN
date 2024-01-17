@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { Link, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
@@ -15,26 +13,8 @@ import { getTimetableByCourse } from '../../actions/timetableActions';
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
-const MyCalendar = (props) => (
-  <div style={{height:"100vh"}}>
-    <Calendar
-      localizer={localizer}
-      // events={myEventsList}
-      startAccessor="start"
-      endAccessor="end"
-    />
-  </div>
-)
 
 const studentTimeTableScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
-  const match = useRouteMatch();
-  const history = useHistory();
-
   const location = useLocation();
   const { pathname } = location;
 
@@ -63,10 +43,6 @@ const studentTimeTableScreen = () => {
   }, [dispatch, userInfo]);
 
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
-
   const localizer = momentLocalizer(moment) // or globalizeLocalizer
 
   const today = new Date();
@@ -80,18 +56,13 @@ const studentTimeTableScreen = () => {
   timetableEvents.forEach((timetableItem) => {
     const {
       _id,
-      course: { name: courseName },
       courseUnit: { name: courseUnitName },
-      lecturer: { firstName: lecturerFirstName, lastName: lecturerLastName },
-      year,
       dayOfWeek,
-      lecturerRoom,
       startTime,
       endTime,
     } = timetableItem;
   
     // Combine lecturer's first and last name
-    const lecturerFullName = `${lecturerFirstName} ${lecturerLastName}`;
     console.log("current year ", currentYear);
     
     // Iterate through each day of the month
@@ -114,7 +85,7 @@ const studentTimeTableScreen = () => {
       }
   
       // Format the title for the event
-      const title = `${courseUnitName} - ${lecturerFullName}`;
+      const title = `${courseUnitName}`;
   
       // Add the event to the calendarEvents array
       calendarEvents.push({

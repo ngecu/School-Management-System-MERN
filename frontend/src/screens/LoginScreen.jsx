@@ -14,13 +14,11 @@ import IndexAccountantScreen from './Accountant/IndexAccountantScreen'
 import IndexLecturerScreen from './Lecturer/IndexLecturerScreen'
 import IndexParentScreen from './Parent/IndexParentScreen'
 import IndexStudentScreen from './Student/IndexStudentScreen'
-import {GoogleLogin} from 'react-google-login'
-import {gapi} from 'gapi-script'
-const clientID ="451025251359-813olgkbnta7djitumcbd7m744ejjnf9.apps.googleusercontent.com"
+
 
 const LoginScreen = ({ location, history }) => {
 
-  const clientSecret="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"
+
    
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -33,21 +31,7 @@ const LoginScreen = ({ location, history }) => {
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
-  // useEffect(() => {
-  //   // if (userInfo) {
-  //   //   history.push(redirect)
-  //   // }
-  // }, [history, userInfo, redirect])
 
-  useEffect(()=>{
-    function start() {
-      gapi.auth2.init({
-        clientId:clientID,
-        scope:""
-      })
-    }
-    gapi.load('client:auth2',start)
-  })
   const submitLoginHandler = (values) => {
     console.log("submitted ",values);
     const { email, password } = values;
@@ -68,12 +52,7 @@ const LoginScreen = ({ location, history }) => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  const onSuccess = (res)=>{
-    console.log("login Success ",res.profileObj);
-  }
-  const onFailure = (res)=>{
-    console.log("login failed ",res);
-  }
+
 
   return (
     <>
@@ -189,21 +168,11 @@ const LoginScreen = ({ location, history }) => {
                    </div>
 
                    <div class="d-grid mb-2 google-btn-holder">
-                    <GoogleLogin 
-                    className='btn  btn-google w-100  btn-login fw-bold text-uppercase'
-                    client_id={clientID}
-                    buttonText="Login in with Google"
-                    onSuccess={onSuccess}
-                    onFailure={onFailure}
-                    cookiePolicy={'single_host_origin'}
-                    isSignedIn={true}
-                    style={{
-                      color: "white",backgroundColor: "#ea4335 !important"}}
-                    />
-               {/* <button class="btn  btn-google w-100  btn-login fw-bold text-uppercase" type="submit" style={{
+                  
+               <button class="btn  btn-google w-100  btn-login fw-bold text-uppercase" disabled={true} type="submit" style={{
  color: "white",backgroundColor: "#ea4335"}}>
-                 <i class="fab fa-google me-2"></i> 
-               </button> */}
+                 <i class="fab fa-google me-2"></i> Login in with Google
+               </button>
              </div>
 
 <div className="text-center">
