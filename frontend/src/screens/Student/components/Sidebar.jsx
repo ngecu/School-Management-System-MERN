@@ -109,7 +109,7 @@ const Sidebar = () => {
         </li> */}
 
         <li className="nav-item">
-  <NavLink to="/chats" className={`nav-link ${location.pathname === '/chats' ? 'active' : ''}`}>
+  <NavLink to="/chat" className={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
     <i className="nav-icon fas fa-comments"></i>
     <p>Messages</p>
   </NavLink>

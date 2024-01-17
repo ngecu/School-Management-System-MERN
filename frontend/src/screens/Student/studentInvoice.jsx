@@ -301,7 +301,7 @@ const studentInvoiceScreen = () => {
               <div class="row">
                 <div class="col-12">
                   <h4>
-                    <i class="fas fa-globe"></i> AdminLTE, Inc.
+                    <i class="fas fa-globe"></i> EVE SMS, Inc.
                     <small class="float-right">Date: 2/10/2014</small>
                   </h4>
                 </div>
@@ -312,24 +312,29 @@ const studentInvoiceScreen = () => {
                 <div class="col-sm-4 invoice-col">
                   From
                   <address>
-                    <strong>Admin, Inc.</strong><br/>
-                    795 Folsom Ave, Suite 600<br/>
-                    San Francisco, CA 94107<br/>
-                    Phone: (804) 123-5432<br/>
-                    Email: info@almasaeedstudio.com
+                    <strong>School Mng., Inc.</strong><br/>
+                   
                   </address>
                 </div>
            
                 <div class="col-sm-4 invoice-col">
-                  To
-                  <address>
-                    <strong>John Doe</strong><br/>
-                    795 Folsom Ave, Suite 600<br/>
-                    San Francisco, CA 94107<br/>
-                    Phone: (555) 539-1037<br/>
-                    Email: john.doe@example.com
-                  </address>
-                </div>
+  To
+  <address>
+    <strong>{userInfo.firstName} {userInfo.lastName}</strong><br/>
+    {userInfo.address && (
+      <>
+        {userInfo.address.street && <>{userInfo.address.street},</>}
+        {userInfo.address.suite && <> Suite {userInfo.address.suite},</>}
+        {userInfo.address.city && <>{userInfo.address.city},</>}
+        {userInfo.address.state && <>{userInfo.address.state} {userInfo.address.zipCode},</>}
+        <br/>
+      </>
+    )}
+    Phone: {userInfo.phone || 'N/A'}<br/>
+    Email: {userInfo.email}
+  </address>
+</div>
+
                 
                 <div class="col-sm-4 invoice-col">
                   <b>Invoice #007612</b><br/>
