@@ -34,3 +34,8 @@
   width: 100%;
   object-fit: cover;
 }
+.google-btn-holder button{
+  color: "white !important";
+  background-color: "#ea4335 !important"
+
+}

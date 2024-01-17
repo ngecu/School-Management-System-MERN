@@ -32,7 +32,8 @@ import {
   USER_CHANGE_PASSWORD_SUCCESS,
   USER_CHANGE_PASSWORD_FAIL
 } from '../constants/userConstants'
-const base_url = `http://localhost:5000/api/users`
+
+const base_url = `https://school-management-system-7km3.onrender.com/api/users`
 
 export const login = (email, password) => async (dispatch) => {
   try {

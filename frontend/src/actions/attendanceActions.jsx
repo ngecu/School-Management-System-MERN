@@ -11,7 +11,7 @@ import {
   ATTENDANCE_DETAILS_FAIL,
 } from '../constants/attendanceConstants';
 
-const base_url = 'http://localhost:5000/api/attendance';
+const base_url = `https://school-management-system-7km3.onrender.com/api/attendance`;
 
 // Action to create attendance
 export const createAttendance = (attendanceData) => async (dispatch,getState) => {

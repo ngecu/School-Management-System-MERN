@@ -12,7 +12,7 @@ import {
     STUDENT_DETAILS_FAIL,
 } from '../constants/studentConstants';
 
-const base_url = 'http://localhost:5000/api/students';
+const base_url = `https://school-management-system-7km3.onrender.com/api/students`;
 
 
 export const createStudent = (studentData) => async (dispatch, getState) => {

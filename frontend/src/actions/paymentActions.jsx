@@ -23,7 +23,7 @@ import {
 } from '../constants/paymentConstants';
 import { INITIATE_STK_PUSH_FAIL, INITIATE_STK_PUSH_REQUEST, INITIATE_STK_PUSH_SUCCESS } from '../constants/mpesaContants';
 
-const base_url = 'http://localhost:5000/api/payment';
+const base_url = `https://school-management-system-7km3.onrender.com/api/payment`;
 
 // Action creator to fetch all payment transactions
 export const listPaymentTransactions = () => async (dispatch,getState) => {
