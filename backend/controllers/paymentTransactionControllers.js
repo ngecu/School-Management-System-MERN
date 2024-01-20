@@ -160,10 +160,10 @@ export const togglePaymentApproval = asyncHandler(async (req, res) => {
 
   if (originalApprovalStatus && !updatedPaymentTransaction.approved) {
     // If the payment was approved and now it's disapproved, subtract the amount
-    schoolFee.amount -= updatedPaymentTransaction.amount;
+    schoolFee.amount += updatedPaymentTransaction.amount;
   } else if (!originalApprovalStatus && updatedPaymentTransaction.approved) {
     // If the payment was disapproved and now it's approved, add the amount
-    schoolFee.amount += updatedPaymentTransaction.amount;
+    schoolFee.amount -= updatedPaymentTransaction.amount;
   }
 
   // Save the updated school fee

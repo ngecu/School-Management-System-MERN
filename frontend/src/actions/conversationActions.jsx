@@ -11,7 +11,7 @@ import {
 } from '../constants/conversationConstant';
 import { GET_USER_CONVERSATIONS_FAIL, GET_USER_CONVERSATIONS_REQUEST, GET_USER_CONVERSATIONS_SUCCESS } from '../constants/conversationConstant';
 
-const base_url = `https://school-management-system-7km3.onrender.com/api/conversation/`;
+const base_url = `http://localhost:5000/api/conversation/`;
 
 
 // Action to create a conversation

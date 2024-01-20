@@ -238,7 +238,7 @@ const AccountantFeeScreen = () => {
                 <tbody>
                   {fees.map((fee) => (
                     <tr key={fee._id}>
-                      <td>{fee.student.firstName}</td>
+                      <td>{fee.student?.firstName}</td>
                       <td>{fee.amount}</td>
                       <td>
   <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>

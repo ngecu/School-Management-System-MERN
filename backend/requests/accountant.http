@@ -2,9 +2,10 @@
 ## REGISTER ACCOUNTANT
 POST http://localhost:5000/api/accountants/
 Content-Type: application/json
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDU2ODA1NywiZXhwIjoxNzA3MTYwMDU3fQ.-OpGlAG6Ay3hUlYsZxqRkEdMJrLBSFYxjIb-YBLSuVI
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTQwZTQxM2YzY2E1NGViNWJhOTk1OCIsImlhdCI6MTcwNTc0ODQ3NiwiZXhwIjoxNzA4MzQwNDc2fQ.tR7EvKIK-xk-ED0YLdBTSXQa_pAB9qepteWGfu75bTE
 
 {
+
   "email": "dummy3@example.com",
   "password": "dummyPassword123",
   "firstName": "John",

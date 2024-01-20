@@ -9,7 +9,7 @@ import {
   SCHOOL_DETAILS_FAIL,
 } from '../constants/schoolConstants';
 
-const base_url = `https://school-management-system-7km3.onrender.com/api/schools`;
+const base_url = `http://localhost:5000/api/schools`;
 
 export const listSchools = () => async (dispatch,getState) => {
   try {

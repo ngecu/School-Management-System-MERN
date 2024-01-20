@@ -20,7 +20,7 @@ import {
   TIMETABLE_BY_COURSE_FAIL,
 } from '../constants/timetableConstants';
 
-const base_url = `https://school-management-system-7km3.onrender.com/api/timetable`
+const base_url = `http://localhost:5000/api/timetable`
 // Get list of timetables
 export const listTimetables = () => async (dispatch) => {
   try {

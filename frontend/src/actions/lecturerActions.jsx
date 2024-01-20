@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { LECTURER_CREATE_FAIL, LECTURER_CREATE_REQUEST, LECTURER_CREATE_SUCCESS, LECTURER_DETAILS_REQUEST, LECTURER_LIST_FAIL, LECTURER_LIST_REQUEST, LECTURER_LIST_SUCCESS } from "../constants/lecturerConstants";
 
-const base_url = `https://school-management-system-7km3.onrender.com/api/lecturers`;
+const base_url = `http://localhost:5000/api/`
 
 export const createLecturer = (lecturerData) => async (dispatch, getState) => {
     try {

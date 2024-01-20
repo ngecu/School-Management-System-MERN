@@ -17,7 +17,7 @@ import {
   PARENT_DELETE_FAIL,
 } from '../constants/parentConstants';
 
-const base_url = `https://school-management-system-7km3.onrender.com/api/parents`;
+const base_url = `http://localhost:5000/api/`
 
 // Create Parent Action
 export const createParent = (parentData) => async (dispatch) => {

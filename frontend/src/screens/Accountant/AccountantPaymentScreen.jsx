@@ -248,7 +248,7 @@ const AccountantPaymentScreen = () => {
                 <tbody>
                 {paymentTransactions && paymentTransactions.map((transaction) => (
   <tr key={transaction._id}>
-    <td>{transaction.schoolFees.student.firstName}</td>
+    <td>{transaction.schoolFees.student?.firstName}</td>
     <td>{transaction.amount}</td>
     <td>
       <span className={`badge ${transaction.approved != true ? 'badge-danger' : 'badge-success'}`}>
