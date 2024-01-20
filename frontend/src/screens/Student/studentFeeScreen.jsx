@@ -16,7 +16,7 @@ import { createPaymentTransaction, initiateStkPush, listPaymentTransactionsByFee
 import {v4} from 'uuid'
 import { NavLink } from 'react-router-dom';
 
-const localizer = momentLocalizer(moment) // or globalizeLocalizer
+const localizer = momentLocalizer(moment) 
 const { Option } = Select;
 
 const studentFeeScreen = () => {
@@ -83,12 +83,14 @@ const studentFeeScreen = () => {
     // Handle the form submission, e.g., send the payment details to the backend
     values.schoolFees = fees._id
     values.transactionId = v4()
+    
     // makePayment(values);
     console.log(values)
     if(values.paymentMethod == "mpesa"){
-      dispatch(initiateStkPush(values.amount,values.phone))
+      dispatch(initiateStkPush(values))
     }
     else{
+      console.log(values);
     dispatch(createPaymentTransaction(values))
 
     }

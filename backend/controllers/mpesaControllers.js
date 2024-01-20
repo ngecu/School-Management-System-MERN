@@ -3,6 +3,8 @@ import 'dotenv/config'
 import {getTimestamp} from "../utils/timestamp.js";
 import ngrok from 'ngrok'
 import PaymentTransaction from "../models/paymentTransactionModel.js";
+import axios from 'axios'
+import {v4} from 'uuid'
 
 // @desc initiate stk push
 // @method POST
@@ -10,7 +12,7 @@ import PaymentTransaction from "../models/paymentTransactionModel.js";
 // @access public
 export const initiateSTKPush = async (req, res) => {
   try {
-    const { amount, phone, Order_ID } = req.body;
+    const { amount, phoneNumber,transactionId,schoolFees } = req.body;
     console.log("req body is ", req.body);
     const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
     const auth = "Bearer " + req.safaricom_access_token;
@@ -36,10 +38,10 @@ export const initiateSTKPush = async (req, res) => {
         Timestamp: timestamp,
         TransactionType: "CustomerPayBillOnline",
         Amount: amount,
-        PartyA: phone,
+        PartyA: phoneNumber,
         PartyB: process.env.BUSINESS_SHORT_CODE,
-        PhoneNumber: phone,
-        CallBackURL: `${callback_url}/api/stkPushCallback/${Order_ID}`,
+        PhoneNumber: phoneNumber,
+        CallBackURL: `${callback_url}/api/stkPushCallback/${transactionId}`,
         AccountReference: "SCHOOL FEES PAYMENT",
         TransactionDesc: "Paid online",
       },
@@ -56,16 +58,16 @@ export const initiateSTKPush = async (req, res) => {
         // STK push request is successful
         // Create a payment transaction in the database
         const paymentTransaction = await PaymentTransaction.create({
-          schoolFees: 'School Fees', // Adjust the fields accordingly
+          schoolFees,
           amount,
           paymentMethod: 'M-Pesa',
-          phone,
+          phoneNumber,
           transactionDate: new Date(),
-          transactionId: Order_ID,
+          transactionId,
           approved: false, // Adjust the approval status accordingly
         });
 
-        res.status(200).json({ body, paymentTransaction });
+        res.status(200).json({message:"success" });
       } else if (body.ResponseCode === "1") {
         console.log("user canceled");
         // User cancelled the STK push request
@@ -194,4 +196,22 @@ export const confirmPayment = async(req, res) => {
             error : e
         })
     }
+}
+
+export const QRCode = async(req,res)=>{
+  try{
+    const body = {    
+      MerchantName:"TEST SUPERMARKET",
+      RefNo:"Invoice Test",
+      Amount:1,
+      TrxCode:"BG",
+      CPI:"373132",
+      Size:"300"
+   }
+    const response  = axios.post("https://sandbox.safaricom.co.ke/mpesa/qrcode/v1/generate",body)
+    // console.log(response)
+  }
+  catch(e){
+    // console.log(e)
+  }
 }

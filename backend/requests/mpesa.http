@@ -4,9 +4,13 @@ Content-Type: application/json
 
 {
     "phone":"254759594677",
-    "amount":300
+    "amount":500
 }
 
 ###
 POST https://sandbox.safaricom.co.ke/mpesa/qrcode/v1/generate
+Content-Type: application/json
+
+###
+GET http://localhost:5000/api/mpesa/qrcode
 Content-Type: application/json

@@ -100,7 +100,7 @@ export const createPaymentTransaction = (paymentTransactionData) => async (dispa
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-
+        console.log("sadsadasd ",paymentTransactionData);
     const { data } = await axios.post(`${base_url}`, paymentTransactionData,config);
 
     dispatch({
@@ -233,18 +233,17 @@ export const listPaymentTransactionsByFee = (feeId) => async (dispatch,getState)
     }
   };
 
-  export const initiateStkPush = (amount, phone) => async (dispatch) => {
+  export const initiateStkPush = (body) => async (dispatch) => {
     try {
       // Dispatch the request action
       dispatch({
         type: INITIATE_STK_PUSH_REQUEST,
       });
+
+      console.log(body);
   
       // Make the API request to initiate STK push
-      const response = await axios.post('http://localhost:5000/api/mpesa/stkPush', {
-        amount,
-        phone
-      });
+      const response = await axios.post('http://localhost:5000/api/mpesa/stkPush', body);
   
       // Dispatch the success action
       dispatch({

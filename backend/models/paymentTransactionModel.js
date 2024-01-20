@@ -19,7 +19,7 @@ const paymentTransactionSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    phone: {
+    phoneNumber: {
       type: String,
       required: false,
     },

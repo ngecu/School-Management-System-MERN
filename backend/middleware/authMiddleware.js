@@ -10,7 +10,7 @@ export const safaricomAccessToken = (req, res, next)=> {
 
       const url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
       const auth = new Buffer.from(`${process.env.CONSUMER_KEY}:${process.env.CONSUMER_SECRET}`).toString('base64');
-
+      console.log(auth)
       request(
           {
               url: url,

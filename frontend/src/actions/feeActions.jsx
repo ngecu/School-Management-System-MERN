@@ -14,7 +14,7 @@ import {
   MARK_FEES_AS_PAID_FAIL,
 } from '../constants/feeConstants';
 
-const BASE_URL = `https://school-management-system-7km3.onrender.com/api/schoolfees`; // Replace with your actual base URL
+const BASE_URL = `http://localhost:5000/api/schoolfees`; 
 
 export const createFees = () => async (dispatch,getState) => {
   try {
