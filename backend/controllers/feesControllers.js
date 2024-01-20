@@ -29,9 +29,10 @@ export const getAllSchoolFees = asyncHandler(async (req, res) => {
 // @route   GET /api/school-fees/:id
 // @access  Private
 export const getSchoolFeesByStudentId = asyncHandler(async (req, res) => {
-  const studentId = req.params.id;
-  const schoolFees = await SchoolFees.findOne({ student: studentId });
-  
+  const student = req.params.id;
+  console.log(student);
+  const schoolFees = await SchoolFees.findOne({student });
+  console.log(schoolFees);
   res.json(schoolFees);
 });
 

@@ -86,22 +86,22 @@ const Sidebar = () => {
       </NavLink>
     </li>
 
-
     <li className="nav-item">
       <NavLink to="/chat" className={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-envelope"></i>
         <p>Messages</p>
       </NavLink>
     </li>
-    <li class="nav-item">
-          <Button variant="danger" className="w-100" onClick={logoutHandler}>
-            <i class="nav-icon fas fa-person"></i>
-            <p>LOGOUT</p>
-          </Button>
-        </li>
 
+    <li className="nav-item mt-auto"> {/* Use "mt-auto" class to push it to the bottom */}
+      <Button variant="danger" className="w-100" onClick={logoutHandler}>
+        <i className="nav-icon fas fa-person"></i>
+        <p>LOGOUT</p>
+      </Button>
+    </li>
   </ul>
 </nav>
+
 
       
     </div>

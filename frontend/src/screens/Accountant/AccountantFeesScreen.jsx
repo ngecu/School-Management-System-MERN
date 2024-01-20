@@ -19,8 +19,14 @@ const AccountantFeeScreen = () => {
 
   const dispatch = useDispatch();
 
-  const getAllFees = useSelector((state) => state.getAllFees);
-  const { loading, error, fees } = getAllFees;
+const getAllFeesState = useSelector((state) => state.getAllFees);
+const { loading: allFeesLoading, error: allFeesError, fees: allFees } = getAllFeesState;
+
+const getFeesByStudentState = useSelector((state) => state.getFeesByStudent);
+const { loading: feesByStudentLoading, error: feesByStudentError, fees: feesByStudent } = getFeesByStudentState;
+
+
+  
 
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -76,8 +82,7 @@ const AccountantFeeScreen = () => {
           render: (text, record) => (
             <Space size="middle">
               {/* You can add actions here, e.g., Edit, Delete buttons */}
-              <a>Edit</a>
-              <a>Delete</a>
+            
             </Space>
           ),
         },

@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
-import { AllFees } from '../../actions/feeActions';
+import { AllFees, getFeesByStudent } from '../../actions/feeActions';
 
 const AccountantFeeScreen = () => {
  const [studentId, setStudentId] = useState('');
@@ -26,14 +26,26 @@ const AccountantFeeScreen = () => {
   };
 
    const [message, setMessage] = useState(null);
+   const [search, setSearch] = useState(false);
   const match = useRouteMatch();
   const history = useHistory();
   const location = useLocation();
   const { pathname } = location;
-``
+
   const handleSearch = () => {
+    let id ="";
+    setSearch(true)
+    console.log("i am searching students");
+
+        const filteredFees = fees.filter(fee => {
+      return fee.student && fee.student.firstName.toLowerCase() === studentId.toLowerCase();
+    });
+
+    console.log(filteredFees);
+
     if (studentId.trim() !== '') {
-      dispatch(getFeesByStudent(studentId));
+      dispatch(getFeesByStudent(filteredFees[0].student._id));
+
     }
   };
 
@@ -221,8 +233,38 @@ const AccountantFeeScreen = () => {
               </Col>
             </Row>
           </Form>
+<>
+        {!search ? <Table striped bordered hover responsive className="table-sm">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                  
+                    <th>Updated At</th>
+                    <th></th>
 
-         <Table striped bordered hover responsive className="table-sm">
+                  </tr>
+                </thead>
+                <tbody>
+                  {fees.map((fee) => (
+                    <tr key={fee._id}>
+                      <td>{fee.student?.firstName}</td>
+                      <td>{fee.amount}</td>
+                      <td>
+  <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>
+    {fee.status}
+  </span>
+</td>
+                      <td>{fee.dueDate}</td>
+                     
+                      <td>{fee.updatedAt}</td>
+                      
+                    </tr>
+                  ))}
+                </tbody>
+              </Table> : <Table striped bordered hover responsive className="table-sm">
                 <thead>
                   <tr>
                     <th>Student</th>
@@ -253,19 +295,14 @@ const AccountantFeeScreen = () => {
                         <Button variant="info" size="sm" onClick={() => handleView(fee._id)}>
                           View
                         </Button>{' '}
-                        {/* Edit Button */}
-                        <Button variant="warning" size="sm" onClick={() => handleEdit(fee._id)}>
-                           Edit
-                        </Button>{' '}
-                        {/* Delete Button */}
-                        <Button variant="danger" size="sm" onClick={() => handleDelete(fee._id)}>
-                           Delete
-                        </Button>
+                       
                       </td>
                     </tr>
                   ))}
                 </tbody>
-              </Table> 
+              </Table>
+              }
+              </> 
         </div>
       )}
                 </div>

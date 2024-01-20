@@ -248,20 +248,20 @@ const AccountantPaymentScreen = () => {
                 <tbody>
                 {paymentTransactions && paymentTransactions.map((transaction) => (
   <tr key={transaction._id}>
-    <td>{transaction.schoolFees.student?.firstName}</td>
+    <td>{transaction.schoolFees?.student?.firstName}</td>
     <td>{transaction.amount}</td>
     <td>
       <span className={`badge ${transaction.approved != true ? 'badge-danger' : 'badge-success'}`}>
         {`${transaction.approved}`}
       </span>
     </td>
-    <td>{transaction.schoolFees.dueDate}</td>
-    <td>{transaction.schoolFees.updatedAt}</td>
+    <td>{transaction.schoolFees?.dueDate}</td>
+    <td>{transaction.schoolFees?.updatedAt}</td>
     <td>
       {/* View Button */}
-      <Button variant="info" size="sm" onClick={() => handleView(transaction.schoolFees._id)}>
+      {/* <Button variant="info" size="sm" onClick={() => handleView(transaction.schoolFees._id)}>
         View
-      </Button>{' '}
+      </Button>{' '} */}
       {/* Edit Button */}
       {transaction.approved != true ? <> <Button variant="warning" size="sm" onClick={() => ApprovePayment(transaction._id,transaction.schoolFees._id)}>
         APPROVE

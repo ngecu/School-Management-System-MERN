@@ -43,6 +43,7 @@ const App = () => {
           <Route path="/allAttedance" component={AttedanceScreen} />
           
           <Route path="/chat" component={ChatScreen} />
+          <Route path="/student/chat" component={ChatScreen} />
 
 
           {/* students routes  */}
