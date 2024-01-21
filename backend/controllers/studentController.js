@@ -7,9 +7,9 @@ import User from '../models/userModel.js';
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
     console.log(req.body);
+    const password = "password123";
   const {
     email,
-    password,
     firstName,
     lastName,
     gender,
@@ -18,7 +18,10 @@ export const admitStudent = asyncHandler(async (req, res) => {
     phone,
     nationalID,
     course,
-    parents,
+    parentFullName,
+    relationship,
+    parentPhone,
+    parentEmail,
     status,
     lastLoginDate,
     lastLoginIp,
@@ -36,26 +39,23 @@ export const admitStudent = asyncHandler(async (req, res) => {
   const parentIds = [];
 
   // Iterate through parents array and create/update parent documents
-  for (const parentData of parents) {
-    console.log(parentData);
-    const { email, fullName, phone, relationship } = parentData;
 
     // Check if the parent already exists
-    let parent = await Parent.findOne({ email });
-    let password = v4()
+    let parent = await Parent.findOne({ parentEmail });
+  
     // If not, create a new parent
     if (!parent) {
       parent = await Parent.create({
-        email,
-        fullName,
-        phone,
+        email:parentEmail,
+        fullName:parentFullName,
+        phone:parentPhone,
         password:password
       });
     }
 
     // Add the parent's ID to the array
     parentIds.push(parent._id);
-  }
+  
   
   // Create the student with the parent IDs
   console.log("password is ",password);

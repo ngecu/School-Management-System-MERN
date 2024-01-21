@@ -9,7 +9,7 @@ import {
   COURSE_DETAILS_FAIL,
 } from '../constants/courseConstants';
 
-const base_url = `https://school-management-system-7km3.onrender.comapi/courses`;
+const base_url = `http://localhost:5000/api/courses`;
 
 export const listCourses = () => async (dispatch,getState) => {
   try {

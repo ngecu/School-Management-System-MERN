@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Form, Input, Select, DatePicker, Button, Upload, message, Col, Row } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import Sidebar from '../../components/Sidebar';
@@ -6,12 +6,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { listSchools } from '../../actions/schoolActions';
 import { listCourses } from '../../actions/courseActions';
 import { createStudent } from '../../actions/studentActions';
-
+import Topbar from './components/Topbar';
+import { useState } from 'react';
+import {useDropzone} from 'react-dropzone'
+import { uploadFile } from '../../actions/cloudinaryAtions';
+import { useHistory } from 'react-router-dom';
 
 const { Option } = Select;
 
 const AdmissionScreen = () => {
-  const onFinish = (values) => {
+
+  const [schoolselected,setSchoolSelect] = useState(null)
+
+  const onFinish = async (values) => {
     console.log('Received values:', values);
   
     // Extract parent details from values
@@ -30,17 +37,47 @@ const AdmissionScreen = () => {
       ...values,
       parents: formattedParents,
     };
+
+    if (selectedImages.length > 0) {
+      const uploadedFileUrl = await dispatch(uploadFile(selectedImages[0]));
+
+      if (uploadedFileUrl !== null) {
+        // If the file is uploaded successfully, add the secure_url to the values
+        values.photo = uploadedFileUrl;
+        values.userType = "student"
+        dispatch(createStudent(values))
+          .then(() => {
+            // Handle success
+            message.success('Student added successfully!');
+
+            // Redirect to /allStudents
+        history.push('/allStudents');
+          })
+          .catch((error) => {
+            // Handle failure
+            console.log('Error adding student:', error);
+          });
+      } else {
+        // Handle failure to upload file
+        console.log('Error uploading file');
+      }
+    } else {
+    
   
     // Dispatch the createStudent action
     dispatch(createStudent(dataToSend)).then((response) => {
       if (response.success) {
         // Handle success, you may redirect the user or show a success message
         message.success('Student created successfully!');
+
+        // Redirect to /allStudents
+        history.push('/allStudents');
       } else {
         // Handle failure, show an error message
         message.error(response.error);
       }
     });
+  }
   };
   
 
@@ -74,6 +111,29 @@ const coursesList = useSelector((state) => state.courseList);
 const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
 
+const [selectedImages, setSelectedImages] = useState([]);
+    // Add this
+    const [uploadStatus, setUploadStatus] = useState("");
+    const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+        acceptedFiles.forEach((file) => {
+          setSelectedImages((prevState) => [...prevState, file]);
+        });
+      }, []);
+
+      const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    const {
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        isDragAccept,
+        isDragReject,
+    } = useDropzone({
+    onDrop,
+    accept: acceptedImageTypes.join(','), 
+  });
+
+
   return (
 
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -82,141 +142,7 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
       
     
     
-      
-      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-       
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-          </li>
-        
-        </ul>
-    
-        
-        <ul class="navbar-nav ml-auto">
-    
-    
-          
-         
-          <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-              <i class="fas fa-search"></i>
-            </a>
-            <div class="navbar-search-block">
-              <form class="form-inline">
-                <div class="input-group input-group-sm">
-                  <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search"/>
-                  <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                      <i class="fas fa-search"></i>
-                    </button>
-                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </li>
-    
-         
-          <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-              <i class="far fa-comments"></i>
-              <span class="badge badge-danger navbar-badge">3</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-              <a href="#" class="dropdown-item">
-              
-                <div class="media">
-                  <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle"/>
-                  <div class="media-body">
-                    <h3 class="dropdown-item-title">
-                      Brad Diesel
-                      <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                    </h3>
-                    <p class="text-sm">Call me whenever you can...</p>
-                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                  </div>
-                </div>
-           
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-               
-                <div class="media">
-                  <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3"/>
-                  <div class="media-body">
-                    <h3 class="dropdown-item-title">
-                      John Pierce
-                      <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                    </h3>
-                    <p class="text-sm">I got your message bro</p>
-                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                  </div>
-                </div>
-              
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-               
-                <div class="media">
-                  <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3"/>
-                  <div class="media-body">
-                    <h3 class="dropdown-item-title">
-                      Nora Silvester
-                      <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                    </h3>
-                    <p class="text-sm">The subject goes here</p>
-                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                  </div>
-                </div>
-                
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-            </div>
-          </li>
-         
-          <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-              <i class="far fa-bell"></i>
-              <span class="badge badge-warning navbar-badge">15</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-              <span class="dropdown-item dropdown-header">15 Notifications</span>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="fas fa-envelope mr-2"></i> 4 new messages
-                <span class="float-right text-muted text-sm">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="fas fa-users mr-2"></i> 8 friend requests
-                <span class="float-right text-muted text-sm">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="fas fa-file mr-2"></i> 3 new reports
-                <span class="float-right text-muted text-sm">2 days</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-              <i class="fas fa-expand-arrows-alt"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true"  role="button">
-              <i class="fas fa-th-large"></i>
-              <i class="fas fa-right-from-bracket"></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
+    <Topbar/>
       
             <Sidebar />
             <div class="content-wrapper">
@@ -352,7 +278,12 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
     },
   ]}
 >
-  <Select loading={loadingSchools}>
+  <Select 
+  onChange={(value) => {
+    setSchoolSelect(value);
+    console.log("scjool df ",schoolselected);
+  }}
+  loading={loadingSchools}>
     {schools && schools.map((school) => (
       <Option key={school._id} value={school._id}>
         {school.name}
@@ -374,11 +305,14 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
   ]}
 >
   <Select loading={loadingCourses}>
-    {courses && courses.map((course) => (
-      <Option key={course._id} value={course._id}>
-        {course.name}
-      </Option>
-    ))}
+  {courses && courses
+  .filter(course => course.school._id === schoolselected)
+  .map((course) => (
+    <Select.Option key={course._id} value={course._id}>
+      {course.name}
+    </Select.Option>
+))}
+
   </Select>
 </Form.Item>
                       </Col>
@@ -391,6 +325,10 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
           {
             required: true,
             message: 'Please input the National Number!',
+          },
+          {
+            min: 8,
+            message: 'National ID must be at least 8 characters!',
           },
         ]}
       >
@@ -407,6 +345,10 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
             required: true,
             message: 'Please input the Phone Number!',
           },
+          {
+            min: 10,
+            message: 'Phone number must be at least 10 characters!',
+          },
         ]}
       >
         <Input />
@@ -421,13 +363,25 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
         getValueFromEvent={normFile}
         extra="Please upload a photo with dimensions 150px X 150px."
       >
-        <Upload
-          name="photo"
-          beforeUpload={beforeUpload}
-          listType="picture"
-        >
-          <Button icon={<UploadOutlined />}>Upload</Button>
-        </Upload>
+     <div className='drop-zone-cotainer'>
+          <div className='dropzone' {...getRootProps()}>
+            <input {...getInputProps()} />
+            {isDragActive ? (
+              <p>Drop file(s) here ...</p>
+            ) : (
+              <p>Drag and drop file(s) here, or click to select files</p>
+            )}
+          </div>
+
+          <div className='images'>
+        {selectedImages.length > 0 &&
+          selectedImages.map((image, index) => (
+            <img src={`${URL.createObjectURL(image)}`} key={index} alt="" />
+          ))}
+      </div>
+
+        </div>
+
       </Form.Item>
                       </Col>
                     </Row>

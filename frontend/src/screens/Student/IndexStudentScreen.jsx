@@ -266,7 +266,7 @@ const IndexStudentScreen = () => {
     <th>1</th>
   </tr>
   <tr>
-    <td>Yeah:</td>
+    <td>Year:</td>
     <th>2024</th>
   </tr>
   <tr>
