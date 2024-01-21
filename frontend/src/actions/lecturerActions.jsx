@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { LECTURER_CREATE_FAIL, LECTURER_CREATE_REQUEST, LECTURER_CREATE_SUCCESS, LECTURER_DETAILS_REQUEST, LECTURER_LIST_FAIL, LECTURER_LIST_REQUEST, LECTURER_LIST_SUCCESS } from "../constants/lecturerConstants";
 
-const base_url = `http://localhost:5000/api/`
+const base_url = `http://localhost:5000/api/lecturers`
 
 export const createLecturer = (lecturerData) => async (dispatch, getState) => {
     try {
@@ -28,6 +28,8 @@ export const createLecturer = (lecturerData) => async (dispatch, getState) => {
         type: LECTURER_CREATE_SUCCESS,
         payload: data,
       });
+      document.location.href = '/allLecturers'
+
     } catch (error) {
       dispatch({
         type: LECTURER_CREATE_FAIL,

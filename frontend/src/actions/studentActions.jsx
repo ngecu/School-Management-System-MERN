@@ -36,6 +36,8 @@ export const createStudent = (studentData) => async (dispatch, getState) => {
         type: STUDENT_CREATE_SUCCESS,
         payload: data.data,
       });
+      document.location.href = '/allStudents'
+
     } catch (error) {
       dispatch({
         type: STUDENT_CREATE_FAIL,

@@ -7,7 +7,6 @@ import User from '../models/userModel.js';
 export const addLecturer = asyncHandler(async (req, res) => {
   const {
     email,
-    password,
     firstName,
     lastName,
     gender,
@@ -21,7 +20,7 @@ export const addLecturer = asyncHandler(async (req, res) => {
     lastLoginDate,
     lastLoginIp,
   } = req.body;
-
+  const password = "lecturerPassword123"
   const lecturerExists = await Lecturer.findOne({ email });
 
   if (lecturerExists) {
