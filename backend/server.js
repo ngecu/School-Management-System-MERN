@@ -25,6 +25,7 @@ import adminRoutes from './routes/adminRoutes.js'
 import feeRoutes from './routes/feeRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import timetableRoutes from './routes/timetableRoutes.js';
+import examRoutes from './routes/examRoutes.js'
 
 import cors from 'cors'
 
@@ -63,6 +64,7 @@ app.use("/api/schoolfees", feeRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use('/api/timetable', timetableRoutes);
 app.use('/api/mpesa',mpesaRoutes)
+app.use('/api/exams',examRoutes)
 
 
 

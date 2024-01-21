@@ -88,6 +88,7 @@ import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReduce
 import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
 import { createConversationReducer, getAllConversationsReducer, getUserConversationsReducer } from './reducers/conversationReducers';
 import { accountantCreateReducer } from './reducers/accountantReducers';
+import { examCreateReducer, getAllExamsReducer } from './reducers/examReduccers';
 
 const reducer = combineReducers({
   // User reducers
@@ -179,6 +180,8 @@ const reducer = combineReducers({
 
   createAccountant:accountantCreateReducer,
 
+  createExam:examCreateReducer,
+  allExams:getAllExamsReducer,
     // Upload reducers
     uploadFile: uploadFileReducer,
 });

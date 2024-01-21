@@ -172,16 +172,16 @@ const Sidebar = () => {
               </li>
 
               <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
+              <NavLink to="/allfee" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Fees Collection</p>
-                </a>
+                </NavLink>
               </li>
           
             </ul>
           </li>
 
-          <li class="nav-item">
+          {/* <li class="nav-item">
           <NavLink to="/allAttedance" class={`nav-link ${location.pathname === '/allAttedance' ? 'active' : ''}`}>
             <i class="nav-icon fas fa-person"></i>
               <p>
@@ -190,7 +190,7 @@ const Sidebar = () => {
               </p>
             </NavLink>
           
-          </li>
+          </li> */}
 
           <li class="nav-item">
             <a class="nav-link">
@@ -202,23 +202,18 @@ const Sidebar = () => {
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
+              <NavLink to="/exam_schedule" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
                   <p>Exam Schedule</p>
-                </a>
+                </NavLink>
               </li>
               <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
+              <NavLink to="/exam_grade" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
                   <p>Exam Grade</p>
-                </a>
+                </NavLink>
               </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Expenses</p>
-                </a>
-              </li>
+           
             </ul>
           </li>
 

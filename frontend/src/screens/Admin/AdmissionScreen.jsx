@@ -98,7 +98,7 @@ const AdmissionScreen = () => {
 
   const dispatch = useDispatch();
 
-// Fetch schools and courses when the component mounts
+
 useEffect(() => {
   dispatch(listSchools());
   dispatch(listCourses());

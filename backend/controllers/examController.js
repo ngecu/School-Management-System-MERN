@@ -5,17 +5,27 @@ import Exam from '../models/examModel.js';
 // @route   POST /api/exams
 // @access  Private
 export const createExam = asyncHandler(async (req, res) => {
-  const { title, date, examType, courseUnit } = req.body;
+  const { title, date, examType, courseUnit, startTime } = req.body;
 
-  const exam = await Exam.create({
-    title,
-    date,
-    examType,
-    courseUnit,
-  });
+  // Check if an exam with the same date and start time exists
+  const existingExam = await Exam.findOne({ date, startTime });
 
-  res.status(201).json(exam);
+  if (existingExam) {
+    res.status(400).json({ message: 'An exam with the same date and start time already exists.' });
+  } else {
+    // Create the new exam
+    const exam = await Exam.create({
+      title,
+      date,
+      examType,
+      courseUnit,
+      startTime,
+    });
+
+    res.status(201).json(exam);
+  }
 });
+
 
 // @desc    Get all exams
 // @route   GET /api/exams
