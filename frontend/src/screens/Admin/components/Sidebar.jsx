@@ -139,10 +139,14 @@ const Sidebar = () => {
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+              
+              <NavLink to="/allParents" class={`nav-link ${location.pathname === '/allParents' ? 'active' : ''}`}>
+              <i class="far fa-circle nav-icon"></i>
                   <p>All Parents</p>
-                </a>
+              </NavLink>
+               
+                
+              
               </li>
              
             
@@ -173,18 +177,7 @@ const Sidebar = () => {
                   <p>All Fees Collection</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Expenses</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Expenses</p>
-                </a>
-              </li>
+          
             </ul>
           </li>
 

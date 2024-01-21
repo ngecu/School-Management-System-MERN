@@ -17,7 +17,7 @@ import {
   PARENT_DELETE_FAIL,
 } from '../constants/parentConstants';
 
-const base_url = `http://localhost:5000/api/`
+const base_url = `http://localhost:5000/api/parents`
 
 // Create Parent Action
 export const createParent = (parentData) => async (dispatch) => {
