@@ -72,13 +72,13 @@ const Sidebar = () => {
             <p>Dashboard</p>
           </NavLink>
         </li>
-
+{/* 
         <li className="nav-item">
           <NavLink to="/my_attendance" className={`nav-link ${location.pathname === '/my_attendance' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-calendar-check"></i>
             <p>Attendance</p>
           </NavLink>
-        </li>
+        </li> */}
 
         <li className="nav-item">
           <NavLink to="/my_exam" className={`nav-link ${location.pathname === '/my_exam_results' ? 'active' : ''}`}>
@@ -108,12 +108,12 @@ const Sidebar = () => {
           </NavLink>
         </li> */}
 
-        <li className="nav-item">
+        {/* <li className="nav-item">
   <NavLink to="/student/chat" className={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
     <i className="nav-icon fas fa-comments"></i>
     <p>Messages</p>
   </NavLink>
-</li>
+</li> */}
 
 <li className="nav-item">
   <NavLink to="/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
