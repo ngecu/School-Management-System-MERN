@@ -1,4 +1,5 @@
 import Course from '../models/courseModel.js';
+import CourseUnit from '../models/courseUnitModel.js';
 
 // Controller to insert a new course
 export const createCourse = async (req, res) => {
@@ -16,8 +17,16 @@ export const createCourse = async (req, res) => {
 export const getAllCourses = async (req, res) => {
   try {
     const courses = await Course.find().populate('school');
-    res.status(200).json({ success: true, data: courses });
+    const newCourses = await Promise.all(
+      courses.map(async (element) => {
+        const courseUnits = await CourseUnit.find({ course: element._id });
+        return { ...element.toObject(), courseUnits };
+      })
+    );
+
+    res.status(200).json({ success: true, data: newCourses });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+

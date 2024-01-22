@@ -34,3 +34,10 @@ export const getAllExams = asyncHandler(async (req, res) => {
   const exams = await Exam.find().populate('examType courseUnit');
   res.json(exams);
 });
+
+
+export const getExamByCourse = asyncHandler(async (req, res) => {
+  const exams = await Exam.find().populate('examType courseUnit');
+  console.log(exams);
+  res.json(exams);
+});

@@ -181,7 +181,8 @@ const reducer = combineReducers({
   createAccountant:accountantCreateReducer,
 
   createExam:examCreateReducer,
-  allExams:getAllExamsReducer,
+  examList:getAllExamsReducer,
+
     // Upload reducers
     uploadFile: uploadFileReducer,
 });

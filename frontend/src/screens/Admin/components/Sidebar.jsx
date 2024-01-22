@@ -217,12 +217,12 @@ const Sidebar = () => {
             </ul>
           </li>
 
-          <li class="nav-item">
+          {/* <li class="nav-item">
           <NavLink to="/chat" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
             <i class="nav-icon fas fa-person"></i>
             <p>Message</p>
           </NavLink>
-        </li>
+        </li> */}
 
 
         <li class="nav-item">

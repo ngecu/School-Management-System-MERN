@@ -44,9 +44,19 @@ export const createExam = (examData) => async (dispatch,getState) => {
 export const getAllExams = () => async (dispatch, getState) => {
     try {
       dispatch({ type: GET_ALL_EXAMS_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
   
       // Fetch exams from the API
-      const { data } = await axios.get(`${base_url}`);
+      const { data } = await axios.get(`${base_url}`,config);
   
       dispatch({
         type: GET_ALL_EXAMS_SUCCESS,

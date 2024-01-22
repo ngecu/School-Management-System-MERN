@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Form, Input, Select, DatePicker, Button, Upload, message, Col, Row } from 'antd';
+import { Form, Input, Select, DatePicker, Upload, message, Col, Row } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from './components/Sidebar';
 import { useSelector, useDispatch } from 'react-redux';
 import { listSchools } from '../../actions/schoolActions';
 import { listCourses } from '../../actions/courseActions';
@@ -11,7 +11,7 @@ import Topbar from './components/Topbar';
 import {useDropzone} from 'react-dropzone'
 import { uploadFile } from '../../actions/cloudinaryAtions';
 import { useHistory } from 'react-router-dom';
-
+import {Button} from 'react-bootstrap'
 
 const { Option } = Select;
 

@@ -3,6 +3,7 @@ import Student from '../models/studentModel.js';
 import Parent from '../models/parentModel.js';
 import {v4} from 'uuid'
 import User from '../models/userModel.js';
+import SchoolFees from '../models/schoolFeesModel.js';
 
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
@@ -99,6 +100,24 @@ export const admitStudent = asyncHandler(async (req, res) => {
     });
 
     if (user) {
+
+      const studentId = student._id;
+  
+      // Check if school fees already exist for the student
+      const existingFees = await SchoolFees.findOne({ student: studentId });
+
+      if (!existingFees) {
+        // If school fees don't exist, create them
+        await SchoolFees.create({
+          student: studentId,
+          amount: 30000,
+          dueDate: 2024-30-12,
+          transactionId:v4()
+        });
+        console.log('School fees created successfully.');
+
+      }
+
       res.status(200).json({
         message: "Student registered successfully",
       });

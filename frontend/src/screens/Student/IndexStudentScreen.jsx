@@ -228,15 +228,10 @@ const IndexStudentScreen = () => {
         </div>
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-md-3">
+                <div class="col-md-9">
                     <input type="text" class="form-control" placeholder="Exam Name"/>
                 </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Course Unit"/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Grade"/>
-                </div>
+               
                 <div class="col-md-3 ">
                     <button class="btn btn-primary w-100">Search</button>
                 </div>

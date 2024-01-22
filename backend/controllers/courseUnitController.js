@@ -31,3 +31,13 @@ export const getAllCourseUnits = asyncHandler(async (req, res) => {
       data: courseUnits,
     });
   });
+
+  export const getAllCourseByCourse = asyncHandler(async (req, res) => {
+    const courseID = req.params.courseID
+    const courseUnits = await CourseUnit.find({course:courseID});
+  
+    res.status(200).json({
+      success: true,
+      data: courseUnits,
+    });
+  });

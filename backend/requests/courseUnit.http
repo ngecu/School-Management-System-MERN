@@ -5,10 +5,10 @@ Content-Type: application/json
 Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OTlhNDQyNDJhZDI5OWY5ZThiYzVjNyIsImlhdCI6MTcwNDYzOTI1OCwiZXhwIjoxNzA3MjMxMjU4fQ.LHNov2kgVD1l40FaABhVLej-kF8VRmIHmFS8rlAufyw
 
 {
-"name": "Introduction to Programming",
-"code": "CS101",
+"name": "Criminal Law Course Unit",
+"code": "CLCU",
 "description": "An introductory course to programming concepts.",
-"course":"6597e3fb97d4d9309e9e3495"
+"course":"65a386e888bd19cbb969568c"
 }
 
 ###

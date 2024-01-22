@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Collapse } from 'antd';
-import Sidebar from '../../components/Sidebar'
+import Sidebar from './components/Sidebar'
 import { listStudents } from '../../actions/studentActions';
 import Topbar from './components/Topbar';
 

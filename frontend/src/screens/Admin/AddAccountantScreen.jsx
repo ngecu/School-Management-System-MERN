@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Form, Input, Select, Button, message,Row,Col } from 'antd'
+import { Form, Input, Select,  message,Row,Col } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -7,12 +7,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Collapse } from 'antd';
-import Sidebar from '../../components/Sidebar'
+import Sidebar from './components/Sidebar'
 import { listStudents } from '../../actions/studentActions';
 import { createAccountant } from '../../actions/accountantActions';
 import {useDropzone} from 'react-dropzone'
 import { uploadFile } from '../../actions/cloudinaryAtions';
 import Topbar from './components/Topbar';
+import {Button} from 'react-bootstrap'
 
 
 const AddAccountant = () => {
@@ -215,7 +216,7 @@ const AddAccountant = () => {
 </Row>
 
       <Form.Item wrapperCol={{ offset: 0, span: 32 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" className="w-100" htmlType="submit">
           Add Accountant
         </Button>
       </Form.Item>

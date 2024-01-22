@@ -8,7 +8,9 @@ import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
 import Topbar from './components/Topbar';
-
+import { listStudents } from '../../actions/studentActions';
+import { listLecturers } from '../../actions/lecturerActions';
+import { listCourses } from '../../actions/courseActions';
 const IndexAdminScreen = () => {
 
   const location = useLocation();
@@ -22,6 +24,20 @@ const IndexAdminScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  useEffect(() => {
+    dispatch(listStudents());
+    dispatch(listLecturers());
+    dispatch(listCourses());
+  }, [dispatch]);
+
+  const studentList = useSelector((state) => state.studentList);
+  const { loading, error, students } = studentList;
+
+  const lecturerList = useSelector((state) => state.lecturerList);
+  const {  lecturers } = lecturerList;
+
+  const coursesList = useSelector((state) => state.courseList);
+const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
 
   return (
@@ -47,7 +63,7 @@ const IndexAdminScreen = () => {
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Students</div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">20</div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{students && <>{students.length}</>}</div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                        
                       </div>
@@ -65,8 +81,8 @@ const IndexAdminScreen = () => {
                             <div class="card-body">
                               <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                  <div class="text-xs font-weight-bold text-uppercase mb-1">Teachers</div>
-                                  <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                  <div class="text-xs font-weight-bold text-uppercase mb-1">Lecturers</div>
+                                  <div class="h5 mb-0 font-weight-bold text-gray-800">{lecturers && <>{lecturers.length}</>}</div>
                                   <div class="mt-2 mb-0 text-muted text-xs">
                                  
                                   </div>
@@ -84,8 +100,8 @@ const IndexAdminScreen = () => {
                 <div class="card-body">
                   <div class="row align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">Classes</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                      <div class="text-xs font-weight-bold text-uppercase mb-1">Courses</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{courses && <>{courses.length}</>}</div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                       
                       </div>
