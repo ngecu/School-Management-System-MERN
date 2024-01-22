@@ -99,7 +99,7 @@ const studentExamResultScreen = () => {
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Exam Name</th>
+                        <th>Exam Type</th>
                         <th>Course Unit</th>
                         <th>Grade</th>
                         <th>Date</th>
@@ -107,22 +107,17 @@ const studentExamResultScreen = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Exam 1</td>
-                        <td>Mathematics</td>
+                        <td>Main</td>
+                        <td>Criminal Law</td>
                         <td>A</td>
                         <td>2023-01-01</td>
                     </tr>
-                    <tr>
-                        <td>Exam 2</td>
-                        <td>Science</td>
-                        <td>B</td>
-                        <td>2023-02-01</td>
-                    </tr>
+                  
 
                     <tr>
-                        <td>Exam 2</td>
-                        <td>Science</td>
-                        <td>B</td>
+                        <td>Cat</td>
+                        <td>Criminal Law</td>
+                        <td>C</td>
                         <td>2023-02-01</td>
                     </tr>
                 </tbody>

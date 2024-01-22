@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar';
-import { AllFees, getFeesByStudent } from '../../actions/feeActions';
+
 import Topbar from './components/Topbar';
 import { listCourses } from '../../actions/courseActions';
 import { createExam, getAllExams } from '../../actions/examActions';
@@ -18,7 +18,7 @@ import { getCourseUnitsByCourseA } from '../../actions/courseUnitActions';
 
 const { Option } = Select;
 
-const ExanSchedulerScreen = () => {
+const ExamGradingScreen = () => {
   const [studentId, setStudentId] = useState('');
   const dispatch = useDispatch();
 
@@ -87,7 +87,7 @@ const ExanSchedulerScreen = () => {
         <div class="content-wrapper">
           <section class="content">
             <div class="container-fluid">
-            <h1>Schedule Exam</h1>
+            <h1>Grade Student</h1>
 
               <Form
                 name="examForm"
@@ -98,69 +98,7 @@ const ExanSchedulerScreen = () => {
                 initialValues={{ examType: 'Main' }}
               >
                 <Row gutter={[16, 16]}>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Title"
-                      name="title"
-                      rules={[{ required: true, message: 'Please enter the title!' }]}
-                    >
-                      <Input />
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={12}>
-                    <Form.Item
-                      label="Date"
-                      name="date"
-                      rules={[
-                        { required: true, message: 'Please select the date!' },
-                        {
-                          validator(_, value) {
-                            // Custom validation to ensure the date is not in the past
-                            if (moment(value).isBefore(moment(), 'day')) {
-                              return Promise.reject('Date cannot be in the past!');
-                            }
-                            return Promise.resolve();
-                          },
-                        },
-                      ]}
-                    >
-                      <DatePicker />
-                    </Form.Item>
-                  </Col>
-
-                        <Col span={12}>
-                      {/* Updated to use Select for Start Time */}
-                      <Form.Item
-                        label="Start Time"
-                        name="startTime"
-                        rules={[{ required: true, message: 'Please select the start time!' }]}
-                      >
-                        <Select>
-                          {/* Generating options for Start Time from 00 to 24 */}
-                          {[...Array(24).keys()].map((hour) => (
-                            <Select.Option key={hour} value={hour.toString().padStart(2, '0') + ':00'}>
-                              {hour.toString().padStart(2, '0') + ':00'}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Col>
-               
-                  <Col span={12}>
-                    <Form.Item
-                      label="Exam Type"
-                      name="examType"
-                      rules={[{ required: true, message: 'Please select the exam type!' }]}
-                    >
-                      <Select>
-                        <Option value="Main">Main</Option>
-                        <Option value="Cat">Cat</Option>
-                      </Select>
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={12}>
+                <Col span={12}>
                     <Form.Item
                       label="Course"
                       name="course"
@@ -191,43 +129,70 @@ const ExanSchedulerScreen = () => {
           </Select>
         </Form.Item>
       </Col> }
+
+      <Col span={12}>
+                    <Form.Item
+                      label="Student"
+                      name="student"
+                      rules={[{ required: true, message: 'Please select the course unit!' }]}
+                    >
+                      <Select  onChange={handleCourseChange}>
+                        {courses &&
+                          courses.map((course) => (
+                            <Option key={course._id} value={course._id}>
+                              {course.name}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
                  
+
+                  <Col span={12}>
+                    <Form.Item
+                      label="Grade"
+                      name="grade"
+                      rules={[{ required: true, message: 'Please select the course unit!' }]}
+                    >
+                      <Select  onChange={handleCourseChange}>
+                        {courses &&
+                          courses.map((course) => (
+                            <Option key={course._id} value={course._id}>
+                              {course.name}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Form.Item>
+                  </Col>
+                     
+              
+            
 
                 </Row>
 
                 <Form.Item wrapperCol={{ offset: 0, span: 32 }}>
                   <Button type="primary" className='w-100' htmlType="submit">
-                    Schedule Exam
+                    GRADE
                   </Button>
                 </Form.Item>
               </Form>
               
-              <h1>Scheduled Exams</h1>
+              <h1>LATEST GRADINGS</h1>
 
               <Table striped bordered hover responsive className="table-sm">
                 <thead>
                   <tr>
-                    <th>TITLE</th>
-                    <th>DATE</th>
-                    <th>START TIME</th>
-                    <th>EXAM TYPE</th>
+                    <th>STUDENT</th>
+                    <th>COURSE</th>
+                    <th>COURSE UNIT</th>
+                    <th>GRADE</th>
                   
                    
 
                   </tr>
                 </thead>
                 <tbody>
-                  {exams && exams.map((fee) => (
-                    <tr key={fee._id}>
-                      <td>{fee.title}</td>
-                      <td>{fee.date}</td>
-
-                      <td>{fee.startTime}</td>
-                      <td>{fee.examType}</td>
-                     
-                      
-                    </tr>
-                  ))}
+                
                 </tbody>
               </Table>
             </div>
@@ -238,4 +203,4 @@ const ExanSchedulerScreen = () => {
   );
 };
 
-export default ExanSchedulerScreen;
+export default ExamGradingScreen;

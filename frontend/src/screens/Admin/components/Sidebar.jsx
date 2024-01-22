@@ -172,7 +172,7 @@ const Sidebar = () => {
               </li>
 
               <li class="nav-item">
-              <NavLink to="/allfee" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
+              <NavLink to="/allfee" class={`nav-link ${location.pathname === '/allfee' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Fees Collection</p>
                 </NavLink>
@@ -202,13 +202,13 @@ const Sidebar = () => {
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-              <NavLink to="/exam_schedule" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
+              <NavLink to="/exam_schedule" class={`nav-link ${location.pathname === '/exam_schedule' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
                   <p>Exam Schedule</p>
                 </NavLink>
               </li>
               <li class="nav-item">
-              <NavLink to="/exam_grade" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
+              <NavLink to="/exam_grade" class={`nav-link ${location.pathname === '/exam_grade' ? 'active' : ''}`}>
                   <i class="far fa-circle nav-icon"></i>
                   <p>Exam Grade</p>
                 </NavLink>

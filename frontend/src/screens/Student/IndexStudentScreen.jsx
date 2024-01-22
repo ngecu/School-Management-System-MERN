@@ -170,8 +170,8 @@ const IndexStudentScreen = () => {
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Notifications</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">latest grade</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">C - Criminal Law</div>
                     <div class="mt-2 mb-0 text-muted text-xs">
                     </div>
                 </div>
@@ -188,8 +188,8 @@ const IndexStudentScreen = () => {
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Events</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">COURSE</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">CRIMINAL LAW</div>
                     <div class="mt-2 mb-0 text-muted text-xs">
 
                     </div>
@@ -207,8 +207,8 @@ const IndexStudentScreen = () => {
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">Attendance</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">20%</div>
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">COURSE UNITS</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
                     <div class="mt-2 mb-0 text-muted text-xs">
 
                     </div>
@@ -239,7 +239,7 @@ const IndexStudentScreen = () => {
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Exam Name</th>
+                        <th>Exam Type</th>
                         <th>Course Unit</th>
                         <th>Grade</th>
                         <th>Date</th>
@@ -247,17 +247,17 @@ const IndexStudentScreen = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Exam 1</td>
-                        <td>Mathematics</td>
+                        <td>Main</td>
+                        <td>Criminal Law</td>
                         <td>A</td>
                         <td>2023-01-01</td>
                     </tr>
                   
 
                     <tr>
-                        <td>Exam 2</td>
-                        <td>Science</td>
-                        <td>B</td>
+                        <td>Cat</td>
+                        <td>Criminal Law</td>
+                        <td>C</td>
                         <td>2023-02-01</td>
                     </tr>
                 </tbody>

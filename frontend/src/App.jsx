@@ -25,6 +25,7 @@ import studentInvoiceScreen from './screens/Student/studentInvoice';
 import AddAccountant from './screens/Admin/AddAccountantScreen';
 import AdminFeeScreen from './screens/Admin/AllFeeScreen';
 import ExanSchedulerScreen from './screens/Admin/ExamScheduler';
+import ExamGradingScreen from './screens/Admin/ExamGradingScreen';
 
 const App = () => {
 
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="/add_accountant" component={AddAccountant} />
           <Route path="/allfee" component={AdminFeeScreen} />
           <Route path="/exam_schedule" component={ExanSchedulerScreen} />
+          <Route path="/exam_grade" component={ExamGradingScreen} />
 
           
           <Route path="/chat" component={ChatScreen} />

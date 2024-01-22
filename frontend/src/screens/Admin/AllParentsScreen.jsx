@@ -78,7 +78,7 @@ const AllParentsScreen = () => {
       <Card>
         <Card.Header>
           <div className="d-flex justify-content-between align-items-center">
-            <h5>All Paremts Data</h5>
+            <h5>All Parents Data</h5>
             <Form inline>
               <Form.Control type="text" placeholder="Search" className="mr-2" />
               <Button variant="primary">Search</Button>

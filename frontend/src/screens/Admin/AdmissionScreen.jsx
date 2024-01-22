@@ -152,7 +152,7 @@ const [selectedImages, setSelectedImages] = useState([]);
     
             <div class="pt-3 w-100">
             <div className="w-100 text-center">
-              <h1>STUDENT APPLICATION FORM</h1>
+              <h1>STUDENT ADMISSION FORM</h1>
             </div>
             <Form
       name="admissionForm"
