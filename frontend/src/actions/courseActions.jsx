@@ -72,3 +72,34 @@ export const getCourseDetails = (id) => async (dispatch,getState) => {
     });
   }
 };
+
+export const listCoursesBySchool = (schoolID) => async (dispatch,getState) => {
+  try {
+    dispatch({ type: COURSE_LIST_REQUEST });
+
+    const {
+        userLogin: { userInfo },
+      } = getState();
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+    const { data } = await axios.get(`${base_url}/school/${schoolID}`,config);
+
+    dispatch({
+      type: COURSE_LIST_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: COURSE_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

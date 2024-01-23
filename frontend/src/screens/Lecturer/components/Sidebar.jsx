@@ -43,7 +43,7 @@ const Sidebar = () => {
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="https://avatars.githubusercontent.com/u/41146306?v=4" class="img-circle elevation-2" alt="User Image"/>
+          <img src={userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
         </div>
         <div class="info">
           <a  class="d-block">{userInfo.firstName}</a>
@@ -72,25 +72,25 @@ const Sidebar = () => {
         <p>Dashboard </p>
       </NavLink>
     </li>
-    <li className="nav-item">
+    {/* <li className="nav-item">
       <NavLink to="/courses" className={`nav-link ${location.pathname === '/courses' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-book"></i>
-        <p>Courses Assigned</p>
+        <p>School Assigned</p>
       </NavLink>
-    </li>
+    </li> */}
   
     <li className="nav-item">
-      <NavLink to="/students" className={`nav-link ${location.pathname === '/students' ? 'active' : ''}`}>
+      <NavLink to="lecturer/my_students" className={`nav-link ${location.pathname === '/students' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-users"></i>
         <p>My Students</p>
       </NavLink>
     </li>
-    <li className="nav-item">
+    {/* <li className="nav-item">
       <NavLink to="/announcements" className={`nav-link ${location.pathname === '/announcements' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-bullhorn"></i>
         <p>Announcements</p>
       </NavLink>
-    </li>
+    </li> */}
     <li className="nav-item">
       <NavLink to="/assignments" className={`nav-link ${location.pathname === '/assignments' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-tasks"></i>
@@ -104,7 +104,7 @@ const Sidebar = () => {
       </NavLink>
     </li>
     <li className="nav-item">
-      <NavLink to="/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
+      <NavLink to="/lecturer/profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-user"></i>
         <p>Profile</p>
       </NavLink>

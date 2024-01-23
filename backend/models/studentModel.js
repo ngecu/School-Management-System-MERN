@@ -7,6 +7,11 @@ const studentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+        yearOfStudy: {
+      type: Number,
+      default:1,
+      required: true,
+    },
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Course',

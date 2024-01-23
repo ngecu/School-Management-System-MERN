@@ -30,3 +30,20 @@ export const getAllCourses = async (req, res) => {
   }
 };
 
+export const getAllCourseBySchool = async (req, res) => {
+  try {
+    const {schoolID} = req.params
+    const courses = await Course.find({school:schoolID}).populate('school');
+    const newCourses = await Promise.all(
+      courses.map(async (element) => {
+        const courseUnits = await CourseUnit.find({ course: element._id });
+        return { ...element.toObject(), courseUnits };
+      })
+    );
+
+    res.status(200).json({ success: true, data: newCourses });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+

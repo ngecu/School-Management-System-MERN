@@ -30,15 +30,10 @@ const ExanSchedulerScreen = () => {
 
   const getCourseUnitsByCourse = useSelector((state) => state.getCourseUnitsByCourse);
   const {success, courseUnits } = getCourseUnitsByCourse;
-
   const [message, setMessage] = useState(null);
 
   
-  const [search, setSearch] = useState(false);
-  const match = useRouteMatch();
-  const history = useHistory();
   const location = useLocation();
-  const { pathname } = location;
 
   const onFinish = (values) => {
     console.log(values);

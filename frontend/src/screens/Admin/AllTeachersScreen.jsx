@@ -8,21 +8,58 @@ import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Collapse } from 'antd';
 import Sidebar from './components/Sidebar'
-import { listLecturers } from '../../actions/lecturerActions';
+import { deleteLecturer, listLecturers } from '../../actions/lecturerActions';
 import Topbar from './components/Topbar';
-
+import {  Modal } from 'antd'
 
 
 const AllLecturers = () => {
     const dispatch = useDispatch();
   
-    useEffect(() => {
-      dispatch(listLecturers());
-    }, [dispatch]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [lecturerData, setLecturerData] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+
+
+    const showModal = (lecturerData) => {
+      setLecturerData(lecturerData); // Assuming you have a state variable to store lecturer data
+      setIsModalOpen(true);
+    };
   
+    
+    const handleOk = () => {
+      setIsModalOpen(false);
+    };
+  
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
+  
+  
+    const deleteHandler = (lecturerID)=>{
+      console.log("i am deleting");
+
+      if (window.confirm('Are you sure')) {
+        dispatch(deleteLecturer(lecturerID))
+      }
+
+
+    }
     const lecturerList = useSelector((state) => state.lecturerList);
     const { loading, error, lecturers } = lecturerList;
   
+
+    const lecturerDelete = useSelector((state) => state.lecturerDelete)
+    const {
+      loading: loadingDelete,
+      error: errorDelete,
+      success: successDelete,
+    } = lecturerDelete
+
+    useEffect(() => {
+      dispatch(listLecturers());
+    }, [dispatch,successDelete]);
+
     if (loading) {
       return <Loader />;
     }
@@ -32,26 +69,40 @@ const AllLecturers = () => {
     }
   
     const generateLecturerData = () => {
-      return lecturers.map((lecturer) => (
-        <tr key={lecturer._id}>
-          <td>{lecturer.firstName} {lecturer.lastName}</td>
-          <td>{lecturer.gender}</td>
-        <td>{lecturer.school.name}</td>     
-        <td>{lecturer.email}</td>
-        <td>{lecturer.dob}</td>
+      const filteredLecturers = lecturers.filter((lecturer) =>
+      lecturer.lecturer.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      lecturer.lecturer.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      lecturer.lecturer.email.toLowerCase().includes(searchQuery.toLowerCase())
+      // Add more fields as needed for searching
+    );
+
+    
+      return filteredLecturers.map((lecturer) => (
+        <React.Fragment key={lecturer.lecturer?._id}>
+       
+        
+        <tr key={lecturer.lecturer?._id}>
+          <td>{lecturer.lecturer?.firstName} {lecturer?.lastName}</td>
+          <td>{lecturer.lecturer?.gender}</td>
+        <td>{lecturer.lecturer?.school?.name}</td>     
+        <td>{lecturer.lecturer?.email}</td>
+        <td>{lecturer.lecturer?.dob}</td>
           {/* Add more lecturer-specific fields as needed */}
           <td>
-            <Link to={`/lecturers/${lecturer._id}`} className="btn btn-success btn-sm">
-              <i className="fas fa-folder"></i> View
-            </Link>
-            <Link to={`/lecturers/${lecturer._id}/edit`} className="btn btn-info btn-sm">
-              <i className="fas fa-pencil-alt"></i> Edit
-            </Link>
-            <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(lecturer._id)}>
+          <button
+            className="btn btn-success btn-sm"
+            onClick={() => showModal(lecturer.lecturer)}
+          >
+            <i className="fas fa-folder"></i> View
+          </button>
+         
+            <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(lecturer.lecturer._id)}>
               <i className="fas fa-trash"></i> Delete
             </button>
           </td>
         </tr>
+        </React.Fragment>
+        
       ));
     };
 
@@ -78,7 +129,16 @@ const AllLecturers = () => {
           <div className="d-flex justify-content-between align-items-center">
             <h5>All LECTURERS Data</h5>
             <Form inline>
-              <Form.Control type="text" placeholder="Search" className="mr-2" />
+            <Form.Control
+  type="text"
+  placeholder="Search"
+  className="mr-2"
+  value={searchQuery}
+  onChange={(e) => {
+    console.log(e.target.value);
+    setSearchQuery(e.target.value)
+  }}
+/>
               <Button variant="primary">Search</Button>
             </Form>
           </div>
@@ -127,6 +187,23 @@ const AllLecturers = () => {
 
 
 </div>
+
+<Modal
+  title="Lecturer Details"
+  visible={isModalOpen}
+  onOk={handleOk}
+  onCancel={handleCancel}
+>
+  {lecturerData && (
+    <>
+      <p>Name: {lecturerData.firstName} {lecturerData.lastName}</p>
+      <p>Gender: {lecturerData.gender}</p>
+      <p>School: {lecturerData.school?.name}</p>
+      {/* Add more lecturer-specific fields as needed */}
+    </>
+  )}
+</Modal>
+
 
     </div>
   );

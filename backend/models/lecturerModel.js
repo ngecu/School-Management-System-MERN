@@ -12,6 +12,11 @@ const lecturerSchema = mongoose.Schema(
       ref: 'School',
       required: true,
     },
+    courses: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Course',
+      required: true,
+    }],
     email: {
       type: String,
       required: true,

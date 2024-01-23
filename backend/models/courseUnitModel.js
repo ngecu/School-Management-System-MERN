@@ -16,6 +16,10 @@ const courseUnitSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    yearOfStudy: {
+      type: Number,
+      required: true,
+    },
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Course',

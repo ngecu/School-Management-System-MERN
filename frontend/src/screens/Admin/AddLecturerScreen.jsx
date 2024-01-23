@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form, Input, Select, DatePicker, Upload, message, Col, Row } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import Sidebar from './components/Sidebar';
 import { useSelector, useDispatch } from 'react-redux';
 import { listSchools } from '../../actions/schoolActions';
-import { listCourses } from '../../actions/courseActions';
-import { createStudent } from '../../actions/studentActions';
+import { listCourses, listCoursesBySchool } from '../../actions/courseActions';
 import { createLecturer } from '../../actions/lecturerActions';
 import Topbar from './components/Topbar';
 import {useDropzone} from 'react-dropzone'
 import { uploadFile } from '../../actions/cloudinaryAtions';
-import { useHistory } from 'react-router-dom';
 import {Button} from 'react-bootstrap'
 
 const { Option } = Select;
@@ -55,6 +52,9 @@ const AddLecturerScreen = () => {
  
   };
   
+  const handleCourseChange = (selectedCourseId) => {
+    dispatch(listCoursesBySchool(selectedCourseId))
+    };
 
   const normFile = (e) => {
     if (Array.isArray(e)) {
@@ -82,6 +82,8 @@ useEffect(() => {
 const schoolsList = useSelector((state) => state.schoolList);
 const { loading: loadingSchools, schools, error: errorSchools } = schoolsList;
 
+const courseList = useSelector((state) => state.courseList);
+const {success, courses } = courseList;
 
 const [selectedImages, setSelectedImages] = useState([]);
     // Add this
@@ -247,7 +249,7 @@ const [selectedImages, setSelectedImages] = useState([]);
     },
   ]}
 >
-  <Select loading={loadingSchools}>
+  <Select onChange={handleCourseChange} loading={loadingSchools}>
     {schools && schools.map((school) => (
       <Option key={school._id} value={school._id}>
         {school.name}
@@ -256,6 +258,25 @@ const [selectedImages, setSelectedImages] = useState([]);
   </Select>
 </Form.Item>
                       </Col>
+
+                      {courses &&  
+  <Col span={6}>
+    <Form.Item
+      label={`Courses ${courses.length}`}
+      name="courses"
+      rules={[{ required: true, message: 'Please select the course unit!' }]}
+    >
+      <Select mode="multiple">
+        {courses.map((course) => (
+          <Select.Option key={course._id} value={course._id}>
+            {course.name}
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
+  </Col>
+}
+
 
                    
 

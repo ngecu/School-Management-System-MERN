@@ -34,6 +34,7 @@ export const getAllCourseUnits = asyncHandler(async (req, res) => {
 
   export const getAllCourseByCourse = asyncHandler(async (req, res) => {
     const courseID = req.params.courseID
+    console.log(courseID);
     const courseUnits = await CourseUnit.find({course:courseID});
   
     res.status(200).json({
