@@ -6,12 +6,13 @@ import Loader from '../../components/Loader';
 import { Link, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar'
 import {  Input, Select  , Col, Row } from 'antd';
-import { listSchools } from '../../actions/schoolActions';
+import { getSchoolDetails, listSchools } from '../../actions/schoolActions';
 import { listCourses } from '../../actions/courseActions';
 import {useDropzone} from 'react-dropzone'
 import { uploadFile } from '../../actions/cloudinaryAtions';
 import { updateUserProfile } from '../../actions/userActions';
 import Topbar from './components/Topbar';
+import { listStudents } from '../../actions/studentActions';
 
 
 const LecturerMyStudentsScreen = () => {
@@ -19,12 +20,31 @@ const LecturerMyStudentsScreen = () => {
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
+
+
+
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const studentList = useSelector((state) => state.studentList);
+  const { loading, error, students } = studentList;
+
+  const schoolDetails = useSelector((state) => state.schoolDetails);
+  const { school } = schoolDetails;
+
+
+  
+  useEffect(() => {
+    dispatch(listStudents());
+    dispatch(getSchoolDetails(userInfo.userData.school))
+  }, [dispatch]);
+
+  const filteredStudents =
+    students &&
+    students.filter((student) =>
+      userInfo.userData.courses.includes(student.course._id)
+    );
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -42,7 +62,7 @@ const LecturerMyStudentsScreen = () => {
             <div class="col-xl-4 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
-                 My School 
+                 My School : {school && school.name}
                 </div>
               </div>
             </div>
@@ -50,7 +70,7 @@ const LecturerMyStudentsScreen = () => {
             <div class="col-xl-4 col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                  Courses Assigned:
+                  Courses Assigned:  {userInfo && userInfo.userData.courses.length}
                     </div>
                     </div>
             </div>
@@ -58,7 +78,7 @@ const LecturerMyStudentsScreen = () => {
               <div class="col-xl-4 col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                 My Students:
+                 My Students: {students && <>{filteredStudents .length}</>}
                     </div>
                     </div>
             </div>
@@ -89,8 +109,18 @@ const LecturerMyStudentsScreen = () => {
               </tr>
             </thead>
             <tbody style={{ overflowY: 'auto', maxHeight: '400px' }}>
-           
-          </tbody>
+                        {filteredStudents &&
+                          filteredStudents.map((student) => (
+                            <tr key={student.id}>
+                              <td>{student.firstName} {student.lastName}</td>
+                              <td>{student.gender}</td>
+                              <td>{student.course.name}</td>
+                              <td>{student.address}</td>
+                              <td>{student.dob}</td>
+                              <td>{student.email}</td>
+                            </tr>
+                          ))}
+                      </tbody>
           </Table>
           
                 </div>

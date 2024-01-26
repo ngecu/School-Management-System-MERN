@@ -64,4 +64,3 @@ export const getAttendanceByCourseId = asyncHandler(async (req, res) => {
   });
 });
 
-// Add more controller functions as needed.

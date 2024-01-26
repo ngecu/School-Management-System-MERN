@@ -8,15 +8,13 @@ import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Collapse } from 'antd';
 import Sidebar from './components/Sidebar'
-import { listStudents } from '../../actions/studentActions';
+import { deleteStudent, listStudents } from '../../actions/studentActions';
 import Topbar from './components/Topbar';
 
 
 
 const AllStudents = () => {
 
-  const match = useRouteMatch();
-  const history = useHistory();
 
   const location = useLocation();
   const { pathname } = location;
@@ -25,12 +23,51 @@ const AllStudents = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(listStudents());
-  }, [dispatch]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [lecturerData, setLecturerData] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+
+
+    const showModal = (lecturerData) => {
+      setLecturerData(lecturerData); // Assuming you have a state variable to store lecturer data
+      setIsModalOpen(true);
+    };
+  
+    
+    const handleOk = () => {
+      setIsModalOpen(false);
+    };
+  
+    const handleCancel = () => {
+      setIsModalOpen(false);
+    };
+  
+  
+    const deleteHandler = (lecturerID)=>{
+      console.log("i am deleting");
+
+      if (window.confirm('Are you sure')) {
+        dispatch(deleteStudent(lecturerID))
+      }
+
+
+    }
+
+
 
   const studentList = useSelector((state) => state.studentList);
   const { loading, error, students } = studentList;
+
+  const lecturerDelete = useSelector((state) => state.lecturerDelete)
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = lecturerDelete
+
+  useEffect(() => {
+    dispatch(listStudents());
+  }, [dispatch,successDelete]);
 
   if (loading) {
     return <Loader />;
@@ -44,8 +81,17 @@ const AllStudents = () => {
 
 
   const generateStudentData = () => {
-    return students.map((student) => (
-      <tr key={student.id}>
+
+    const filteredStudents = students.filter((student) =>
+    student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    student.email.toLowerCase().includes(searchQuery.toLowerCase())
+    // Add more fields as needed for searching
+  );
+
+    return filteredStudents.map((student) => (
+      <React.Fragment key={student?._id}>
+      <tr key={student._id}>
         <td>{student.firstName} {student.lastName}</td>
         <td>{student.gender}</td>
         <td>{student.course.name}</td>     
@@ -53,23 +99,19 @@ const AllStudents = () => {
         <td>{student.dob}</td>
        
         <td>
-        <a class="btn btn-success btn-sm" href="#">
-                              <i class="fas fa-folder">
-                              </i>
-                              View
-                          </a>
-                          <a class="btn btn-info btn-sm" href="#">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                          </a>
-                          <a class="btn btn-danger btn-sm" href="#">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                          </a>
+        <button
+            className="btn btn-success btn-sm"
+            onClick={() => showModal(student)}
+          >
+            <i className="fas fa-folder"></i> View
+          </button>
+         
+            <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student._id)}>
+              <i className="fas fa-trash"></i> Delete
+            </button>
         </td>
       </tr>
+      </React.Fragment>
     ));
   };
 
@@ -94,8 +136,17 @@ const AllStudents = () => {
           <div className="d-flex justify-content-between align-items-center">
             <h5>All Students Data</h5>
             <Form inline>
-              <Form.Control type="text" placeholder="Search" className="mr-2" />
-              <Button variant="primary">Search</Button>
+            <Form.Control
+  type="text"
+  placeholder="Search"
+  className="mr-2"
+  value={searchQuery}
+  onChange={(e) => {
+    console.log(e.target.value);
+    setSearchQuery(e.target.value)
+  }}
+/>
+             
             </Form>
           </div>
         </Card.Header>

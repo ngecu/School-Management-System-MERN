@@ -83,3 +83,73 @@ export const getAllAccountants = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+// @desc    Get a single accountant by ID
+// @route   GET /api/accountants/:id
+// @access  Public
+export const getAccountantById = asyncHandler(async (req, res) => {
+  const accountant = await Accountant.findById(req.params.id);
+
+  if (accountant) {
+    res.json(accountant);
+  } else {
+    res.status(404);
+    throw new Error('Accountant not found');
+  }
+});
+
+// @desc    Update an existing accountant
+// @route   PUT /api/accountants/:id
+// @access  Private
+export const updateAccountant = asyncHandler(async (req, res) => {
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    gender,
+    dob,
+    phone,
+    nationalID,
+    status,
+    lastLoginDate,
+    lastLoginIp,
+  } = req.body;
+
+  const accountant = await Accountant.findById(req.params.id);
+
+  if (accountant) {
+    accountant.email = email;
+    accountant.password = password;
+    accountant.firstName = firstName;
+    accountant.lastName = lastName;
+    accountant.gender = gender;
+    accountant.dob = dob;
+    accountant.phone = phone;
+    accountant.nationalID = nationalID;
+    accountant.status = status;
+    accountant.lastLoginDate = lastLoginDate;
+    accountant.lastLoginIp = lastLoginIp;
+
+    const updatedAccountant = await accountant.save();
+    res.json(updatedAccountant);
+  } else {
+    res.status(404);
+    throw new Error('Accountant not found');
+  }
+});
+
+// @desc    Delete an accountant
+// @route   DELETE /api/accountants/:id
+// @access  Private
+export const deleteAccountant = asyncHandler(async (req, res) => {
+  const accountant = await Accountant.findById(req.params.id);
+
+  if (accountant) {
+    await accountant.remove();
+    res.json({ message: 'Accountant removed' });
+  } else {
+    res.status(404);
+    throw new Error('Accountant not found');
+  }
+});

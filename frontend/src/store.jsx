@@ -83,6 +83,16 @@ import {
   stkPushReducer,
 } from './reducers/paymentReducers';
 
+import {
+  // ... other module reducers
+  assignmentCreateReducer,
+  assignmentListReducer,
+  assignmentDetailsReducer,
+  submissionCreateReducer,
+  submissionListReducer,
+  submissionDetailsReducer,
+} from './reducers/assignmentReducers';
+
 import { uploadFileReducer } from './reducers/uploadReducers';
 import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReducer, timetableDetailsReducer, timetableListReducer, timetableUpdateReducer } from './reducers/timetableReducers';
 import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
@@ -172,6 +182,14 @@ const reducer = combineReducers({
     paymentTransactionDelete: paymentTransactionDeleteReducer,
     paymentTransactionByFee: paymentTransactionByFeeReducer,
     stkPush:stkPushReducer,
+
+    //assignment reducers
+    assignmentCreate: assignmentCreateReducer,
+    assignmentList: assignmentListReducer,
+    assignmentDetails: assignmentDetailsReducer,
+    submissionCreate: submissionCreateReducer,
+    submissionList: submissionListReducer,
+    submissionDetails: submissionDetailsReducer,
     
 
       // Reducers for conversation module

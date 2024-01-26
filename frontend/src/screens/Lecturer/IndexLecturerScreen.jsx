@@ -8,13 +8,11 @@ import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
 import Topbar from './components/Topbar';
+import { listStudents } from '../../actions/studentActions';
+import { listLecturers } from '../../actions/lecturerActions';
+import { listCourses } from '../../actions/courseActions';
 
 const IndexLecturerScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
   const match = useRouteMatch();
   const history = useHistory();
 
@@ -31,11 +29,20 @@ const IndexLecturerScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
+  useEffect(() => {
+    dispatch(listStudents());
+    dispatch(listLecturers());
+    dispatch(listCourses());
+  }, [dispatch]);
 
+  const studentList = useSelector((state) => state.studentList);
+  const { students } = studentList;
 
+  const lecturerList = useSelector((state) => state.lecturerList);
+  const {  lecturers } = lecturerList;
+
+  const coursesList = useSelector((state) => state.courseList);
+const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -55,7 +62,7 @@ const IndexLecturerScreen = () => {
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-uppercase mb-1">Students</div>
-                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">20</div>
+                      <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{students && <>{students.length}</>}</div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                        
                       </div>
@@ -73,8 +80,8 @@ const IndexLecturerScreen = () => {
                             <div class="card-body">
                               <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                  <div class="text-xs font-weight-bold text-uppercase mb-1">Teachers</div>
-                                  <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                  <div class="text-xs font-weight-bold text-uppercase mb-1">Lecturers</div>
+                                  <div class="h5 mb-0 font-weight-bold text-gray-800">{lecturers && <>{lecturers.length}</>}</div>
                                   <div class="mt-2 mb-0 text-muted text-xs">
                                  
                                   </div>
@@ -92,8 +99,8 @@ const IndexLecturerScreen = () => {
                 <div class="card-body">
                   <div class="row align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-uppercase mb-1">Classes</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                    <div class="text-xs font-weight-bold text-uppercase mb-1">Courses</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{courses && <>{courses.length}</>}</div>
                       <div class="mt-2 mb-0 text-muted text-xs">
                       
                       </div>
@@ -105,6 +112,73 @@ const IndexLecturerScreen = () => {
                 </div>
               </div>
             </div>
+
+            <div class="col-xl-12 col-md-12 mb-4">
+
+<div className="row">
+  <div className="col-xl-12 col-md-6 mb-4">
+  <div class="card h-100">
+  <div class="card-body">
+    <div class="row no-gutters align-items-center">
+      <div class="col-xl-12 col-md-12 mr-2">
+      <div class="no-gutters align-items-center">
+        <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
+          <img src={userInfo.userData.photo} width={100} alt="" />
+        </div>
+
+        <div class="mt-2 mb-0 text-muted text-xs">
+         
+        </div>
+        </div>
+      </div>
+      <div class="col-xl-12 col-md-12 mr-2">
+      <table className='w-100'>
+      <tbody>
+<tr>
+<td>Email:</td>
+<th>{userInfo.email}</th>
+</tr>
+
+<tr>
+<td>First Name:</td>
+<th>{userInfo.userData.firstName}</th>
+</tr>
+<tr>
+<td>Last Name:</td>
+<th>{userInfo.userData.lastName}</th>
+</tr>
+<tr>
+<td>Gender:</td>
+<th>{userInfo.userData.gender}</th>
+</tr>
+<tr>
+<td>Date of Birth:</td>
+<th>{userInfo.userData.dob}</th>
+</tr>
+
+<tr>
+<td>Religion:</td>
+<th>{userInfo.userData.religion}</th>
+</tr>
+
+<tr>
+<td>Phone Number:</td>
+<th>{userInfo.userData.phone}</th>
+</tr>
+
+</tbody>
+
+</table>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+  
+</div>
+
+</div>
         </div>
 
         

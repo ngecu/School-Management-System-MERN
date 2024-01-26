@@ -23,3 +23,53 @@ export const getAllExamResults = asyncHandler(async (req, res) => {
   const examResults = await ExamResult.find().populate('student exam');
   res.json(examResults);
 });
+
+// @desc    Get a single exam result by ID
+// @route   GET /api/exam-results/:id
+// @access  Public
+export const getExamResultById = asyncHandler(async (req, res) => {
+  const examResult = await ExamResult.findById(req.params.id).populate('student exam');
+
+  if (examResult) {
+    res.json(examResult);
+  } else {
+    res.status(404);
+    throw new Error('Exam result not found');
+  }
+});
+
+// @desc    Update an existing exam result
+// @route   PUT /api/exam-results/:id
+// @access  Private
+export const updateExamResult = asyncHandler(async (req, res) => {
+  const { student, exam, marks } = req.body;
+
+  const examResult = await ExamResult.findById(req.params.id);
+
+  if (examResult) {
+    examResult.student = student;
+    examResult.exam = exam;
+    examResult.marks = marks;
+
+    const updatedExamResult = await examResult.save();
+    res.json(updatedExamResult);
+  } else {
+    res.status(404);
+    throw new Error('Exam result not found');
+  }
+});
+
+// @desc    Delete an exam result
+// @route   DELETE /api/exam-results/:id
+// @access  Private
+export const deleteExamResult = asyncHandler(async (req, res) => {
+  const examResult = await ExamResult.findById(req.params.id);
+
+  if (examResult) {
+    await examResult.remove();
+    res.json({ message: 'Exam result removed' });
+  } else {
+    res.status(404);
+    throw new Error('Exam result not found');
+  }
+});

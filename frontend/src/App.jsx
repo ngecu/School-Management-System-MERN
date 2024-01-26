@@ -28,6 +28,8 @@ import ExanSchedulerScreen from './screens/Admin/ExamScheduler';
 import ExamGradingScreen from './screens/Admin/ExamGradingScreen';
 import LecturerProfileScreen from './screens/Lecturer/lecturerProfileScreen';
 import LecturerMyStudentsScreen from './screens/Lecturer/lecturerMyStudentsScreen';
+import LecturerAssignmentsScreen from './screens/Lecturer/lecturerAssignmentsScreen';
+import LecturerGradeScreen from './screens/Lecturer/lecturerGradeScreen';
 
 const App = () => {
 
@@ -72,7 +74,8 @@ const App = () => {
        {/* lecrurer routes  */}
        <Route path="/lecturer/profile" component={LecturerProfileScreen} />
        <Route path="/lecturer/my_students" component={LecturerMyStudentsScreen} />
-       <Route path="/lecturer/profile" component={LecturerProfileScreen} />
+       <Route path="/lecturer/assignments" component={LecturerAssignmentsScreen} />
+       <Route path="/lecturer/grades" component={LecturerGradeScreen} />
        <Route path="/lecturer/profile" component={LecturerProfileScreen} />
 
       </main>

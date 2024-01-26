@@ -78,3 +78,68 @@ export const getAllParents = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+// @desc    Get a single parent by ID
+// @route   GET /api/parents/:id
+// @access  Public
+export const getParentById = asyncHandler(async (req, res) => {
+  const parent = await Parent.findById(req.params.id).populate('students');
+
+  if (parent) {
+    res.json(parent);
+  } else {
+    res.status(404).json({ success: false, error: 'Parent not found' });
+  }
+});
+
+// @desc    Update an existing parent
+// @route   PUT /api/parents/:id
+// @access  Private/Admin
+export const updateParent = asyncHandler(async (req, res) => {
+  const {
+    email,
+    password,
+    fullName,
+    surname,
+    dob,
+    phone,
+    gender,
+    status,
+    lastLoginDate,
+    lastLoginIp,
+  } = req.body;
+
+  const parent = await Parent.findById(req.params.id);
+
+  if (parent) {
+    parent.email = email;
+    parent.password = password;
+    parent.fullName = fullName;
+    parent.surname = surname;
+    parent.dob = dob;
+    parent.phone = phone;
+    parent.gender = gender;
+    parent.status = status;
+    parent.lastLoginDate = lastLoginDate;
+    parent.lastLoginIp = lastLoginIp;
+
+    const updatedParent = await parent.save();
+    res.json(updatedParent);
+  } else {
+    res.status(404).json({ success: false, error: 'Parent not found' });
+  }
+});
+
+// @desc    Delete a parent
+// @route   DELETE /api/parents/:id
+// @access  Private/Admin
+export const deleteParent = asyncHandler(async (req, res) => {
+  const parent = await Parent.findById(req.params.id);
+
+  if (parent) {
+    await parent.remove();
+    res.json({ success: true, data: {} });
+  } else {
+    res.status(404).json({ success: false, error: 'Parent not found' });
+  }
+});

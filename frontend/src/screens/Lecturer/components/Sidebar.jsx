@@ -80,7 +80,7 @@ const Sidebar = () => {
     </li> */}
   
     <li className="nav-item">
-      <NavLink to="lecturer/my_students" className={`nav-link ${location.pathname === '/students' ? 'active' : ''}`}>
+      <NavLink to="/lecturer/my_students" className={`nav-link ${location.pathname === '/students' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-users"></i>
         <p>My Students</p>
       </NavLink>
@@ -92,13 +92,13 @@ const Sidebar = () => {
       </NavLink>
     </li> */}
     <li className="nav-item">
-      <NavLink to="/assignments" className={`nav-link ${location.pathname === '/assignments' ? 'active' : ''}`}>
+      <NavLink to="/lecturer/assignments" className={`nav-link ${location.pathname === '/assignments' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-tasks"></i>
         <p>Assignments</p>
       </NavLink>
     </li>
     <li className="nav-item">
-      <NavLink to="/grades" className={`nav-link ${location.pathname === '/grades' ? 'active' : ''}`}>
+      <NavLink to="/lecturer/grades" className={`nav-link ${location.pathname === '/grades' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-clipboard"></i>
         <p>Grades</p>
       </NavLink>

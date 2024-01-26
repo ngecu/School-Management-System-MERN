@@ -1,7 +1,6 @@
 import path from 'path'
 import express from 'express'
 import dotenv from 'dotenv'
-import colors from 'colors'
 import morgan from 'morgan'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import {connectDB} from './config/db.js'
@@ -26,6 +25,8 @@ import feeRoutes from './routes/feeRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import timetableRoutes from './routes/timetableRoutes.js';
 import examRoutes from './routes/examRoutes.js'
+import assignmentRoutes from './routes/assignmentRoutes.js'
+import assignmentSubmissionRoutes from './routes/assignmentSubmissionRoutes.js'
 
 import cors from 'cors'
 
@@ -65,6 +66,8 @@ app.use("/api/payment", paymentRoutes);
 app.use('/api/timetable', timetableRoutes);
 app.use('/api/mpesa',mpesaRoutes)
 app.use('/api/exams',examRoutes)
+app.use('/api/assignments',assignmentRoutes)
+app.use('/api/submissiions',assignmentSubmissionRoutes)
 
 
 

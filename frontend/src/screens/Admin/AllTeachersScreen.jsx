@@ -139,7 +139,7 @@ const AllLecturers = () => {
     setSearchQuery(e.target.value)
   }}
 />
-              <Button variant="primary">Search</Button>
+             
             </Form>
           </div>
         </Card.Header>

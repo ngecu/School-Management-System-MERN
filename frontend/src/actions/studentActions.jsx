@@ -112,4 +112,71 @@ export const getStudentDetails = (id) => async (dispatch, getState) => {
   }
 };
 
-// Add other student actions (create, update, delete) as needed...
+export const updateStudent = (id, updatedStudentData) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: STUDENT_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`${base_url}/${id}`, updatedStudentData, config);
+
+    dispatch({
+      type: STUDENT_UPDATE_SUCCESS,
+      payload: data.data,
+    });
+
+    // Optionally, you can redirect or dispatch other actions after a successful update
+
+  } catch (error) {
+    dispatch({
+      type: STUDENT_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Delete Student
+export const deleteStudent = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: STUDENT_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`${base_url}/${id}`, config);
+
+    dispatch({
+      type: STUDENT_DELETE_SUCCESS,
+    });
+
+    // Optionally, you can dispatch other actions or update the state after successful deletion
+
+  } catch (error) {
+    dispatch({
+      type: STUDENT_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

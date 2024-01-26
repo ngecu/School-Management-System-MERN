@@ -163,3 +163,16 @@ export const deleteStudent = asyncHandler(async (req, res) => {
   }
 });
 
+export const studentsByCourse = asyncHandler(async (req, res) => {
+  
+  const student = await Student.find({course});
+
+  if (student) {
+    await student.remove();
+    res.json({ success: true, message: 'Student removed' });
+  } else {
+    res.status(404);
+    throw new Error('Student not found');
+  }
+});
+
