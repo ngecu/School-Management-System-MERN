@@ -29,7 +29,7 @@ const Sidebar = () => {
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
   
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
       <span class="brand-text font-weight-light">EVE SMS</span>
     </a>
@@ -37,14 +37,12 @@ const Sidebar = () => {
 
     <div class="sidebar">
 
-
-
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src={userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
+        <img src={userInfo && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
         </div>
         <div class="info">
-          <a  class="d-block">{userInfo.firstName}</a>
+        <a  class="d-block">{userInfo && userInfo.firstName}</a>
         </div>
       </div>
 
@@ -79,21 +77,21 @@ const Sidebar = () => {
         </li> */}
 
         <li className="nav-item">
-          <NavLink to="/my_exam" className={`nav-link ${location.pathname === '/my_exam_results' ? 'active' : ''}`}>
+          <NavLink to="/student/my_exam" className={`nav-link ${location.pathname === '/my_exam_results' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-poll"></i>
             <p>Exam</p>
           </NavLink>
         </li>
 
         <li className="nav-item">
-          <NavLink to="/my_timetable" className={`nav-link ${location.pathname === '/my_timetable' ? 'active' : ''}`}>
+          <NavLink to="/student/my_timetable" className={`nav-link ${location.pathname === '/my_timetable' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-table"></i>
             <p>Timetable</p>
           </NavLink>
         </li>
 
         <li className="nav-item">
-          <NavLink to="/my_fees" className={`nav-link ${location.pathname === '/my_fees' ? 'active' : ''}`}>
+          <NavLink to="/student/my_fees" className={`nav-link ${location.pathname === '/my_fees' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-money-bill"></i>
             <p>School Fees</p>
           </NavLink>

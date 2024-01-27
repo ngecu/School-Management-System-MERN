@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from '../../../actions/userActions'
 import { useEffect, useState } from "react"
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
+import { NavLink,useHistory } from "react-router-dom/cjs/react-router-dom.min"
 import { Button } from "react-bootstrap"
+import {FaUsers,FaUserPlus,FaChalkboardTeacher,FaMoneyBillWave } from "react-icons/fa";
 
 const Sidebar = () => {
   const dispatch = useDispatch()
-
+  const history = useHistory();
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -14,6 +15,14 @@ const Sidebar = () => {
     dispatch(logout())
   }
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  useEffect(() => {
+    if (!userInfo) {
+      alert('Please login first.');
+      history.push('/');
+    }
+  }, [userInfo, history]);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -29,7 +38,7 @@ const Sidebar = () => {
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
   
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
       <span class="brand-text font-weight-light">EVE SMS</span>
     </a>
@@ -37,16 +46,12 @@ const Sidebar = () => {
 
     <div class="sidebar">
 
-    <div className="live-date-time  text-muted" style={{paddingLeft: "0.8rem"}}>
-            {currentDateTime.toLocaleString()}
-          </div>
-
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src={userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
+        <img src={userInfo && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
         </div>
         <div class="info">
-          <a  class="d-block">{userInfo.firstName}</a>
+        <a  class="d-block">{userInfo && userInfo.firstName}</a>
         </div>
       </div>
 
@@ -81,7 +86,7 @@ const Sidebar = () => {
   
     <li className="nav-item">
       <NavLink to="/lecturer/my_students" className={`nav-link ${location.pathname === '/students' ? 'active' : ''}`}>
-        <i className="nav-icon fas fa-users"></i>
+        <FaUsers />
         <p>My Students</p>
       </NavLink>
     </li>

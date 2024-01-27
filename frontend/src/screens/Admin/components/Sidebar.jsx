@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { NavLink, useHistory } from 'react-router-dom/cjs/react-router-dom.min';import { Button } from "react-bootstrap"
 import {FaUsers,FaUserPlus,FaChalkboardTeacher,FaMoneyBillWave } from "react-icons/fa";
 import { PiExam,PiExamFill  } from "react-icons/pi";
+import { MdLogout } from "react-icons/md";
+
 const Sidebar = () => {
   const dispatch = useDispatch()
   const history = useHistory();
@@ -84,55 +86,55 @@ const Sidebar = () => {
           </li>
 
           <li class="nav-item">
-              <NavLink to="/allStudents" class={`nav-link ${location.pathname === '/allStudents' ? 'active' : ''}`}>
+              <NavLink to="/admin/allStudents" class={`nav-link ${location.pathname === '/allStudents' ? 'active' : ''}`}>
               <FaUsers />
                   <p>All Students</p>
                 </NavLink>
               </li>
         
               <li class="nav-item">
-              <NavLink to="/admission" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
+              <NavLink to="/admin/admission" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
               <FaUserPlus />
                   <p>Admit Student</p>
                 </NavLink>
               </li>
 
               <li class="nav-item">
-              <NavLink to="/allLecturers" class={`nav-link ${location.pathname === '/allLecturers' ? 'active' : ''}`}>
+              <NavLink to="/admin/allLecturers" class={`nav-link ${location.pathname === '/allLecturers' ? 'active' : ''}`}>
               <FaChalkboardTeacher />
               
                   <p>All Lecturers</p>
                 </NavLink>
               </li>
               <li class="nav-item">
-              <NavLink to="/add_lecturer" class={`nav-link ${location.pathname === '/add_lecturer' ? 'active' : ''}`}>
+              <NavLink to="/admin/add_lecturer" class={`nav-link ${location.pathname === '/add_lecturer' ? 'active' : ''}`}>
               <FaUserPlus />
                   <p>Add Lecturer</p>
                 </NavLink>
               </li>
              
               <li class="nav-item">
-              <NavLink to="/add_accountant" class={`nav-link ${location.pathname === '/add_accountant' ? 'active' : ''}`}>
+              <NavLink to="/admin/add_accountant" class={`nav-link ${location.pathname === '/add_accountant' ? 'active' : ''}`}>
               <FaUserPlus />
                   <p>Add Accountant</p>
                 </NavLink>
               </li>
 
               <li class="nav-item">
-              <NavLink to="/allfee" class={`nav-link ${location.pathname === '/allfee' ? 'active' : ''}`}>
+              <NavLink to="/admin/allfee" class={`nav-link ${location.pathname === '/allfee' ? 'active' : ''}`}>
               <FaMoneyBillWave />
                   <p>All Fees Collection</p>
                 </NavLink>
               </li>
 
               <li class="nav-item">
-              <NavLink to="/exam_schedule" class={`nav-link ${location.pathname === '/exam_schedule' ? 'active' : ''}`}>
+              <NavLink to="/admin/exam_schedule" class={`nav-link ${location.pathname === '/exam_schedule' ? 'active' : ''}`}>
               <PiExam />
                   <p>Exam Schedule</p>
                 </NavLink>
               </li>
               <li class="nav-item">
-              <NavLink to="/exam_grade" class={`nav-link ${location.pathname === '/exam_grade' ? 'active' : ''}`}>
+              <NavLink to="/admin/exam_grade" class={`nav-link ${location.pathname === '/exam_grade' ? 'active' : ''}`}>
               <PiExamFill />
                   <p>Exam Grade</p>
                 </NavLink>
@@ -150,17 +152,17 @@ const Sidebar = () => {
           </li> */}
 
 
-          {/* <li class="nav-item">
-          <NavLink to="/chat" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
+          <li class="nav-item">
+          <NavLink to="/admin/chat" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
             <i class="nav-icon fas fa-person"></i>
             <p>Message</p>
           </NavLink>
-        </li> */}
+        </li>
 
 
         <li class="nav-item" onClick={logoutHandler}>
           <Button variant="danger" className="w-100 btn-sm" >
-            <p>LOGOUT</p>
+          <MdLogout /> LOGOUT
           </Button>
         </li>
         

@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from '../../../actions/userActions'
 import { useEffect, useState } from "react"
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
+import { NavLink, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Button } from "react-bootstrap"
+import { MdPayments } from "react-icons/md";
+import {FaMoneyBillWave } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 
 const Sidebar = () => {
   const dispatch = useDispatch()
-
+  const history = useHistory();
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -14,6 +17,13 @@ const Sidebar = () => {
     dispatch(logout())
   }
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  useEffect(() => {
+    if (!userInfo) {
+      alert('Please login first.');
+      history.push('/');
+    }
+  }, [userInfo, history]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -29,7 +39,7 @@ const Sidebar = () => {
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
   
-    <a href="index3.html" class="brand-link">
+<a href="#" class="brand-link">
     <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
       <span class="brand-text font-weight-light">EVE SMS</span>
     </a>
@@ -37,16 +47,14 @@ const Sidebar = () => {
 
     <div class="sidebar">
 
-    <div className="live-date-time  text-muted" style={{paddingLeft: "0.8rem"}}>
-            {currentDateTime.toLocaleString()}
-          </div>
+
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-        <img src="https://avatars.githubusercontent.com/u/41146306?v=4" class="img-circle elevation-2" alt="User Image"/>
+        <img src={userInfo && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
         </div>
         <div class="info">
-          <a  class="d-block">{userInfo.firstName}</a>
+        <a  class="d-block">{userInfo && userInfo.firstName}</a>
         </div>
       </div>
 
@@ -74,15 +82,15 @@ const Sidebar = () => {
     </li>
     <li className="nav-item">
       <NavLink to="/accountant/fee" className={`nav-link ${location.pathname === '/fees' ? 'active' : ''}`}>
-        <i className="nav-icon fas fa-money-bill"></i>
+      <FaMoneyBillWave />
         <p>Fees Collection</p>
       </NavLink>
     </li>
 
     <li className="nav-item">
       <NavLink to="/accountant/payments" className={`nav-link ${location.pathname === '/fees' ? 'active' : ''}`}>
-        <i className="nav-icon fas fa-money-bill"></i>
-        <p>Payment History</p>
+      <MdPayments />
+      <p>Payment History</p>
       </NavLink>
     </li>
 
@@ -93,12 +101,12 @@ const Sidebar = () => {
       </NavLink>
     </li> */}
 
-    <li className="nav-item mt-auto"> {/* Use "mt-auto" class to push it to the bottom */}
-      <Button variant="danger" className="w-100" onClick={logoutHandler}>
-        <i className="nav-icon fas fa-person"></i>
-        <p>LOGOUT</p>
-      </Button>
-    </li>
+<li class="nav-item" onClick={logoutHandler}>
+          <Button variant="danger" className="w-100 btn-sm" >
+          <MdLogout /> LOGOUT
+
+          </Button>
+        </li>
   </ul>
 </nav>
 

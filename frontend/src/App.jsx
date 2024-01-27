@@ -38,32 +38,33 @@ const App = () => {
     <Router>
       
       <main>
-
+          {/* GENERAL ROUTES  */}
           <Route path='/' component={LoginScreen} exact />
           <Route path="/lost-password" component={LostPasswordScreen} />
           <Route path="/new-password/:id/:token" component={NewPasswordScreen} />
           
-          <Route path="/allStudents" component={AllStudents} />
-          <Route path="/admission" component={AdmissionScreen} />
-          <Route path="/add_lecturer" component={AddLecturerScreen} />
-          <Route path="/allLecturers" component={AllLecturers} />
-          <Route path="/allParents" component={AllParentsScreen} />
-          <Route path="/allAttedance" component={AttedanceScreen} />
-          <Route path="/add_accountant" component={AddAccountant} />
-          <Route path="/allfee" component={AdminFeeScreen} />
-          <Route path="/exam_schedule" component={ExanSchedulerScreen} />
-          <Route path="/exam_grade" component={ExamGradingScreen} />
+          {/* ADMIN ROUTES  */}
+          <Route path="/admin/allStudents" component={AllStudents} />
+          <Route path="/admin/admission" component={AdmissionScreen} />
+          <Route path="/admin/add_lecturer" component={AddLecturerScreen} />
+          <Route path="/admin/allLecturers" component={AllLecturers} />
+          <Route path="/admin/allParents" component={AllParentsScreen} />
+          <Route path="/admin/allAttedance" component={AttedanceScreen} />
+          <Route path="/admin/add_accountant" component={AddAccountant} />
+          <Route path="/admin/allfee" component={AdminFeeScreen} />
+          <Route path="/admin/exam_schedule" component={ExanSchedulerScreen} />
+          <Route path="/admin/exam_grade" component={ExamGradingScreen} />
+          <Route path="/admin/chat" component={ChatScreen} />
 
-          
-          <Route path="/chat" component={ChatScreen} />
+
           <Route path="/student/chat" component={ChatScreen} />
 
 
           {/* students routes  */}
-          <Route path="/my_attendance" component={studentAttendanceScreen} />
-          <Route path="/my_exam" component={studentExamResultScreen} />
-          <Route path="/my_timetable" component={studentTimeTableScreen} />
-          <Route path="/my_fees" component={studentFeeScreen} />
+          <Route path="/student/my_attendance" component={studentAttendanceScreen} />
+          <Route path="/student/my_exam" component={studentExamResultScreen} />
+          <Route path="/student/my_timetable" component={studentTimeTableScreen} />
+          <Route path="/student/my_fees" component={studentFeeScreen} />
           <Route path="/my_profile" component={StudentProfileScreen} />
           <Route path="/student/invoice" component={studentInvoiceScreen} />
 
