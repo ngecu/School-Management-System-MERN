@@ -164,8 +164,8 @@ export const deleteStudent = asyncHandler(async (req, res) => {
 });
 
 export const studentsByCourse = asyncHandler(async (req, res) => {
-  
-  const student = await Student.find({course});
+  const {id} = req.params
+  const student = await Student.find({course:id});
 
   if (student) {
     await student.remove();

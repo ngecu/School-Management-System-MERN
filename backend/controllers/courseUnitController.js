@@ -32,7 +32,7 @@ export const getAllCourseUnits = asyncHandler(async (req, res) => {
     });
   });
 
-  export const getAllCourseByCourse = asyncHandler(async (req, res) => {
+  export const getAllCourseUnitsByCourse = asyncHandler(async (req, res) => {
     const courseID = req.params.courseID
     console.log(courseID);
     const courseUnits = await CourseUnit.find({course:courseID});
@@ -110,12 +110,3 @@ export const deleteCourseUnit = asyncHandler(async (req, res) => {
     });
   }
 });
-
-// Export the controllers
-export {
-  createCourseUnit,
-  getAllCourseUnits,
-  getCourseUnitById,
-  updateCourseUnit,
-  deleteCourseUnit,
-};

@@ -98,12 +98,3 @@ export const deleteExam = asyncHandler(async (req, res) => {
     res.status(404).json({ message: 'Exam not found' });
   }
 });
-
-// Export the controllers
-export {
-  createExam,
-  getAllExams,
-  getExamById,
-  updateExam,
-  deleteExam,
-};
