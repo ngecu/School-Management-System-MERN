@@ -5,12 +5,12 @@ import ExamResult from '../models/examResultModel.js';
 // @route   POST /api/exam-results
 // @access  Private
 export const createExamResult = asyncHandler(async (req, res) => {
-  const { student, exam, marks } = req.body;
+  const { student, exam, marksObtained } = req.body;
 
   const examResult = await ExamResult.create({
     student,
     exam,
-    marks,
+    marksObtained,
   });
 
   res.status(201).json(examResult);

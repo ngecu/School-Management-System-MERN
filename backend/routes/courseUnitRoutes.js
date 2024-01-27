@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router()
 
 import { protect, admin } from '../middleware/authMiddleware.js'
-import { createCourseUnit, deleteCourseUnit, getAllCourseByCourse, getAllCourseUnits, getAllCourseUnitsByCourse, getCourseUnitById, updateCourseUnit } from '../controllers/courseUnitController.js'
+import { createCourseUnit, deleteCourseUnit, getAllCourseUnits, getAllCourseUnitsByCourse, getCourseUnitById, updateCourseUnit } from '../controllers/courseUnitController.js'
 
 router.route('/').post(createCourseUnit)
 router.route('/').get(getAllCourseUnits)

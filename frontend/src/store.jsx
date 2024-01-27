@@ -98,8 +98,26 @@ import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReduce
 import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
 import { createConversationReducer, getAllConversationsReducer, getUserConversationsReducer } from './reducers/conversationReducers';
 import { accountantCreateReducer } from './reducers/accountantReducers';
-import { examCreateReducer, getAllExamsReducer } from './reducers/examReduccers';
 import { courseUnitCreateReducer, getAllCourseUnitsReducer, getCourseUnitsByCourseReducer } from './reducers/courseUnitReducers';
+
+import {
+  // Exam reducers
+  examCreateReducer,
+  getAllExamsReducer,
+  getExamDetailsReducer,
+  examUpdateReducer,
+  examDeleteReducer,
+} from './reducers/examReducers';
+
+import {
+  // Exam Result reducers
+  examResultCreateReducer,
+  getAllExamResultsReducer,
+  getExamResultDetailsReducer,
+  examResultUpdateReducer,
+  examResultDeleteReducer,
+} from './reducers/examResultReducers';
+
 
 const reducer = combineReducers({
   // User reducers
@@ -199,8 +217,19 @@ const reducer = combineReducers({
 
   createAccountant:accountantCreateReducer,
 
-  createExam:examCreateReducer,
-  examList:getAllExamsReducer,
+  // Exam reducers
+  examCreate: examCreateReducer,
+  examList: getAllExamsReducer,
+  examDetails: getExamDetailsReducer,
+  examUpdate: examUpdateReducer,
+  examDelete: examDeleteReducer,
+
+  // Exam Result reducers
+  examResultCreate: examResultCreateReducer,
+  examResultsList: getAllExamResultsReducer,
+  examResultDetails: getExamResultDetailsReducer,
+  examResultUpdate: examResultUpdateReducer,
+  examResultDelete: examResultDeleteReducer,
 
   courseUnitCreate: courseUnitCreateReducer,
   getAllCourseUnits: getAllCourseUnitsReducer,

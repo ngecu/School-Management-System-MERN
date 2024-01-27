@@ -1,208 +1,158 @@
-import React, {useCallback, useState, useEffect } from 'react';
-import { Button} from 'react-bootstrap';
+// Assuming this is the LecturerGradeScreen.js file
+
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../../components/Message';
-import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
-import Sidebar from './components/Sidebar'
-import { getSchoolDetails } from '../../actions/schoolActions';
+import { Button, Form, Input, DatePicker, Select, Collapse, Table } from 'antd';
+import { createExam, getAllExams } from '../../actions/examActions';
+import { createExamResult, getAllExamResults } from '../../actions/examResultActions';
+import { useLocation } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import { listStudents } from '../../actions/studentActions';
-import { Table,Form, Input, DatePicker,  Select ,Collapse} from 'antd';
-import { createAssignment, listAssignments } from '../../actions/assignmentActions';
+
 const { Option } = Select;
 const { Panel } = Collapse;
 
 const LecturerGradeScreen = () => {
-  
-
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const schoolDetails = useSelector((state) => state.schoolDetails);
-  const { school } = schoolDetails;
+  const examList = useSelector((state) => state.examList);
+  const { loading: examsLoading, exams } = examList;
 
-  const assignmentList = useSelector((state) => state.assignmentList);
-  const {loading,assignments} = assignmentList
-  
+  const examResultsList = useSelector((state) => state.examResultsList);
+  const { loading: examResultsLoading, examResults } = examResultsList;
+
+  const examResultCreate = useSelector((state) => state.examResultCreate);
+  const { success } = examResultCreate;
+
+  const studentList = useSelector((state) => state.studentList);
+  const { loading, error, students } = studentList;
+
   useEffect(() => {
-    dispatch(getSchoolDetails(userInfo.userData.school))
-    dispatch(listAssignments())
-  }, [dispatch]);
+    dispatch(getAllExams());
+    dispatch(getAllExamResults());
+    dispatch(listStudents());
 
+  }, [dispatch, location,success]);
 
-  
-    const onFinish = (values) => {
-      console.log(values);
-      dispatch(createAssignment(values));
-      // form.resetFields();
-    };
+  const onFinishExam = (values) => {
+    dispatch(createExam(values));
+  };
 
+  const onFinishExamResult = (values) => {
+    dispatch(createExamResult(values));
+  };
 
-    const columns = [
-      {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-      },
-      {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-      },
-      {
-        title: 'Due Date',
-        dataIndex: 'dueDate',
-        key: 'dueDate',
-      },
-    ];
+  const examColumns = [
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+    },
+    {
+      title: 'Exam Type',
+      dataIndex: 'examType',
+      key: 'examType',
+    },
+    // Add more columns as needed
+  ];
 
-    
+  const examResultColumns = [
+    {
+      title: 'Student',
+      dataIndex: 'student',
+      key: 'student',
+    },
+    {
+      title: 'Marks Obtained',
+      dataIndex: 'marksObtained',
+      key: 'marksObtained',
+    },
+    // Add more columns as needed
+  ];
+
   return (
-    <div class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
-
-<Topbar/>
+    <div className="hold-transition sidebar-mini layout-fixed">
+      <div className="wrapper">
+        <Topbar />
         <Sidebar />
-        <div class="content-wrapper">
+        <div className="content-wrapper">
+          <section className="content">
+            <div className="container-fluid">
+            
 
-        <section class="content">
-      <div class="container-fluid">
+              {/* Exam List Table */}
+              <Collapse accordion>
+                <Panel header="Exam List" key="2">
+                  <Table dataSource={exams} columns={examColumns} />
+                </Panel>
+              </Collapse>
 
-        <div class="row pt-3">
-     
-            <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                 Given Assigments : {school && school.name}
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                  Submissions:  {userInfo && userInfo.userData.courses.length}
-                    </div>
-                    </div>
-            </div>
-
-              <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                 Approved Submissions: 
-                    </div>
-                    </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                 Average Assignment Credits:
-                    </div>
-                    </div>
-            </div>
-
-               <div class="col-xl-12 col-md-12 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                <div className="d-flex justify-content-between align-items-center">
-            <h5>ASSIGNMENT PAGE</h5>
-          
-          
-          </div>
-
-          <Collapse accordion>
-            <Panel header="Create Assignment" key="1">
-          <Form
-      
-      layout="vertical"
-      onFinish={onFinish}
-      initialValues={{ yearOfStudy: 1 }} // Set default yearOfStudy to 1
-    >
-      <Form.Item
-        label="Title"
-        name="title"
-        rules={[{ required: true, message: 'Please enter the assignment title' }]}
+              {/* Create Exam Result Form */}
+              <Collapse accordion>
+                <Panel header="Create Exam Result" key="3">
+                  <Form onFinish={onFinishExamResult}>
+                  <Form.Item
+        label="Student"
+        name="student"
+        rules={[{ required: true, message: 'Please select the student' }]}
       >
-        <Input />
+       <Select>
+                        {students && students.map((student) => (
+                          <Option key={student._id} value={student._id}>
+                            {student.firstName} {/* Modify this based on your student data structure */}
+                          </Option>
+                        ))}
+                      </Select>
       </Form.Item>
 
       <Form.Item
-        label="Description"
-        name="description"
-        rules={[{ required: true, message: 'Please enter the assignment description' }]}
+        label="Exam"
+        name="exam"
+        rules={[{ required: true, message: 'Please select the exam' }]}
       >
-        <Input.TextArea />
+         <Select>
+                        {exams && exams.map((exam) => (
+                          <Option key={exam._id} value={exam._id}>
+                            {exam.title} {/* Modify this based on your exam data structure */}
+                          </Option>
+                        ))}
+                      </Select>
       </Form.Item>
 
       <Form.Item
-        label="Due Date"
-        name="dueDate"
-        rules={[{ required: true, message: 'Please select the due date' }]}
+        label="Marks Obtained"
+        name="marksObtained"
+        rules={[{ required: true, message: 'Please enter the marks obtained' }]}
       >
-        <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+        <Input type="number" />
       </Form.Item>
+                    <Button type="primary" htmlType="submit">
+                      Create Exam Result
+                    </Button>
+                  </Form>
+                </Panel>
+              </Collapse>
 
-      <Form.Item
-        label="Course"
-        name="course"
-        rules={[{ required: true, message: 'Please select the course' }]}
-      >
-<Select>
-  {school &&
-    school.courses.map((course) => (
-      <Option key={course._id} value={course._id}>
-        {course.name}
-      </Option>
-    ))}
-</Select>
-
-      </Form.Item>
-
-      <Form.Item
-        label="Year of Study"
-        name="yearOfStudy"
-        rules={[{ required: true, message: 'Please select the year of study' }]}
-      >
-        <Select>
-          <Option value={1}>Year 1</Option>
-          <Option value={2}>Year 2</Option>
-          <Option value={3}>Year 3</Option>
-          <Option value={4}>Year 4</Option>
-        </Select>
-      </Form.Item>
-
-      <Form.Item>
-        <Button type="primary" className="w-100" htmlType="submit">
-          Create Assignment
-        </Button>
-      </Form.Item>
-    </Form>
-    </Panel>
-
-    <Panel header="Assignment List" key="2">
-  <Table dataSource={assignments} columns={columns} />
-</Panel>
-          </Collapse>
-                </div>
-              </div>
+              {/* Exam Result List Table */}
+              <Collapse accordion>
+                <Panel header="Exam Result List" key="4">
+                  <Table dataSource={examResults} columns={examResultColumns} />
+                </Panel>
+              </Collapse>
             </div>
-       
+          </section>
         </div>
-
-        
-        </div>
-
-        </section>
-        </div>
-       
-
-
-</div>
-
+      </div>
     </div>
   );
 };
