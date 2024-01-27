@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from '../../../actions/userActions'
 import { useEffect, useState } from "react"
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
-import { Button } from "react-bootstrap"
-
+import { NavLink, useHistory } from 'react-router-dom/cjs/react-router-dom.min';import { Button } from "react-bootstrap"
+import {FaUsers,FaUserPlus,FaChalkboardTeacher,FaMoneyBillWave } from "react-icons/fa";
+import { PiExam,PiExamFill  } from "react-icons/pi";
 const Sidebar = () => {
   const dispatch = useDispatch()
-
+  const history = useHistory();
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
@@ -14,6 +14,14 @@ const Sidebar = () => {
     dispatch(logout())
   }
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  
+  useEffect(() => {
+    if (!userInfo) {
+      alert('Please login first.');
+      history.push('/');
+    }
+  }, [userInfo, history]);
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -29,7 +37,7 @@ const Sidebar = () => {
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
   
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
       <span class="brand-text font-weight-light">EVE SMS</span>
     </a>
@@ -37,16 +45,14 @@ const Sidebar = () => {
 
     <div class="sidebar">
 
-    <div className="live-date-time  text-muted" style={{paddingLeft: "0.8rem"}}>
-            {currentDateTime.toLocaleString()}
-          </div>
+
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="https://avatars.githubusercontent.com/u/41146306?v=4" class="img-circle elevation-2" alt="User Image"/>
+          <img src={userInfo && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
         </div>
         <div class="info">
-          <a  class="d-block">{userInfo.firstName}</a>
+          <a  class="d-block">{userInfo && userInfo.firstName}</a>
         </div>
       </div>
 
@@ -76,111 +82,62 @@ const Sidebar = () => {
             </NavLink>
         
           </li>
-        
+
           <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-            
-              <p>
-                Students
-                <i class="fas fa-angle-left right"></i>
-                {/* <span class="badge badge-info right">6</span> */}
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
               <NavLink to="/allStudents" class={`nav-link ${location.pathname === '/allStudents' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
+              <FaUsers />
                   <p>All Students</p>
                 </NavLink>
               </li>
+        
               <li class="nav-item">
               <NavLink to="/admission" class={`nav-link ${location.pathname === '/admission' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Admission Form</p>
+              <FaUserPlus />
+                  <p>Admit Student</p>
                 </NavLink>
               </li>
-             
-              
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Lecturers
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
+
               <li class="nav-item">
               <NavLink to="/allLecturers" class={`nav-link ${location.pathname === '/allLecturers' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
+              <FaChalkboardTeacher />
+              
                   <p>All Lecturers</p>
                 </NavLink>
               </li>
               <li class="nav-item">
               <NavLink to="/add_lecturer" class={`nav-link ${location.pathname === '/add_lecturer' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
+              <FaUserPlus />
                   <p>Add Lecturer</p>
                 </NavLink>
               </li>
              
-              
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Parents
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
               <li class="nav-item">
-              
-              <NavLink to="/allParents" class={`nav-link ${location.pathname === '/allParents' ? 'active' : ''}`}>
-              <i class="far fa-circle nav-icon"></i>
-                  <p>All Parents</p>
-              </NavLink>
-               
-                
-              
-              </li>
-             
-            
-           
-            </ul>
-          </li>
-        
-          <li class="nav-item">
-            <a  class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Accountant
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-
-            <li class="nav-item">
               <NavLink to="/add_accountant" class={`nav-link ${location.pathname === '/add_accountant' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
+              <FaUserPlus />
                   <p>Add Accountant</p>
                 </NavLink>
               </li>
 
               <li class="nav-item">
               <NavLink to="/allfee" class={`nav-link ${location.pathname === '/allfee' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
+              <FaMoneyBillWave />
                   <p>All Fees Collection</p>
                 </NavLink>
               </li>
-          
-            </ul>
-          </li>
 
+              <li class="nav-item">
+              <NavLink to="/exam_schedule" class={`nav-link ${location.pathname === '/exam_schedule' ? 'active' : ''}`}>
+              <PiExam />
+                  <p>Exam Schedule</p>
+                </NavLink>
+              </li>
+              <li class="nav-item">
+              <NavLink to="/exam_grade" class={`nav-link ${location.pathname === '/exam_grade' ? 'active' : ''}`}>
+              <PiExamFill />
+                  <p>Exam Grade</p>
+                </NavLink>
+              </li>
+          
           {/* <li class="nav-item">
           <NavLink to="/allAttedance" class={`nav-link ${location.pathname === '/allAttedance' ? 'active' : ''}`}>
             <i class="nav-icon fas fa-person"></i>
@@ -192,30 +149,6 @@ const Sidebar = () => {
           
           </li> */}
 
-          <li class="nav-item">
-            <a class="nav-link">
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Exam
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-              <NavLink to="/exam_schedule" class={`nav-link ${location.pathname === '/exam_schedule' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Exam Schedule</p>
-                </NavLink>
-              </li>
-              <li class="nav-item">
-              <NavLink to="/exam_grade" class={`nav-link ${location.pathname === '/exam_grade' ? 'active' : ''}`}>
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Exam Grade</p>
-                </NavLink>
-              </li>
-           
-            </ul>
-          </li>
 
           {/* <li class="nav-item">
           <NavLink to="/chat" class={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
@@ -225,9 +158,8 @@ const Sidebar = () => {
         </li> */}
 
 
-        <li class="nav-item">
-          <Button variant="danger" className="w-100" onClick={logoutHandler}>
-            <i class="nav-icon fas fa-person"></i>
+        <li class="nav-item" onClick={logoutHandler}>
+          <Button variant="danger" className="w-100 btn-sm" >
             <p>LOGOUT</p>
           </Button>
         </li>

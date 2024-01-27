@@ -140,9 +140,20 @@ export const admitStudent = asyncHandler(async (req, res) => {
 export const getAllStudents = async (req, res) => {
   try {
     console.log("fetching all students");
+    // Fetch all students and populate the 'course' field
     const students = await Student.find().populate('course');
-    console.log(students);
-    res.status(200).json({ success: true, data: students });
+
+    // Fetch user data associated with each student
+    const studentsWithUserData = await Promise.all(students.map(async (student) => {
+      const associatedUser = await User.findOne({ email: student.email });
+      return {
+        student,
+        user: associatedUser,
+      };
+    }));
+
+    console.log(studentsWithUserData);
+    res.status(200).json({ success: true, data: studentsWithUserData });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

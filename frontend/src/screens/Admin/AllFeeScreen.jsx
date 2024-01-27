@@ -67,6 +67,11 @@ const AdminFeeScreen = () => {
  <Topbar/>
   
         <Sidebar />
+        {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
         <div class="content-wrapper">
 
         <section class="content">
@@ -77,11 +82,7 @@ const AdminFeeScreen = () => {
             <div class="col-xl-12 col-md-12 mb-4">
               <div class="card h-100">
                 <div class="card-body">
-               {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : (
+        
         <div>
           <h1>All Fees Collection</h1>
           <Form>
@@ -172,7 +173,7 @@ const AdminFeeScreen = () => {
               }
               </> 
         </div>
-      )}
+    
                 </div>
               </div>
             </div>
@@ -184,7 +185,8 @@ const AdminFeeScreen = () => {
 
         </section>
         </div>
-       
+          )
+          }
 
 
 </div>

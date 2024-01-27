@@ -32,6 +32,10 @@ const Topbar = () => {
    
         <ul class="navbar-nav">
           <li class="nav-item">
+          <div className="live-date-time  text-muted" style={{paddingLeft: "0.8rem"}}>
+            {currentDateTime.toLocaleString()}
+          </div>
+          
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
           </li>
         

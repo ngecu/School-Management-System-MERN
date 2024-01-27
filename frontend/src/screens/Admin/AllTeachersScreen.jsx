@@ -70,13 +70,7 @@ const AllLecturers = () => {
       dispatch(listLecturers());
     }, [dispatch,successDelete,successToggle]);
 
-    if (loading) {
-      return <Loader />;
-    }
   
-    if (error) {
-      return <Message variant="danger">{error}</Message>;
-    }
   
     const generateLecturerData = () => {
       const filteredLecturers = lecturers.filter((lecturer) =>
@@ -90,7 +84,9 @@ const AllLecturers = () => {
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentLecturers = filteredLecturers.slice(indexOfFirstItem, indexOfLastItem);
 
-    return currentLecturers.map((lecturer) => (
+    return (
+      <>
+      {currentLecturers.map((lecturer) => (
         <React.Fragment key={lecturer.lecturer?._id}>
        
         
@@ -133,8 +129,26 @@ const AllLecturers = () => {
         </tr>
         </React.Fragment>
         
-      ));
+      ))
     };
+
+<Pagination>
+          {[...Array(Math.ceil(filteredLecturers.length / itemsPerPage)).keys()].map(
+            (pageNumber) => (
+              <Pagination.Item
+                key={pageNumber + 1}
+                active={pageNumber + 1 === currentPage}
+                onClick={() => paginate(pageNumber + 1)}
+              >
+                {pageNumber + 1}
+              </Pagination.Item>
+            )
+          )}
+        </Pagination>
+
+    </>
+    )
+  }
 
 
   return (
@@ -148,6 +162,11 @@ const AllLecturers = () => {
 <Topbar/>
   
   <Sidebar />
+  {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
         <div class="content-wrapper">
 
         <section class="content">
@@ -213,6 +232,7 @@ const AllLecturers = () => {
 
         </section>
         </div>
+          )}
        
 
 
@@ -225,12 +245,45 @@ const AllLecturers = () => {
   onCancel={handleCancel}
 >
   {lecturerData && (
-    <>
-      <p>Name: {lecturerData.firstName} {lecturerData.lastName}</p>
-      <p>Gender: {lecturerData.gender}</p>
-      <p>School: {lecturerData.school?.name}</p>
-      {/* Add more lecturer-specific fields as needed */}
-    </>
+     <Row >
+     <Col style={{textAlign:"center"}} md={12}>
+  
+  <img src={lecturerData.photo} alt="Student" style={{ maxWidth: '100%' }} />
+</Col>
+
+<Col md={6}>
+  <strong>National ID:</strong> {lecturerData.nationalID}
+</Col>
+<Col md={6}>
+  <strong>Year of Study:</strong> {lecturerData.yearOfStudy}
+</Col>
+{/* <Col md={6}>
+  <strong>Course:</strong> {lecturerData.course.name}
+</Col> */}
+<Col md={6}>
+  <strong>Email:</strong> {lecturerData.email}
+</Col>
+
+<Col md={6}>
+  <strong>First Name:</strong> {lecturerData.firstName}
+</Col>
+<Col md={6}>
+  <strong>Last Name:</strong> {lecturerData.lastName}
+</Col>
+<Col md={6}>
+  <strong>Gender:</strong> {lecturerData.gender}
+</Col>
+<Col md={6}>
+  <strong>DOB:</strong> {lecturerData.dob}
+</Col>
+<Col md={6}>
+  <strong>Religion:</strong> {lecturerData.religion}
+</Col>
+<Col md={6}>
+  <strong>Phone:</strong> {lecturerData.phone}
+</Col> 
+
+</Row>
   )}
 </Modal>
 

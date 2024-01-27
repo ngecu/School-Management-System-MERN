@@ -37,9 +37,7 @@ const Sidebar = () => {
 
     <div class="sidebar">
 
-    <div className="live-date-time  text-muted" style={{paddingLeft: "0.8rem"}}>
-            {currentDateTime.toLocaleString()}
-          </div>
+
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">

@@ -68,23 +68,13 @@ const AllStudents = () => {
     dispatch(listStudents());
   }, [dispatch,successDelete]);
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return <Message variant="danger">{error}</Message>;
-  }
-
-
-
 
   const generateStudentData = () => {
     const filteredStudents = students.filter(
       (student) =>
-        student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.email.toLowerCase().includes(searchQuery.toLowerCase())
+        student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
       // Add more fields as needed for searching
     );
   
@@ -96,17 +86,17 @@ const AllStudents = () => {
       <>
         {currentItems.map((student) => (
           <React.Fragment key={student?._id}>
-            <tr key={student._id}>
-            <td>{student.firstName} {student.lastName}</td>
-<td>{student.gender}</td>
-<td>{student.course.name}</td>     
-<td>{student.email}</td>
-<td>{student.dob}</td>
+            <tr key={student.student?._id}>
+            <td>{student.student?.firstName} {student.student?.lastName}</td>
+<td>{student.student?.gender}</td>
+<td>{student.cstudent?.course.name}</td>     
+<td>{student.student?.email}</td>
+<td>{student.student?.dob}</td>
 
 <td>
 <button
     className="btn btn-success btn-sm"
-    onClick={() => showModal(student)}
+    onClick={() => showModal(student.student)}
   >
     <i className="fas fa-folder"></i> View
   </button>
@@ -114,6 +104,17 @@ const AllStudents = () => {
     <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student._id)}>
       <i className="fas fa-trash"></i> Delete
     </button>
+
+    {student.user?.isActive ? (
+    <button className="btn btn-warning btn-sm" onClick={() => toggleStatus(student.user._id)}>
+      <i className="fas fa-times"></i> Deactivate
+    </button>
+  ) : (
+    <button className="btn btn-primary btn-sm" onClick={() => toggleStatus(student.user._id)}>
+      <i className="fas fa-check"></i> Activate
+    </button>
+  )}
+
 </td>
             </tr>
           </React.Fragment>
@@ -146,63 +147,56 @@ const AllStudents = () => {
 <Topbar/>
   
         <Sidebar />
-        <div class="content-wrapper">
 
-        <section class="content">
-      <div class="container-fluid">
+        {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
+            <div class="content-wrapper">
 
-    
-      <Card>
-        <Card.Header>
-          <div className="d-flex justify-content-between align-items-center">
-            <h5>All Students Data</h5>
-            <Form inline>
-            <Form.Control
-  type="text"
-  placeholder="Search"
-  className="mr-2"
-  value={searchQuery}
-  onChange={(e) => {
-    console.log(e.target.value);
-    setSearchQuery(e.target.value)
-  }}
-/>
-             
-            </Form>
-          </div>
-        </Card.Header>
-        <Card.Body>
-          <Table bordered hover responsive>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Course</th>
-         
-                <th>Address</th>
-                <th>Date Of Birth</th>
-            
-                <th>E-mail</th>
-              </tr>
-            </thead>
-            <tbody style={{ overflowY: 'auto', maxHeight: '400px' }}>
-            {generateStudentData()}
-          </tbody>
-          </Table>
-        </Card.Body>
-        <Card.Footer>
-          <div className="d-flex justify-content-end">
-      
-          </div>
-        </Card.Footer>
-      </Card>
- 
-
-        
-        </div>
-
-        </section>
-        </div>
+            <section class="content">
+          <div class="container-fluid">
+            <Card>
+              <Card.Header>
+                <div className="d-flex justify-content-between align-items-center">
+                  <h5>All Students Data</h5>
+                  <Form inline>
+                    <Form.Control
+                      type="text"
+                      placeholder="Search"
+                      className="mr-2"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </Form>
+                </div>
+              </Card.Header>
+              <Card.Body>
+                <Table bordered hover responsive>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Gender</th>
+                      <th>Course</th>
+                      <th>Address</th>
+                      <th>Date Of Birth</th>
+                      <th>E-mail</th>
+                    </tr>
+                  </thead>
+                  <tbody style={{ overflowY: 'auto', maxHeight: '400px' }}>
+                    {generateStudentData()}
+                  </tbody>
+                </Table>
+              </Card.Body>
+              <Card.Footer>
+                <div className="d-flex justify-content-end"></div>
+              </Card.Footer>
+            </Card>
+            </div>
+            </section>
+            </div>
+          )}
        
 
 

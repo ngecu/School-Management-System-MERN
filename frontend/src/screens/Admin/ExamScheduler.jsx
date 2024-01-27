@@ -79,6 +79,11 @@ const ExanSchedulerScreen = () => {
       <div class="wrapper">
         <Topbar />
         <Sidebar />
+        {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
         <div class="content-wrapper">
           <section class="content">
             <div class="container-fluid">
@@ -228,6 +233,7 @@ const ExanSchedulerScreen = () => {
             </div>
           </section>
         </div>
+          )}
       </div>
     </div>
   );

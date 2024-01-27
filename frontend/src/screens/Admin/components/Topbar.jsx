@@ -13,6 +13,7 @@ const Topbar = () => {
   const logoutHandler = () => {
     dispatch(logout())
   }
+  
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -31,23 +32,24 @@ const Topbar = () => {
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
    
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-          </li>
-        
-        </ul>
-    
-        
-        <ul class="navbar-nav ml-auto">
-    
-    
-          <li class="nav-item">
-            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-              <i class="fas fa-expand-arrows-alt"></i>
-            </a>
-          </li>
+
+        <li class="nav-item">
+          Admin Dashboard
           
+         </li>
+         </ul>
+
+         <ul class="navbar-nav">
+          <li class="nav-item">
+          <div className="live-date-time  text-muted" style={{paddingLeft: "0.8rem"}}>
+            {currentDateTime.toLocaleString()}
+          </div>          
+          </li>
+       
         </ul>
+    
+        
+     
       </nav>
   )}
 
