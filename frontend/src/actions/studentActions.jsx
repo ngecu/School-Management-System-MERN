@@ -11,7 +11,7 @@ import {
     STUDENT_DETAILS_SUCCESS,
     STUDENT_DETAILS_FAIL,
 } from '../constants/studentConstants';
-
+import { useHistory } from 'react-router-dom';
 const base_url = `http://localhost:5000/api/students`;
 
 
@@ -36,7 +36,12 @@ export const createStudent = (studentData) => async (dispatch, getState) => {
         type: STUDENT_CREATE_SUCCESS,
         payload: data.data,
       });
-      document.location.href = '/allStudents'
+  // Get access to the history object
+  const history = useHistory();
+
+  // Redirect to the desired route
+  history.push('/allStudents');
+
 
     } catch (error) {
       dispatch({

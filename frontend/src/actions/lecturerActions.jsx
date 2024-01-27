@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { LECTURER_CREATE_FAIL, LECTURER_CREATE_REQUEST, LECTURER_CREATE_SUCCESS, LECTURER_DELETE_FAIL, LECTURER_DELETE_REQUEST, LECTURER_DELETE_SUCCESS, LECTURER_DETAILS_REQUEST, LECTURER_LIST_FAIL, LECTURER_LIST_REQUEST, LECTURER_LIST_SUCCESS } from "../constants/lecturerConstants";
-
+import { useHistory } from 'react-router-dom';
 const base_url = `http://localhost:5000/api/lecturers`
 
 export const createLecturer = (lecturerData) => async (dispatch, getState) => {
@@ -28,7 +28,13 @@ export const createLecturer = (lecturerData) => async (dispatch, getState) => {
         type: LECTURER_CREATE_SUCCESS,
         payload: data,
       });
-      // document.location.href = '/allLecturers'
+
+        // Get access to the history object
+  const history = useHistory();
+
+  // Redirect to the desired route
+  history.push('/allLecturers');
+
 
     } catch (error) {
       dispatch({

@@ -21,7 +21,7 @@ import {
   SUBMISSION_DETAILS_SUCCESS,
   SUBMISSION_DETAILS_FAIL,
 } from '../constants/assignmentConstants';
-
+import { useHistory } from 'react-router-dom';
 const base_url = `http://localhost:5000/api/assignments`; // Update with your API URL
 
 // Action creators for assignment
@@ -50,9 +50,11 @@ export const createAssignment = (assignmentData) => async (dispatch, getState) =
       payload: data.data,
     });
 
-    // Redirect or handle success as needed
-    // document.location.href = '/assignments'; // Example redirect
+  // Get access to the history object
+  const history = useHistory();
 
+  // Redirect to the desired route
+  history.push('/assignments');
   } catch (error) {
     dispatch({
       type: ASSIGNMENT_CREATE_FAIL,
@@ -151,8 +153,11 @@ export const createSubmission = (submissionData) => async (dispatch, getState) =
       payload: data.data,
     });
 
-    // Redirect or handle success as needed
-    // document.location.href = '/submissions'; // Example redirect
+  // Get access to the history object
+  const history = useHistory();
+
+  // Redirect to the desired route
+  history.push('/submissions');
 
   } catch (error) {
     dispatch({

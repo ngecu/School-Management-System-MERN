@@ -32,6 +32,7 @@ import {
   USER_CHANGE_PASSWORD_SUCCESS,
   USER_CHANGE_PASSWORD_FAIL
 } from '../constants/userConstants'
+import { useHistory } from 'react-router-dom';
 
 const base_url = `http://localhost:5000/api/users`
 
@@ -75,7 +76,10 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_DETAILS_RESET })
   dispatch({ type: USER_LIST_RESET })
-  document.location.href = '/'
+  const history = useHistory();
+
+  // Redirect to the desired route
+  history.push('/');
 }
 
 export const register = (name, email, password) => async (dispatch) => {
