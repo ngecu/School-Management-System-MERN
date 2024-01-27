@@ -7,7 +7,8 @@ import {
   authUser,
   sendRestPassword,
   getAllUsers,
-  updateProfile
+  updateProfile,
+  toggleUserActivation
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -17,7 +18,7 @@ router.route('/').get(getAllUsers)
 router.route('/reset-password').post(sendRestPassword)
 router.route('/change-password/:id/:token').post(setNewPassword)
 router.route('/update-profile').put(protect,updateProfile)
-
+router.route('/:id/toggle-active').put(protect, admin, toggleUserActivation);
 
 
 

@@ -30,7 +30,10 @@ import {
   USER_RESET_PASSWORD_FAIL,
   USER_CHANGE_PASSWORD_REQUEST,
   USER_CHANGE_PASSWORD_SUCCESS,
-  USER_CHANGE_PASSWORD_FAIL
+  USER_CHANGE_PASSWORD_FAIL,
+  USER_TOGGLE_ACTIVE_REQUEST,
+  USER_TOGGLE_ACTIVE_SUCCESS,
+  USER_TOGGLE_ACTIVE_FAIL,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -164,3 +167,19 @@ export const userChangePasswordReducer = (state = {}, action) => {
       return state
   }
 }
+
+export const userToggleActiveReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_TOGGLE_ACTIVE_REQUEST:
+      return { loading: true };
+
+    case USER_TOGGLE_ACTIVE_SUCCESS:
+      return { loading: false, success: true, user: action.payload };
+
+    case USER_TOGGLE_ACTIVE_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};

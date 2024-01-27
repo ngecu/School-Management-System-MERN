@@ -12,6 +12,7 @@ import {
   userUpdateReducer,
   userResetPasswordReducer,
   userChangePasswordReducer,
+  userToggleActiveReducer,
 } from './reducers/userReducers';
 
 import {
@@ -130,6 +131,7 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   userResetPassword: userResetPasswordReducer,
   userChangePassword: userChangePasswordReducer,
+  userTogleActive:userToggleActiveReducer,
   
   // Course reducers
   courseCreate: courseCreateReducer,

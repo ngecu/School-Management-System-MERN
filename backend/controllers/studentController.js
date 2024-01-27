@@ -155,6 +155,18 @@ export const deleteStudent = asyncHandler(async (req, res) => {
   const student = await Student.findById(req.params.id);
 
   if (student) {
+
+     // Find associated User and delete it
+  const associatedUser = await User.findOne({ email: student.email });
+  const associatedSchoolFees = await SchoolFees.findOne({student:student._id})
+  
+  if (associatedUser) {
+    await associatedUser.remove();
+  }
+  if (associatedUser) {
+    await associatedSchoolFees.remove()
+  }
+
     await student.remove();
     res.json({ success: true, message: 'Student removed' });
   } else {

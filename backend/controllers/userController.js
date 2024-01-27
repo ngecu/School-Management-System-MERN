@@ -310,6 +310,35 @@ const updateProfile = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Toggle user activation status
+// @route   PUT /api/users/:id/toggle-active
+// @access  Private/Admin
+const toggleUserActivation = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  user.isActive = !user.isActive; // Toggle isActive status
+
+  const updatedUser = await user.save();
+
+  res.status(200).json({
+    _id: updatedUser._id,
+    firstName: updatedUser.firstName,
+    secondName: updatedUser.secondName,
+    email: updatedUser.email,
+    isAdmin: updatedUser.isAdmin,
+    isActive: updatedUser.isActive,
+    userType: updatedUser.userType,
+    verified: updatedUser.verified,
+  });
+});
+
 export {
   authUser,
   registerUser,
@@ -317,5 +346,6 @@ export {
   verifyResetPassword,
   setNewPassword,
   getAllUsers,
-  updateProfile
+  updateProfile,
+  toggleUserActivation
 }

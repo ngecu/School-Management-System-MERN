@@ -11,6 +11,7 @@ import Sidebar from './components/Sidebar'
 import { deleteLecturer, listLecturers } from '../../actions/lecturerActions';
 import Topbar from './components/Topbar';
 import {  Modal } from 'antd'
+import { toggleUserActive } from '../../actions/userActions';
 
 
 const AllLecturers = () => {
@@ -19,10 +20,11 @@ const AllLecturers = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [lecturerData, setLecturerData] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
-
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
 
     const showModal = (lecturerData) => {
-      setLecturerData(lecturerData); // Assuming you have a state variable to store lecturer data
+      setLecturerData(lecturerData); 
       setIsModalOpen(true);
     };
   
@@ -34,7 +36,10 @@ const AllLecturers = () => {
     const handleCancel = () => {
       setIsModalOpen(false);
     };
-  
+    
+    const toggleStatus = (userId)=>{
+      dispatch(toggleUserActive(userId))
+    }
   
     const deleteHandler = (lecturerID)=>{
       console.log("i am deleting");
@@ -56,9 +61,14 @@ const AllLecturers = () => {
       success: successDelete,
     } = lecturerDelete
 
+    const userTogleActive = useSelector((state)=> state.userTogleActive)
+    const {
+      success:successToggle
+    } = userTogleActive
+
     useEffect(() => {
       dispatch(listLecturers());
-    }, [dispatch,successDelete]);
+    }, [dispatch,successDelete,successToggle]);
 
     if (loading) {
       return <Loader />;
@@ -73,11 +83,14 @@ const AllLecturers = () => {
       lecturer.lecturer.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       lecturer.lecturer.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       lecturer.lecturer.email.toLowerCase().includes(searchQuery.toLowerCase())
-      // Add more fields as needed for searching
+
     );
 
-    
-      return filteredLecturers.map((lecturer) => (
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentLecturers = filteredLecturers.slice(indexOfFirstItem, indexOfLastItem);
+
+    return currentLecturers.map((lecturer) => (
         <React.Fragment key={lecturer.lecturer?._id}>
        
         
@@ -86,8 +99,15 @@ const AllLecturers = () => {
           <td>{lecturer.lecturer?.gender}</td>
         <td>{lecturer.lecturer?.school?.name}</td>     
         <td>{lecturer.lecturer?.email}</td>
-        <td>{lecturer.lecturer?.dob}</td>
-          {/* Add more lecturer-specific fields as needed */}
+        <td>
+  {lecturer.user?.isActive ? (
+    <span className="badge badge-success">Active</span>
+  ) : (
+    <span className="badge badge-danger">Inactive</span>
+  )}
+
+  
+</td>
           <td>
           <button
             className="btn btn-success btn-sm"
@@ -99,6 +119,16 @@ const AllLecturers = () => {
             <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(lecturer.lecturer._id)}>
               <i className="fas fa-trash"></i> Delete
             </button>
+
+            {lecturer.user?.isActive ? (
+    <button className="btn btn-warning btn-sm" onClick={() => toggleStatus(lecturer.user._id)}>
+      <i className="fas fa-times"></i> Deactivate
+    </button>
+  ) : (
+    <button className="btn btn-primary btn-sm" onClick={() => toggleStatus(lecturer.user._id)}>
+      <i className="fas fa-check"></i> Activate
+    </button>
+  )}
           </td>
         </tr>
         </React.Fragment>
@@ -152,9 +182,9 @@ const AllLecturers = () => {
                 <th>Course</th>
          
                 <th>Address</th>
-                <th>Date Of Birth</th>
+                <th>Active</th>
             
-                <th>E-mail</th>
+                <th></th>
               </tr>
             </thead>
             <tbody style={{ overflowY: 'auto', maxHeight: '400px' }}>

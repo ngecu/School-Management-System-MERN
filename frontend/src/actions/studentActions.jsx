@@ -10,6 +10,9 @@ import {
     STUDENT_DETAILS_REQUEST,
     STUDENT_DETAILS_SUCCESS,
     STUDENT_DETAILS_FAIL,
+    STUDENT_DELETE_REQUEST,
+    STUDENT_DELETE_SUCCESS,
+    STUDENT_DELETE_FAIL,
 } from '../constants/studentConstants';
 import { useHistory } from 'react-router-dom';
 const base_url = `http://localhost:5000/api/students`;

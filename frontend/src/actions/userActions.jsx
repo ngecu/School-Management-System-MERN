@@ -30,7 +30,10 @@ import {
 
   USER_CHANGE_PASSWORD_REQUEST,
   USER_CHANGE_PASSWORD_SUCCESS,
-  USER_CHANGE_PASSWORD_FAIL
+  USER_CHANGE_PASSWORD_FAIL,
+  USER_TOGGLE_ACTIVE_REQUEST,
+  USER_TOGGLE_ACTIVE_SUCCESS,
+  USER_TOGGLE_ACTIVE_FAIL,
 } from '../constants/userConstants'
 import { useHistory } from 'react-router-dom';
 
@@ -297,6 +300,38 @@ export const listUsers = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const toggleUserActive = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_TOGGLE_ACTIVE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+
+    const { data } = await axios.put(`${base_url}/${userId}/toggle-active`, {}, config);
+
+    dispatch({
+      type: USER_TOGGLE_ACTIVE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_TOGGLE_ACTIVE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

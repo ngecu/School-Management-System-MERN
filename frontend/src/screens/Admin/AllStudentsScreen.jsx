@@ -3,13 +3,12 @@ import { Table, Form, Button, Row, Col, ListGroup, Container, Card, Pagination }
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { Collapse } from 'antd';
+import { useLocation } from 'react-router-dom';
+
 import Sidebar from './components/Sidebar'
 import { deleteStudent, listStudents } from '../../actions/studentActions';
 import Topbar from './components/Topbar';
+import {  Modal } from 'antd'
 
 
 
@@ -24,12 +23,12 @@ const AllStudents = () => {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-    const [lecturerData, setLecturerData] = useState(null);
+    const [studentData, setStudentData] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
-
-
-    const showModal = (lecturerData) => {
-      setLecturerData(lecturerData); // Assuming you have a state variable to store lecturer data
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const showModal = (data) => {
+      setStudentData(data); 
       setIsModalOpen(true);
     };
   
@@ -58,12 +57,12 @@ const AllStudents = () => {
   const studentList = useSelector((state) => state.studentList);
   const { loading, error, students } = studentList;
 
-  const lecturerDelete = useSelector((state) => state.lecturerDelete)
+  const studentDelete = useSelector((state) => state.studentDelete)
   const {
     loading: loadingDelete,
     error: errorDelete,
     success: successDelete,
-  } = lecturerDelete
+  } = studentDelete
 
   useEffect(() => {
     dispatch(listStudents());
@@ -81,40 +80,62 @@ const AllStudents = () => {
 
 
   const generateStudentData = () => {
+    const filteredStudents = students.filter(
+      (student) =>
+        student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.email.toLowerCase().includes(searchQuery.toLowerCase())
+      // Add more fields as needed for searching
+    );
+  
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+  
+    return (
+      <>
+        {currentItems.map((student) => (
+          <React.Fragment key={student?._id}>
+            <tr key={student._id}>
+            <td>{student.firstName} {student.lastName}</td>
+<td>{student.gender}</td>
+<td>{student.course.name}</td>     
+<td>{student.email}</td>
+<td>{student.dob}</td>
 
-    const filteredStudents = students.filter((student) =>
-    student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.email.toLowerCase().includes(searchQuery.toLowerCase())
-    // Add more fields as needed for searching
-  );
-
-    return filteredStudents.map((student) => (
-      <React.Fragment key={student?._id}>
-      <tr key={student._id}>
-        <td>{student.firstName} {student.lastName}</td>
-        <td>{student.gender}</td>
-        <td>{student.course.name}</td>     
-        <td>{student.email}</td>
-        <td>{student.dob}</td>
-       
-        <td>
-        <button
-            className="btn btn-success btn-sm"
-            onClick={() => showModal(student)}
-          >
-            <i className="fas fa-folder"></i> View
-          </button>
-         
-            <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student._id)}>
-              <i className="fas fa-trash"></i> Delete
-            </button>
-        </td>
-      </tr>
-      </React.Fragment>
-    ));
+<td>
+<button
+    className="btn btn-success btn-sm"
+    onClick={() => showModal(student)}
+  >
+    <i className="fas fa-folder"></i> View
+  </button>
+ 
+    <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student._id)}>
+      <i className="fas fa-trash"></i> Delete
+    </button>
+</td>
+            </tr>
+          </React.Fragment>
+        ))}
+        <Pagination>
+          {[...Array(Math.ceil(filteredStudents.length / itemsPerPage)).keys()].map(
+            (pageNumber) => (
+              <Pagination.Item
+                key={pageNumber + 1}
+                active={pageNumber + 1 === currentPage}
+                onClick={() => paginate(pageNumber + 1)}
+              >
+                {pageNumber + 1}
+              </Pagination.Item>
+            )
+          )}
+        </Pagination>
+      </>
+    );
   };
 
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -171,15 +192,7 @@ const AllStudents = () => {
         </Card.Body>
         <Card.Footer>
           <div className="d-flex justify-content-end">
-            <Pagination>
-              <Pagination.First />
-              <Pagination.Prev />
-              <Pagination.Item>{1}</Pagination.Item>
-              <Pagination.Item>{2}</Pagination.Item>
-              <Pagination.Item>{3}</Pagination.Item>
-              <Pagination.Next />
-              <Pagination.Last />
-            </Pagination>
+      
           </div>
         </Card.Footer>
       </Card>
@@ -194,6 +207,56 @@ const AllStudents = () => {
 
 
 </div>
+
+<Modal
+  title="Student Details"
+  visible={isModalOpen}
+  onOk={handleOk}
+  onCancel={handleCancel}
+>
+  {studentData && (
+     <Row >
+          <Col style={{textAlign:"center"}} md={12}>
+       
+       <img src={studentData.photo} alt="Student" style={{ maxWidth: '100%' }} />
+     </Col>
+
+     <Col md={6}>
+       <strong>National ID:</strong> {studentData.nationalID}
+     </Col>
+     <Col md={6}>
+       <strong>Year of Study:</strong> {studentData.yearOfStudy}
+     </Col>
+     <Col md={6}>
+       <strong>Course:</strong> {studentData.course.name}
+     </Col>
+     <Col md={6}>
+       <strong>Email:</strong> {studentData.email}
+     </Col>
+     
+     <Col md={6}>
+       <strong>First Name:</strong> {studentData.firstName}
+     </Col>
+     <Col md={6}>
+       <strong>Last Name:</strong> {studentData.lastName}
+     </Col>
+     <Col md={6}>
+       <strong>Gender:</strong> {studentData.gender}
+     </Col>
+     <Col md={6}>
+       <strong>DOB:</strong> {studentData.dob}
+     </Col>
+     <Col md={6}>
+       <strong>Religion:</strong> {studentData.religion}
+     </Col>
+     <Col md={6}>
+       <strong>Phone:</strong> {studentData.phone}
+     </Col> 
+ 
+   </Row>
+  )}
+</Modal>
+
 
     </div>
   );
