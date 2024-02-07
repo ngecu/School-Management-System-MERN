@@ -9,6 +9,7 @@ import Sidebar from './components/Sidebar'
 import { deleteStudent, listStudents } from '../../actions/studentActions';
 import Topbar from './components/Topbar';
 import {  Modal } from 'antd'
+import { toggleUserActive } from '../../actions/userActions';
 
 
 
@@ -64,11 +65,19 @@ const AllStudents = () => {
     success: successDelete,
   } = studentDelete
 
+  const userTogleActive = useSelector((state)=> state.userTogleActive)
+  const {
+    success:successToggle
+  } = userTogleActive
+
+
   useEffect(() => {
     dispatch(listStudents());
-  }, [dispatch,successDelete]);
+  }, [dispatch,successDelete,successToggle]);
 
-
+  const toggleStatus = (userId)=>{
+    dispatch(toggleUserActive(userId))
+  }
   const generateStudentData = () => {
     const filteredStudents = students.filter(
       (student) =>

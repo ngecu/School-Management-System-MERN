@@ -50,6 +50,11 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
   <Topbar/>
   
         <Sidebar />
+        {loadingCourses ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
         <div class="content-wrapper">
 
         <section class="content">
@@ -173,6 +178,7 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
         </section>
         </div>
+          )}
        
 
 

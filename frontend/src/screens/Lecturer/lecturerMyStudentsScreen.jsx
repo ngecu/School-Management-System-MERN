@@ -20,10 +20,6 @@ const LecturerMyStudentsScreen = () => {
 
   const dispatch = useDispatch();
 
-
-
-
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -43,7 +39,7 @@ const LecturerMyStudentsScreen = () => {
   const filteredStudents =
     students &&
     students.filter((student) =>
-      userInfo.userData.courses.includes(student.course._id)
+      userInfo.userData.courses.includes(student?.course?._id)
     );
 
   return (
@@ -112,9 +108,9 @@ const LecturerMyStudentsScreen = () => {
                         {filteredStudents &&
                           filteredStudents.map((student) => (
                             <tr key={student.id}>
-                              <td>{student.firstName} {student.lastName}</td>
+                              <td>{student.student.firstName} {student.lastName}</td>
                               <td>{student.gender}</td>
-                              <td>{student.course.name}</td>
+                              <td>{student?.course.name}</td>
                               <td>{student.address}</td>
                               <td>{student.dob}</td>
                               <td>{student.email}</td>

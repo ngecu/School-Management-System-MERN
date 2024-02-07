@@ -97,12 +97,12 @@ const AccountantPaymentScreen = () => {
          <Table striped bordered hover responsive className="table-sm">
                 <thead>
                   <tr>
-                    <th>Student</th>
+                    <th>Transaction Id</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    <th>Due Date</th>
+                    <th>Payment Method</th>
                   
-                    <th>Updated At</th>
+                    <th>Paid At</th>
                     <th></th>
 
                   </tr>
@@ -110,15 +110,15 @@ const AccountantPaymentScreen = () => {
                 <tbody>
                 {paymentTransactions && paymentTransactions.map((transaction) => (
   <tr key={transaction._id}>
-    <td>{transaction.schoolFees?.student?.firstName}</td>
+    <td>{transaction.transactionId}</td>
     <td>{transaction.amount}</td>
     <td>
       <span className={`badge ${transaction.approved != true ? 'badge-danger' : 'badge-success'}`}>
         {`${transaction.approved}`}
       </span>
     </td>
-    <td>{transaction.schoolFees?.dueDate}</td>
-    <td>{transaction.schoolFees?.updatedAt}</td>
+    <td>{transaction.paymentMethod}</td>
+    <td>{transaction.createdAt}</td>
     <td>
       {/* View Button */}
       {/* <Button variant="info" size="sm" onClick={() => handleView(transaction.schoolFees._id)}>

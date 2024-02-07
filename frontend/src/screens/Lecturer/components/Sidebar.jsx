@@ -96,12 +96,12 @@ const Sidebar = () => {
         <p>Announcements</p>
       </NavLink>
     </li> */}
-    <li className="nav-item">
+    {/* <li className="nav-item">
       <NavLink to="/lecturer/assignments" className={`nav-link ${location.pathname === '/assignments' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-tasks"></i>
         <p>Assignments</p>
       </NavLink>
-    </li>
+    </li> */}
     <li className="nav-item">
       <NavLink to="/lecturer/grades" className={`nav-link ${location.pathname === '/grades' ? 'active' : ''}`}>
         <i className="nav-icon fas fa-clipboard"></i>

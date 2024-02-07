@@ -38,7 +38,7 @@ const LecturerProfileScreen = () => {
     firstName: userInfo.userData.firstName,
     lastName: userInfo.userData.lastName,
     gender: userInfo.userData.gender,
-    dob: moment(userInfo.userData.dob), // You may need to use a date library like moment for proper date formatting
+    dob: userInfo.userData.dob,
     religion: userInfo.userData.religion,
     email: userInfo.email,
     nationalID: userInfo.userData.nationalID,
