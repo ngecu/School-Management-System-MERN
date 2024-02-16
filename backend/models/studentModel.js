@@ -73,7 +73,20 @@ const studentSchema = mongoose.Schema(
     password:{
       type: String,
       required:true
-    }
+    },
+    year_of_study:{
+      type: String,
+      required:true
+    },
+    mos:{
+      type: String,
+      required:true
+    },
+    admissionNumber:{
+      type: String,
+      required:true
+    },
+
   },
   {
     timestamps: true,

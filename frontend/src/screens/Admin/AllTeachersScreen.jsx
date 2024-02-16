@@ -91,7 +91,7 @@ const AllLecturers = () => {
        
         
         <tr key={lecturer.lecturer?._id}>
-          <td>{lecturer.lecturer?.firstName} {lecturer?.lastName}</td>
+          <td>{lecturer.lecturer?.firstName} {lecturer?.lecturer.lastName}</td>
           <td>{lecturer.lecturer?.gender}</td>
         <td>{lecturer.lecturer?.school?.name}</td>     
         <td>{lecturer.lecturer?.email}</td>
@@ -199,7 +199,7 @@ const AllLecturers = () => {
                 <th>Course</th>
          
                 <th>Address</th>
-                <th>Active</th>
+                <th>Status</th>
             
                 <th></th>
               </tr>
@@ -275,7 +275,9 @@ const AllLecturers = () => {
   <strong>Gender:</strong> {lecturerData.gender}
 </Col>
 <Col md={6}>
-  <strong>DOB:</strong> {lecturerData.dob}
+  <strong>DOB:</strong> 
+  <strong>DOB:</strong> {lecturerData.dob && new Date(lecturerData.dob).toLocaleDateString()}
+
 </Col>
 <Col md={6}>
   <strong>Religion:</strong> {lecturerData.religion}

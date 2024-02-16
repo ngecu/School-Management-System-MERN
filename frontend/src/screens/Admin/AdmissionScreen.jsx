@@ -17,10 +17,22 @@ const { Option } = Select;
 const AdmissionScreen = () => {
 
   const [schoolselected,setSchoolSelect] = useState(null)
+  const [yearofstudyselected,setYearofstudy] = useState(null)
+  const [courseselected,setcourse] = useState(null)
 
+  
+  
   const onFinish = async (values) => {
     console.log('Received values:', values);
   
+    // Function to generate a unique ID (for example, using timestamp)
+const generateUniqueId = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+};
+
+const admissionNumber = `${schoolselected}-${yearofstudyselected}-${courseselected}-${generateUniqueId()}`;
+console.log("Admission Number:", admissionNumber);
+
   // Calculate age based on date of birth
   const dob = new Date(values.dob);
   const ageDiffMs = Date.now() - dob.getTime();
@@ -314,7 +326,13 @@ const [selectedImages, setSelectedImages] = useState([]);
     },
   ]}
 >
-  <Select loading={loadingCourses}>
+  <Select 
+    onChange={(value) => {
+      setcourse(value);
+      console.log("course is ",courseselected);
+    }}
+  
+  loading={loadingCourses}>
   {courses && courses
   .filter(course => course.school._id === schoolselected)
   .map((course) => (
@@ -334,7 +352,7 @@ const [selectedImages, setSelectedImages] = useState([]);
   rules={[
     {
       required: true,
-      message: 'Please select the course!',
+      message: 'Please select the Mode of Study!',
     },
   ]}
 >
@@ -342,8 +360,53 @@ const [selectedImages, setSelectedImages] = useState([]);
     <Select.Option key="full_time" value="full_time">
      Full Time
     </Select.Option>
+
+    <Select.Option key="dlm" value="dlm">
+    Dynamic Learning Maps
+    </Select.Option>
+
     <Select.Option key="part_time" value="part_time">
      Part Time
+    </Select.Option>
+  </Select>
+</Form.Item>
+                      </Col>
+
+                      <Col md={6}>
+                      <Form.Item
+  label="Year Of Study"
+  name="year_of_study"
+  setYearofstudy
+  rules={[
+    {
+      required: true,
+      message: 'Please select the year of study!',
+    },
+  ]}
+>
+  <Select 
+  onChange={(value) => {
+    setYearofstudy(value);
+    console.log("year of study is ",yearofstudyselected);
+  }}
+
+  >
+    <Select.Option key="1" value="1">
+     1
+    </Select.Option>
+
+    <Select.Option key="2" value="2">
+     2
+    </Select.Option>
+
+    <Select.Option key="3" value="3">
+      3
+    </Select.Option>
+    <Select.Option key="4" value="4">
+      4
+    </Select.Option>
+    <Select.Option key="5" value="5">
+      5
     </Select.Option>
   </Select>
 </Form.Item>

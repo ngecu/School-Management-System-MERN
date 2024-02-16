@@ -193,11 +193,7 @@ const studentFeeScreen = () => {
           rules={[{ required: true, message: 'Please select the payment method' }]}
         >
           <Select onChange={handlePaymentMethodChange}>
-            <Select.Option value="cash">Paypal</Select.Option>
             <Select.Option value="mpesa">Mpesa</Select.Option>
-            <Select.Option value="cheque">Cheque</Select.Option>
-
-            {/* Add more payment methods as needed */}
           </Select>
         </Form.Item>
 

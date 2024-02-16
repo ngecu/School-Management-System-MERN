@@ -99,7 +99,8 @@ const AllStudents = () => {
 <td>{student.student?.gender}</td>
 <td>{student.student?.course?.name}</td>     
 <td>{student.student?.email}</td>
-<td>{student.student?.dob}</td>
+<td>{student.student?.dob && new Date(student.student.dob).toLocaleDateString()}</td>
+
 <td>
   {student.student?.isActive ? (
     <span className="badge badge-success">Active</span>
@@ -197,7 +198,8 @@ const AllStudents = () => {
                       <th>Course</th>
                       <th>Address</th>
                       <th>Date Of Birth</th>
-                      <th>E-mail</th>
+                      <th>Status</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody style={{ overflowY: 'auto', maxHeight: '400px' }}>
@@ -254,7 +256,9 @@ const AllStudents = () => {
        <strong>Gender:</strong> {studentData.gender}
      </Col>
      <Col md={6}>
-       <strong>DOB:</strong> {studentData.dob}
+
+
+       <strong>DOB:</strong> {studentData.dob && new Date(studentData.dob).toLocaleDateString()}
      </Col>
      <Col md={6}>
        <strong>Religion:</strong> {studentData.religion}
