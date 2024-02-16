@@ -43,11 +43,11 @@ const AllStudents = () => {
     };
   
   
-    const deleteHandler = (lecturerID)=>{
+    const deleteHandler = (studentID)=>{
       console.log("i am deleting");
 
       if (window.confirm('Are you sure')) {
-        dispatch(deleteStudent(lecturerID))
+        dispatch(deleteStudent(studentID))
       }
 
 
@@ -84,7 +84,6 @@ const AllStudents = () => {
         student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
-      // Add more fields as needed for searching
     );
   
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -98,10 +97,18 @@ const AllStudents = () => {
             <tr key={student.student?._id}>
             <td>{student.student?.firstName} {student.student?.lastName}</td>
 <td>{student.student?.gender}</td>
-<td>{student.cstudent?.course.name}</td>     
+<td>{student.student?.course?.name}</td>     
 <td>{student.student?.email}</td>
 <td>{student.student?.dob}</td>
+<td>
+  {student.student?.isActive ? (
+    <span className="badge badge-success">Active</span>
+  ) : (
+    <span className="badge badge-danger">Inactive</span>
+  )}
 
+  
+</td>
 <td>
 <button
     className="btn btn-success btn-sm"
@@ -110,7 +117,7 @@ const AllStudents = () => {
     <i className="fas fa-folder"></i> View
   </button>
  
-    <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student._id)}>
+    <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student.student._id)}>
       <i className="fas fa-trash"></i> Delete
     </button>
 

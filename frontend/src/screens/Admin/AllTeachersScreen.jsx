@@ -101,8 +101,6 @@ const AllLecturers = () => {
   ) : (
     <span className="badge badge-danger">Inactive</span>
   )}
-
-  
 </td>
           <td>
           <button
@@ -257,9 +255,12 @@ const AllLecturers = () => {
 <Col md={6}>
   <strong>Year of Study:</strong> {lecturerData.yearOfStudy}
 </Col>
-{/* <Col md={6}>
-  <strong>Course:</strong> {lecturerData.course.name}
-</Col> */}
+<Col md={6}>
+  <strong>School:</strong> {lecturerData.school.name}
+</Col>
+<Col md={6}>
+  <strong>Courses:</strong> {lecturerData.courses.length}
+</Col>
 <Col md={6}>
   <strong>Email:</strong> {lecturerData.email}
 </Col>

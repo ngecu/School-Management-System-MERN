@@ -16,6 +16,8 @@ const AddLecturerScreen = () => {
   const onFinish = async (values) => {
     console.log('Received values:', values);
 
+
+    
     if (selectedImages.length > 0) {
       const uploadedFileUrl = await dispatch(uploadFile(selectedImages[0]));
 
@@ -25,11 +27,27 @@ const AddLecturerScreen = () => {
         values.userType = "lecturer"
     
       }
+
+        // Calculate age based on date of birth
+  const dob = new Date(values.dob);
+  const ageDiffMs = Date.now() - dob.getTime();
+  const ageDate = new Date(ageDiffMs); // Epoch
+  const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+  // Check if age is at least 18 years
+  if (age < 18) {
+    message.error('Lecturer must be at least 18 years old.');
+    return; // Stop execution if age is less than 18
+  }
+
          // Dispatch the createLecturer action
     dispatch(createLecturer(values)).then((response) => {
-      if (response.success) {
-        // Handle success, you may redirect the user or show a success message
-        message.success('Lecturer created successfully!');
+      if (response.message) {
+        
+        message.success(response.message);
+
+        // history.push('/admin/allLecturers');
+
       } else {
         // Handle failure, show an error message
         message.error(response.error);
