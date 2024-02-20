@@ -38,8 +38,7 @@
     "react-icons": "^4.10.1",
     "request": "^2.88.2",
     "useragent": "^2.3.0",
-    "ws": "^8.16.0",
-    "nodemon": "^2.0.4"
+    "ws": "^8.16.0"
 
   },
   "devDependencies": {
@@ -47,6 +46,6 @@
     "@babel/node": "^7.22.19",
     "@babel/preset-env": "^7.23.7",
     "concurrently": "^5.3.0",
-    "jest": "^29.7.0",
+    "jest": "^29.7.0"
   }
 }
