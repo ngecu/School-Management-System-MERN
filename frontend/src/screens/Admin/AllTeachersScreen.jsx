@@ -91,7 +91,7 @@ const AllLecturers = () => {
        
         
         <tr key={lecturer.lecturer?._id}>
-          <td>{lecturer.lecturer?.firstName} {lecturer?.lastName}</td>
+          <td>{lecturer.lecturer?.firstName} {lecturer?.lecturer.lastName}</td>
           <td>{lecturer.lecturer?.gender}</td>
         <td>{lecturer.lecturer?.school?.name}</td>     
         <td>{lecturer.lecturer?.email}</td>
@@ -101,8 +101,6 @@ const AllLecturers = () => {
   ) : (
     <span className="badge badge-danger">Inactive</span>
   )}
-
-  
 </td>
           <td>
           <button
@@ -201,7 +199,7 @@ const AllLecturers = () => {
                 <th>Course</th>
          
                 <th>Address</th>
-                <th>Active</th>
+                <th>Status</th>
             
                 <th></th>
               </tr>
@@ -257,9 +255,12 @@ const AllLecturers = () => {
 <Col md={6}>
   <strong>Year of Study:</strong> {lecturerData.yearOfStudy}
 </Col>
-{/* <Col md={6}>
-  <strong>Course:</strong> {lecturerData.course.name}
-</Col> */}
+<Col md={6}>
+  <strong>School:</strong> {lecturerData.school.name}
+</Col>
+<Col md={6}>
+  <strong>Courses:</strong> {lecturerData.courses.length}
+</Col>
 <Col md={6}>
   <strong>Email:</strong> {lecturerData.email}
 </Col>
@@ -274,7 +275,9 @@ const AllLecturers = () => {
   <strong>Gender:</strong> {lecturerData.gender}
 </Col>
 <Col md={6}>
-  <strong>DOB:</strong> {lecturerData.dob}
+  <strong>DOB:</strong> 
+  <strong>DOB:</strong> {lecturerData.dob && new Date(lecturerData.dob).toLocaleDateString()}
+
 </Col>
 <Col md={6}>
   <strong>Religion:</strong> {lecturerData.religion}

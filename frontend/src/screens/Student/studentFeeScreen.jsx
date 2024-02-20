@@ -193,11 +193,7 @@ const studentFeeScreen = () => {
           rules={[{ required: true, message: 'Please select the payment method' }]}
         >
           <Select onChange={handlePaymentMethodChange}>
-            <Select.Option value="cash">Paypal</Select.Option>
             <Select.Option value="mpesa">Mpesa</Select.Option>
-            <Select.Option value="cheque">Cheque</Select.Option>
-
-            {/* Add more payment methods as needed */}
           </Select>
         </Form.Item>
 
@@ -225,15 +221,18 @@ const studentFeeScreen = () => {
           </>
         )}
 
-        {isMpesa && (
-          <Form.Item
-            name="phoneNumber"
-            label="Phone Number"
-            rules={[{ required: true, message: 'Please enter the phone number' }]}
-          >
-            <Input />
-          </Form.Item>
-        )}
+{isMpesa && (
+  <Form.Item
+    name="phoneNumber"
+    label="Phone Number"
+    rules={[
+      { required: true, message: 'Please enter the phone number' },
+      { min: 12, message: 'Phone number must be at least 12 digits' }
+    ]}
+  >
+    <Input placeholder="254 718 678309" />
+  </Form.Item>
+)}
 
         <Form.Item>
           <Button type="primary" htmlType="submit">

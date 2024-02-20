@@ -12,7 +12,7 @@ import ProfileScreen from './ProfileScreen'
 import IndexAdminScreen from './Admin/IndexAdminScreen'
 import IndexAccountantScreen from './Accountant/IndexAccountantScreen'
 import IndexLecturerScreen from './Lecturer/IndexLecturerScreen'
-import IndexParentScreen from './Parent/IndexParentScreen'
+
 import IndexStudentScreen from './Student/IndexStudentScreen'
 
 
@@ -198,7 +198,7 @@ const LoginScreen = ({ location, history }) => {
     {userInfo.userType === 'Accountant' && <IndexAccountantScreen />}
     {userInfo.userType === 'Lecturer' && <IndexLecturerScreen />}
     {userInfo.userType === 'Student' && <IndexStudentScreen />}
-    {userInfo.userType === 'Parent' && <IndexParentScreen />}
+  
   </>
 )}
 

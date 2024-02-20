@@ -41,6 +41,19 @@ const AddAccountant = () => {
  
   };
 
+
+         // Calculate age based on date of birth
+         const dob = new Date(values.dob);
+         const ageDiffMs = Date.now() - dob.getTime();
+         const ageDate = new Date(ageDiffMs); // Epoch
+         const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+       
+         // Check if age is at least 18 years
+         if (age < 18) {
+           message.error('Lecturer must be at least 18 years old.');
+           return; // Stop execution if age is less than 18
+         }
+         
   dispatch(createAccountant(values))
   .then(() => {
     message.success('Accountant added successfully!');

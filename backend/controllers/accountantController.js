@@ -3,9 +3,10 @@ import Accountant from '../models/accountantModel.js';
 import User from '../models/userModel.js';
 
 export const addAccountant = asyncHandler(async (req, res) => {
+  const password = "accountantPassword123";
+
   const {
     email,
-    password,
     firstName,
     lastName,
     gender,

@@ -18,7 +18,7 @@ export const createLecturer = (lecturerData) => async (dispatch, getState) => {
         },
       };
   
-      const { data } = await axios.post(
+      const response = await axios.post(
         `${base_url}`,
         lecturerData,
         config
@@ -26,16 +26,16 @@ export const createLecturer = (lecturerData) => async (dispatch, getState) => {
   
       dispatch({
         type: LECTURER_CREATE_SUCCESS,
-        payload: data,
+        payload: response.data,
       });
 
         // Get access to the history object
-  const history = useHistory();
+  // const history = useHistory();
 
-  // Redirect to the desired route
-  history.push('/allLecturers');
+  // // Redirect to the desired route
+  // history.push('/allLecturers');
 
-
+  return response.data;
     } catch (error) {
       dispatch({
         type: LECTURER_CREATE_FAIL,
