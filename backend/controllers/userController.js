@@ -17,8 +17,16 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
+  console.log(user)
 
   if (user && (await user.matchPassword(password))) {
+
+    if (!user.isActive) {
+      res.status(401);
+      throw new Error('Account is inactive. Please contact the administrator.');
+    }
+
+    
     const userDetails = {
       _id: user._id,
       firstName: user.firstName,

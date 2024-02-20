@@ -33,18 +33,18 @@ export const createStudent = (studentData) => async (dispatch, getState) => {
         },
       };
   
-      const { data } = await axios.post(base_url, studentData, config);
+      const response= await axios.post(base_url, studentData, config);
   
       dispatch({
         type: STUDENT_CREATE_SUCCESS,
-        payload: data.data,
+        payload: response.data,
       });
   // Get access to the history object
-  const history = useHistory();
-
-  // Redirect to the desired route
-  history.push('/allStudents');
-
+  // const history = useHistory();
+  // alert()
+  // // Redirect to the desired route
+  // history.push('/allStudents');
+  return response.data;
 
     } catch (error) {
       dispatch({

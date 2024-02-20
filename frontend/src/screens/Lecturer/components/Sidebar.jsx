@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { NavLink,useHistory } from "react-router-dom/cjs/react-router-dom.min"
 import { Button } from "react-bootstrap"
 import {FaUsers,FaUserPlus,FaChalkboardTeacher,FaMoneyBillWave } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
 
 const Sidebar = () => {
   const dispatch = useDispatch()
@@ -39,7 +40,7 @@ const Sidebar = () => {
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
   
     <a href="#" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
+    <img src="https://raw.githubusercontent.com/ngecu/PHP-School-Management-System/main/img/logo/attnlg.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
       <span class="brand-text font-weight-light">EVE SMS</span>
     </a>
 
@@ -117,10 +118,9 @@ const Sidebar = () => {
 
   
 
-    <li class="nav-item">
-          <Button variant="danger" className="w-100" onClick={logoutHandler}>
-          <i className="nav-icon fas fa-sign-out-alt"></i>
-            <p>LOGOUT</p>
+    <li class="nav-item" onClick={logoutHandler}>
+          <Button variant="danger" className="w-100 btn-sm" >
+          <MdLogout /> LOGOUT
           </Button>
         </li>
 

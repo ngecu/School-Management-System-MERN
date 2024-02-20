@@ -83,13 +83,23 @@ const LecturerMyStudentsScreen = () => {
               <div class="card h-100">
                 <div class="card-body">
                 <div className="d-flex justify-content-between align-items-center">
+            <div className='row w-100'>
+              <div className="col-md-6">
             <h5>MY STUDENTS  Data</h5>
-          
-          </div>
-          <Form inline>
+
+              </div>
+              <div className="col-md-6">
               <Form.Control type="text" placeholder="Search" className="mr-2" />
-              <Button variant="primary">Search</Button>
-            </Form>
+
+              </div>
+            
+
+             
+            </div>
+          </div>
+          
+            
+           
 
           <Table bordered hover responsive>
             <thead>

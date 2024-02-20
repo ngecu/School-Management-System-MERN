@@ -13,7 +13,7 @@ import Topbar from './components/Topbar';
 const AdminFeeScreen = () => {
  const [studentId, setStudentId] = useState('');
   const dispatch = useDispatch();
-
+  const [searchQuery, setSearchQuery] = useState('')
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -33,23 +33,9 @@ const AdminFeeScreen = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  const handleSearch = () => {
-    let id ="";
-    setSearch(true)
-    console.log("i am searching students");
-
-        const filteredFees = fees.filter(fee => {
-      return fee.student && fee.student.firstName.toLowerCase() === studentId.toLowerCase();
-    });
-
-    console.log(filteredFees);
-
-    if (studentId.trim() !== '') {
-      dispatch(getFeesByStudent(filteredFees[0].student._id));
-
-    }
-  };
-
+  const filteredFees = fees.filter((fee) =>
+  fee.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase())
+);
   useEffect(() => {
     if (userInfo && userInfo._id) {
       dispatch(AllFees());
@@ -87,19 +73,20 @@ const AdminFeeScreen = () => {
           <h1>All Fees Collection</h1>
           <Form>
             <Row>
-              <Col md={10}>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter student Name"
-                  value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
-                />
+              <Col md={12}>
+              <Form.Control
+                      type="text"
+                      placeholder="Search"
+                      className="mr-2"
+                      value={searchQuery}
+                      onChange={(e) => {
+                        console.log("search data is ",e.target.value);
+                        setSearchQuery(e.target.value)}
+                      }
+                    />
+                  
               </Col>
-              <Col md={2}>
-                <Button variant="primary" className="w-100" onClick={handleSearch}>
-                  Search
-                </Button>
-              </Col>
+              
             </Row>
           </Form>
 <>
@@ -109,29 +96,26 @@ const AdminFeeScreen = () => {
                     <th>Student</th>
                     <th>Amount</th>
                     <th>Status</th>
-                    <th>Due Date</th>
-                  
-                    <th>Updated At</th>
-                    <th></th>
+                   
 
                   </tr>
                 </thead>
                 <tbody>
-                  {fees.map((fee) => (
-                    <tr key={fee._id}>
-                      <td>{fee.student?.firstName}</td>
-                      <td>{fee.amount}</td>
-                      <td>
-  <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>
-    {fee.status}
-  </span>
-</td>
-                      <td>{fee.dueDate}</td>
-                     
-                      <td>{fee.updatedAt}</td>
-                      
-                    </tr>
-                  ))}
+                {filteredFees.map((fee) => (
+                                <tr key={fee._id}>
+                                  <td>{fee.student?.firstName}</td>
+                                  <td>{fee.amount}</td>
+                                  <td>
+                                    <span
+                                      className={`badge ${
+                                        fee.status === 'Pending' ? 'badge-danger' : 'badge-success'
+                                      }`}
+                                    >
+                                      {fee.status}
+                                    </span>
+                                  </td>
+                                </tr>
+                              ))}
                 </tbody>
               </Table> : <Table striped bordered hover responsive className="table-sm">
                 <thead>
@@ -147,27 +131,7 @@ const AdminFeeScreen = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {fees.map((fee) => (
-                    <tr key={fee._id}>
-                      <td>{fee.student?.firstName}</td>
-                      <td>{fee.amount}</td>
-                      <td>
-  <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>
-    {fee.status}
-  </span>
-</td>
-                      <td>{fee.dueDate}</td>
-                     
-                      <td>{fee.updatedAt}</td>
-                       <td>
-                        {/* View Button */}
-                        <Button variant="info" size="sm" onClick={() => handleView(fee._id)}>
-                          View
-                        </Button>{' '}
-                       
-                      </td>
-                    </tr>
-                  ))}
+                {generateFeeData()}
                 </tbody>
               </Table>
               }

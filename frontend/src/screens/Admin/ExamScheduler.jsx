@@ -191,6 +191,29 @@ const ExanSchedulerScreen = () => {
           </Select>
         </Form.Item>
       </Col> }
+
+
+      <Col md={12}>
+                      <Form.Item
+  label="Mode Of Study"
+  name="mos"
+  rules={[
+    {
+      required: true,
+      message: 'Please select the course!',
+    },
+  ]}
+>
+  <Select >
+    <Select.Option key="full_time" value="full_time">
+     Full Time
+    </Select.Option>
+    <Select.Option key="full_time" value="full_time">
+     Part Time
+    </Select.Option>
+  </Select>
+</Form.Item>
+                      </Col>
                  
 
                 </Row>

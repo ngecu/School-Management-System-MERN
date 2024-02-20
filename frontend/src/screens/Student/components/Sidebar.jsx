@@ -30,7 +30,7 @@ const Sidebar = () => {
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
   
     <a href="#" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
+    <img src="https://raw.githubusercontent.com/ngecu/PHP-School-Management-System/main/img/logo/attnlg.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
       <span class="brand-text font-weight-light">EVE SMS</span>
     </a>
 
@@ -83,13 +83,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
 
-        <li className="nav-item">
-          <NavLink to="/student/my_timetable" className={`nav-link ${location.pathname === '/my_timetable' ? 'active' : ''}`}>
-            <i className="nav-icon fas fa-table"></i>
-            <p>Timetable</p>
-          </NavLink>
-        </li>
-
+      
         <li className="nav-item">
           <NavLink to="/student/my_fees" className={`nav-link ${location.pathname === '/my_fees' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-money-bill"></i>
