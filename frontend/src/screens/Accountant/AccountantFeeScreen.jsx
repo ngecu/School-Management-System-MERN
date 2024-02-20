@@ -149,12 +149,14 @@ const AccountantFeeScreen = () => {
                     <tr key={fee._id}>
                       <td>{fee.student?.firstName}</td>
                       <td>{fee.amount}</td>
+                      {/* <td>{student.student?.dob && new Date(student.student.dob).toLocaleDateString()}</td> */}
+
                       <td>
   <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>
     {fee.status}
   </span>
 </td>
-                      <td>{fee.dueDate}</td>
+                      <td>{fee.dueDate  && new Date(fee.dueDate).toLocaleDateString()}</td>
                      
                       <td>{fee.updatedAt}</td>
                        <td>

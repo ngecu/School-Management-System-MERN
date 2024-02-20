@@ -5,7 +5,7 @@ import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { Link, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar'
-import { Form, Input, Select,  Button, Col, Row } from 'antd';
+import { Form, Input, Select,message,  Button, Col, Row } from 'antd';
 import { listSchools } from '../../actions/schoolActions';
 import { listCourses } from '../../actions/courseActions';
 import {useDropzone} from 'react-dropzone'
@@ -51,7 +51,7 @@ const LecturerProfileScreen = () => {
   const onFinish = async (values) => {
     console.log('Received values:', values);
 
-    if (values.password && values.password !== values.confirmPassword) {
+    if (values.password && values.password !== values.c_password) {
       setErrorMsg(`Password and Confirm Password do not match`);
       return;
     } else {
@@ -267,6 +267,8 @@ const [selectedImages, setSelectedImages] = useState([]);
                       </Col>
 
                       <Col md={6}>
+
+                        
                       <Form.Item
         label="Password"
         name="password"
@@ -277,7 +279,7 @@ const [selectedImages, setSelectedImages] = useState([]);
           },
         ]}
       >
-        <Input />
+         <Input.Password />
       </Form.Item>
                       </Col>
 
@@ -292,7 +294,7 @@ const [selectedImages, setSelectedImages] = useState([]);
           },
         ]}
       >
-        <Input />
+        <Input.Password />
       </Form.Item>
                       </Col>
 

@@ -95,12 +95,13 @@ const AllStudents = () => {
         {currentItems.map((student) => (
           <React.Fragment key={student?._id}>
             <tr key={student.student?._id}>
+            <td>{student.student?.admissionNumber} </td>
             <td>{student.student?.firstName} {student.student?.lastName}</td>
-<td>{student.student?.gender}</td>
-<td>{student.student?.course?.name}</td>     
-<td>{student.student?.email}</td>
-<td>{student.student?.dob && new Date(student.student.dob).toLocaleDateString()}</td>
-
+            <td>{student.student?.gender}</td>
+            <td>{student.student?.course?.name}</td>     
+            <td>{student.student?.email}</td>
+            <td>{student.student?.dob && new Date(student.student.dob).toLocaleDateString()}</td>
+            
 <td>
   {student.student?.isActive ? (
     <span className="badge badge-success">Active</span>
@@ -193,6 +194,7 @@ const AllStudents = () => {
                 <Table bordered hover responsive>
                   <thead>
                     <tr>
+                    <th></th>
                       <th>Name</th>
                       <th>Gender</th>
                       <th>Course</th>

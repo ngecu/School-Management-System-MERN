@@ -221,15 +221,18 @@ const studentFeeScreen = () => {
           </>
         )}
 
-        {isMpesa && (
-          <Form.Item
-            name="phoneNumber"
-            label="Phone Number"
-            rules={[{ required: true, message: 'Please enter the phone number' }]}
-          >
-            <Input />
-          </Form.Item>
-        )}
+{isMpesa && (
+  <Form.Item
+    name="phoneNumber"
+    label="Phone Number"
+    rules={[
+      { required: true, message: 'Please enter the phone number' },
+      { min: 12, message: 'Phone number must be at least 12 digits' }
+    ]}
+  >
+    <Input placeholder="254 718 678309" />
+  </Form.Item>
+)}
 
         <Form.Item>
           <Button type="primary" htmlType="submit">

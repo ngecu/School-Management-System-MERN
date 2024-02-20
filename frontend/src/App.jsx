@@ -12,7 +12,7 @@ import AllStudents from './screens/Admin/AllStudentsScreen';
 import AdmissionScreen from './screens/Admin/AdmissionScreen';
 import AddLecturerScreen from './screens/Admin/AddLecturerScreen';
 import AllLecturers from './screens/Admin/AllTeachersScreen';
-import AllParentsScreen from './screens/Admin/AllParentsScreen';
+
 import AttedanceScreen from './screens/Admin/AttendanceScreen';
 import studentAttendanceScreen from './screens/Student/studentAttendanceScreen';
 import studentExamResultScreen from './screens/Student/studentExamResultScreen';
@@ -48,7 +48,7 @@ const App = () => {
           <Route path="/admin/admission" component={AdmissionScreen} />
           <Route path="/admin/add_lecturer" component={AddLecturerScreen} />
           <Route path="/admin/allLecturers" component={AllLecturers} />
-          <Route path="/admin/allParents" component={AllParentsScreen} />
+         
           <Route path="/admin/allAttedance" component={AttedanceScreen} />
           <Route path="/admin/add_accountant" component={AddAccountant} />
           <Route path="/admin/allfee" component={AdminFeeScreen} />
@@ -63,9 +63,8 @@ const App = () => {
           {/* students routes  */}
           <Route path="/student/my_attendance" component={studentAttendanceScreen} />
           <Route path="/student/my_exam" component={studentExamResultScreen} />
-          <Route path="/student/my_timetable" component={studentTimeTableScreen} />
           <Route path="/student/my_fees" component={studentFeeScreen} />
-          <Route path="/my_profile" component={StudentProfileScreen} />
+          <Route path="/lecturer/my_profile" component={StudentProfileScreen} />
           <Route path="/student/invoice" component={studentInvoiceScreen} />
 
           {/* account routes  */}
