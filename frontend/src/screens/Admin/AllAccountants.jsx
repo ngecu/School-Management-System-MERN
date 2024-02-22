@@ -13,7 +13,7 @@ import { toggleUserActive } from '../../actions/userActions';
 
 
 
-const AllStudents = () => {
+const AllAccountants = () => {
 
 
   const location = useLocation();
@@ -82,7 +82,6 @@ const AllStudents = () => {
  const generateStudentData = () => {
   const filteredStudents = students.filter(
     (student) =>
-    student.student?.admissionNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
       student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
@@ -190,7 +189,7 @@ const AllStudents = () => {
                   <Form inline>
                     <Form.Control
                       type="text"
-                      placeholder="Search by Admission No."
+                      placeholder="Search"
                       className="mr-2"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -286,4 +285,4 @@ const AllStudents = () => {
   );
 };
 
-export default AllStudents;
+export default AllAccountants;

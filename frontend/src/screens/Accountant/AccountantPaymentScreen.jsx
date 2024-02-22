@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import { Table, Form, Button, Row, Col,Pagination } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -26,17 +26,10 @@ const AccountantPaymentScreen = () => {
     dispatch(logout());
   };
 
-   const [message, setMessage] = useState(null);
-  const match = useRouteMatch();
-  const history = useHistory();
-  const location = useLocation();
-  const { pathname } = location;
-``
-  const handleSearch = () => {
-    if (studentId.trim() !== '') {
-      dispatch(getFeesByStudent(studentId));
-    }
-  };
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     if (userInfo && userInfo._id) {
@@ -53,6 +46,61 @@ const AccountantPaymentScreen = () => {
 
     
   }
+
+  const generateTransactionData = () => {
+    const filteredTransactions = paymentTransactions.filter(
+      (transaction) =>
+        transaction.schoolFees.student.admissionNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        transaction.schoolFees.student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        transaction.schoolFees.student.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        transaction.schoolFees.student.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredTransactions.slice(indexOfFirstItem, indexOfLastItem);
+  
+    return (
+      <>
+        {currentItems.map((transaction) => (
+          <tr key={transaction._id}>
+            <td>{transaction.transactionId}</td>
+            <td>{transaction.schoolFees.student.admissionNumber}</td>
+            <td>{transaction.schoolFees.student.firstName} {transaction.schoolFees.student.lastName}</td>
+            <td>{transaction.amount}</td>
+            <td>{transaction.schoolFees.amount}</td>
+            <td>
+              <span className={`badge ${transaction.approved !== true ? 'badge-danger' : 'badge-success'}`}>
+                {`${transaction.approved}`}
+              </span>
+            </td>
+            <td>{transaction.paymentMethod}</td>
+            <td>{transaction.createdAt && new Date(transaction.createdAt).toLocaleDateString()}</td>
+            <td>{transaction.updatedAt && new Date(transaction.updatedAt).toLocaleDateString()}</td>
+            <td>
+              {transaction.approved !== true && (
+                <Button variant="warning" size="sm" onClick={() => ApprovePayment(transaction._id, transaction.schoolFees._id)}>
+                  APPROVE
+                </Button>
+              )}
+            </td>
+          </tr>
+        ))}
+        <Pagination>
+          {[...Array(Math.ceil(filteredTransactions.length / itemsPerPage)).keys()].map((pageNumber) => (
+            <Pagination.Item
+              key={pageNumber + 1}
+              active={pageNumber + 1 === currentPage}
+              onClick={() => paginate(pageNumber + 1)}
+            >
+              {pageNumber + 1}
+            </Pagination.Item>
+          ))}
+        </Pagination>
+      </>
+    );
+  };
+  
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -78,19 +126,18 @@ const AccountantPaymentScreen = () => {
           <h1>All Payment Collection</h1>
           <Form>
             <Row>
-              <Col md={10}>
+              <Col md={12}>
                 <Form.Control
                   type="text"
-                  placeholder="Enter student Name"
-                  value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
-                />
+                  placeholder="Enter student Admin Number"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    console.log("search data is ",e.target.value);
+                    setSearchQuery(e.target.value)}
+                  }
+                              />
               </Col>
-              <Col md={2}>
-                <Button variant="primary" className="w-100" onClick={handleSearch}>
-                  Search
-                </Button>
-              </Col>
+             
             </Row>
           </Form>
 
@@ -98,39 +145,24 @@ const AccountantPaymentScreen = () => {
                 <thead>
                   <tr>
                     <th>Transaction Id</th>
+                    <th>Admission No.</th>
+                    <th>Student</th>
+
                     <th>Amount</th>
-                    <th>Status</th>
+                    <th>Remaining</th>
+
+                    <th>Approved</th>
                     <th>Payment Method</th>
                   
                     <th>Paid At</th>
+                    <th>Approved At</th>
+
                     <th></th>
 
                   </tr>
                 </thead>
                 <tbody>
-                {paymentTransactions && paymentTransactions.map((transaction) => (
-  <tr key={transaction._id}>
-    <td>{transaction.transactionId}</td>
-    <td>{transaction.amount}</td>
-    <td>
-      <span className={`badge ${transaction.approved != true ? 'badge-danger' : 'badge-success'}`}>
-        {`${transaction.approved}`}
-      </span>
-    </td>
-    <td>{transaction.paymentMethod}</td>
-    <td>{transaction.createdAt}</td>
-    <td>
-      {/* View Button */}
-      {/* <Button variant="info" size="sm" onClick={() => handleView(transaction.schoolFees._id)}>
-        View
-      </Button>{' '} */}
-      {/* Edit Button */}
-      {transaction.approved != true ? <> <Button variant="warning" size="sm" onClick={() => ApprovePayment(transaction._id,transaction.schoolFees._id)}>
-        APPROVE
-      </Button>{' '}</> : <></>}
-    </td>
-  </tr>
-))}
+         {generateTransactionData()}
 
                 </tbody>
               </Table> 

@@ -3,6 +3,7 @@ import { logout } from '../../../actions/userActions'
 import { useEffect, useState } from "react"
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min"
 import { Button } from "react-bootstrap"
+import { MdLogout } from "react-icons/md";
 
 const Sidebar = () => {
   const dispatch = useDispatch()
@@ -91,19 +92,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
 
-        {/* <li className="nav-item">
-          <NavLink to="/courses" className={`nav-link ${location.pathname === '/courses' ? 'active' : ''}`}>
-            <i className="nav-icon fas fa-book"></i>
-            <p>Courses</p>
-          </NavLink>
-        </li> */}
-
-        {/* <li className="nav-item">
-  <NavLink to="/student/chat" className={`nav-link ${location.pathname === '/chat' ? 'active' : ''}`}>
-    <i className="nav-icon fas fa-comments"></i>
-    <p>Messages</p>
-  </NavLink>
-</li> */}
+   
 
 <li className="nav-item">
   <NavLink to="/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
@@ -113,10 +102,9 @@ const Sidebar = () => {
 </li>
 
 
-        <li class="nav-item">
-          <Button variant="danger" className="w-100" onClick={logoutHandler}>
-            <i class="nav-icon fas fa-person"></i>
-            <p>LOGOUT</p>
+<li class="nav-item" onClick={logoutHandler}>
+          <Button variant="danger" className="w-100 btn-sm" >
+          <MdLogout /> LOGOUT
           </Button>
         </li>
         

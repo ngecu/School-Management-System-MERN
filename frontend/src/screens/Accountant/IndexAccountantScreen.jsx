@@ -49,7 +49,74 @@ const IndexAccountantScreen = () => {
 
         <div class="row pt-3">
      
-            <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-4 col-md-6 mb-4">
+
+<div className="row">
+  <div className="col-xl-12 col-md-6 mb-4">
+  <div class="card h-100">
+  <div class="card-body">
+    <div class="row no-gutters align-items-center">
+      <div class="col-xl-12 col-md-12 mr-2">
+      <div class="no-gutters align-items-center">
+        <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
+          <img src={userInfo.userData.photo} width={100} alt="" />
+        </div>
+
+        <div class="mt-2 mb-0 text-muted text-xs">
+         
+        </div>
+        </div>
+      </div>
+      <div class="col-xl-12 col-md-12 mr-2">
+      <table className='w-100'>
+      <tbody>
+<tr>
+<td>Email:</td>
+<th>{userInfo.email}</th>
+</tr>
+
+<tr>
+<td>First Name:</td>
+<th>{userInfo.userData.firstName}</th>
+</tr>
+<tr>
+<td>Last Name:</td>
+<th>{userInfo.userData.lastName}</th>
+</tr>
+<tr>
+<td>Gender:</td>
+<th>{userInfo.userData.gender}</th>
+</tr>
+<tr>
+<td>Date of Birth:</td>
+<th>{userInfo.userData.dob}</th>
+</tr>
+
+<tr>
+<td>Religion:</td>
+<th>{userInfo.userData.religion}</th>
+</tr>
+
+<tr>
+<td>Phone Number:</td>
+<th>{userInfo.userData.phone}</th>
+</tr>
+
+</tbody>
+
+</table>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+
+</div>
+
+</div>
+<div className="col-xl-8 col-md-6 mb-4">
+<div class="col-xl-12 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -68,7 +135,7 @@ const IndexAccountantScreen = () => {
               </div>
             </div>
 
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-12 col-md-6 mb-4">
                           <div class="card h-100">
                             <div class="card-body">
                               <div class="row no-gutters align-items-center">
@@ -87,7 +154,7 @@ const IndexAccountantScreen = () => {
                           </div>
                         </div>
           
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-12 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row align-items-center">
@@ -105,6 +172,8 @@ const IndexAccountantScreen = () => {
                 </div>
               </div>
             </div>
+</div>
+           
         </div>
 
         

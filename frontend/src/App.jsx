@@ -30,6 +30,7 @@ import LecturerProfileScreen from './screens/Lecturer/lecturerProfileScreen';
 import LecturerMyStudentsScreen from './screens/Lecturer/lecturerMyStudentsScreen';
 import LecturerAssignmentsScreen from './screens/Lecturer/lecturerAssignmentsScreen';
 import LecturerGradeScreen from './screens/Lecturer/lecturerGradeScreen';
+import AllAccountants from './screens/Admin/AllAccountants';
 
 const App = () => {
 
@@ -48,8 +49,12 @@ const App = () => {
           <Route path="/admin/admission" component={AdmissionScreen} />
           <Route path="/admin/add_lecturer" component={AddLecturerScreen} />
           <Route path="/admin/allLecturers" component={AllLecturers} />
+          <Route path="/admin/AllAccountants" component={AllAccountants} />
          
           <Route path="/admin/allAttedance" component={AttedanceScreen} />
+
+          
+
           <Route path="/admin/add_accountant" component={AddAccountant} />
           <Route path="/admin/allfee" component={AdminFeeScreen} />
           <Route path="/admin/exam_schedule" component={ExanSchedulerScreen} />

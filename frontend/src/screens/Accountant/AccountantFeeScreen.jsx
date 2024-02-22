@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import { Table, Form,  Row, Col, Pagination } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -22,39 +22,69 @@ const AccountantFeeScreen = () => {
   const { loading, error, fees } = getAllFees;
 
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
-
-   const [message, setMessage] = useState(null);
    const [search, setSearch] = useState(false);
-  const match = useRouteMatch();
-  const history = useHistory();
   const location = useLocation();
   const { pathname } = location;
-
-  const handleSearch = () => {
-    let id ="";
-    setSearch(true)
-    console.log("i am searching students");
-
-        const filteredFees = fees.filter(fee => {
-      return fee.student && fee.student.firstName.toLowerCase() === studentId.toLowerCase();
-    });
-
-    console.log(filteredFees);
-
-    if (studentId.trim() !== '') {
-      dispatch(getFeesByStudent(filteredFees[0].student._id));
-
-    }
-  };
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+ 
 
   useEffect(() => {
     if (userInfo && userInfo._id) {
       dispatch(AllFees());
     }
   }, [dispatch, userInfo]);
+
+  
+  const generateFeeData = () => {
+    const filteredStudents = fees.filter(
+      (student) =>
+      student.student?.admissionNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+
+        student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+  
+    return (
+      <>
+        {currentItems.map((student) => (
+          <React.Fragment key={student?._id}>
+            <tr key={student.student?._id}>
+            <td>{student.student?.admissionNumber} </td>
+            <td>{student.student?.firstName} {student.student?.lastName}</td>
+            <td>{student.amount}</td>
+            <td>{student.status}</td>     
+            <td>{student.dueDate && new Date(student.dueDate).toLocaleDateString()}</td>     
+            <td>{student.updatedAt && new Date(student.updatedAt).toLocaleDateString()}</td>
+            
+
+
+            </tr>
+          </React.Fragment>
+        ))}
+        <Pagination>
+          {[...Array(Math.ceil(filteredStudents.length / itemsPerPage)).keys()].map(
+            (pageNumber) => (
+              <Pagination.Item
+                key={pageNumber + 1}
+                active={pageNumber + 1 === currentPage}
+                onClick={() => paginate(pageNumber + 1)}
+              >
+                {pageNumber + 1}
+              </Pagination.Item>
+            )
+          )}
+        </Pagination>
+      </>
+    );
+  };
+
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -85,92 +115,39 @@ const AccountantFeeScreen = () => {
           <h1>All Fees Collection</h1>
           <Form>
             <Row>
-              <Col md={10}>
+              <Col md={12}>
                 <Form.Control
                   type="text"
-                  placeholder="Enter student Name"
-                  value={studentId}
-                  onChange={(e) => setStudentId(e.target.value)}
+                  placeholder="Enter student Admission No."
+                  value={searchQuery}
+                      onChange={(e) => {
+                        console.log("search data is ",e.target.value);
+                        setSearchQuery(e.target.value)}
+                      }
                 />
               </Col>
-              <Col md={2}>
-                <Button variant="primary" className="w-100" onClick={handleSearch}>
-                  Search
-                </Button>
-              </Col>
+              
             </Row>
           </Form>
 <>
-        {!search ? <Table striped bordered hover responsive className="table-sm">
+        <Table striped bordered hover responsive className="table-sm">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>Student</th>
                     <th>Amount</th>
                     <th>Status</th>
                     <th>Due Date</th>
                   
                     <th>Updated At</th>
-                    <th></th>
+                   
 
                   </tr>
                 </thead>
                 <tbody>
-                  {fees.map((fee) => (
-                    <tr key={fee._id}>
-                      <td>{fee.student?.firstName}</td>
-                      <td>{fee.amount}</td>
-                      <td>
-  <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>
-    {fee.status}
-  </span>
-</td>
-                      <td>{fee.dueDate}</td>
-                     
-                      <td>{fee.updatedAt}</td>
-                      
-                    </tr>
-                  ))}
+                 {generateFeeData()}
                 </tbody>
-              </Table> : <Table striped bordered hover responsive className="table-sm">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Due Date</th>
-                  
-                    <th>Updated At</th>
-                    <th></th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  {fees.map((fee) => (
-                    <tr key={fee._id}>
-                      <td>{fee.student?.firstName}</td>
-                      <td>{fee.amount}</td>
-                      {/* <td>{student.student?.dob && new Date(student.student.dob).toLocaleDateString()}</td> */}
-
-                      <td>
-  <span className={`badge ${fee.status === 'Pending' ? 'badge-danger' : 'badge-success'}`}>
-    {fee.status}
-  </span>
-</td>
-                      <td>{fee.dueDate  && new Date(fee.dueDate).toLocaleDateString()}</td>
-                     
-                      <td>{fee.updatedAt}</td>
-                       <td>
-                        {/* View Button */}
-                        <Button variant="info" size="sm" onClick={() => handleView(fee._id)}>
-                          View
-                        </Button>{' '}
-                       
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-              }
+              </Table> 
               </> 
         </div>
       )}

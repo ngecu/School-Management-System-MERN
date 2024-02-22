@@ -38,8 +38,7 @@
     "react-icons": "^4.10.1",
     "request": "^2.88.2",
     "useragent": "^2.3.0",
-    "ws": "^8.16.0",
-    "nodemon": "^2.0.4"
+    "ws": "^8.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",

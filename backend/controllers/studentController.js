@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
-    console.log(req.body);
     const password = "studentPassword123";
     const {
       email,
@@ -64,7 +63,6 @@ export const admitStudent = asyncHandler(async (req, res) => {
 
     // Find the course by name
     const courseExtracted = await Course.findOne({ _id: course });
-    console.log("course extracted is ",courseExtracted);
     if (!course) {
       res.status(400);
       throw new Error('Course not found');
@@ -72,13 +70,10 @@ export const admitStudent = asyncHandler(async (req, res) => {
 
     // Generate admission number
     const courseCode = courseExtracted.name.substring(0, 3).toUpperCase(); 
-    const courseIndex = await Student.countDocuments({ course }); // Count existing students in the same course
+    const courseIndex = await Student.countDocuments({ course }) + 1; // Count existing students in the same course and increment by 1
     const currentYear = new Date().getFullYear();
     const admissionNumber = `${courseCode}/${courseIndex}/${currentYear}/${year_of_study}`;
-    console.log("Admission Number:", admissionNumber);
 
-    // Create the student with the parent IDs
-    console.log("password is ", password);
 
     const student = await Student.create({
       email,
@@ -126,6 +121,11 @@ export const admitStudent = asyncHandler(async (req, res) => {
         const studentId = student._id;
 
         // Check if school fees already exist for the student
+        const today = new Date();
+
+// Calculate 3 months from today's date
+const dueDate = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
+
         const existingFees = await SchoolFees.findOne({ student: studentId });
 
         if (!existingFees) {
@@ -133,10 +133,9 @@ export const admitStudent = asyncHandler(async (req, res) => {
           await SchoolFees.create({
             student: studentId,
             amount: 30000,
-            dueDate: new Date("2024-12-30"), // Corrected date format
+            dueDate,
             transactionId: uuidv4()
           });
-          console.log('School fees created successfully.');
 
         }
 
@@ -163,7 +162,6 @@ export const admitStudent = asyncHandler(async (req, res) => {
 
 export const getAllStudents = async (req, res) => {
   try {
-    console.log("fetching all students");
     // Fetch all students and populate the 'course' field
     const students = await Student.find().populate('course');
 

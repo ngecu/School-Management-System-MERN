@@ -3,7 +3,6 @@ import Lecturer from '../models/lecturerModel.js';
 import User from '../models/userModel.js';
 
 export const addLecturer = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const {
     email,
     firstName,

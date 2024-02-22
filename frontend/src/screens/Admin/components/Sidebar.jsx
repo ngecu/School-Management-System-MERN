@@ -112,6 +112,14 @@ const Sidebar = () => {
                   <p>Add Lecturer</p>
                 </NavLink>
               </li>
+
+              <li clas
+              s="nav-item">
+              <NavLink to="/admin/allAccountants" class={`nav-link ${location.pathname === '/admin/allAccountants' ? 'active' : ''}`}>
+              <FaChalkboardTeacher />
+                  <p>All Accountants</p>
+                </NavLink>
+              </li>
              
               <li class="nav-item">
               <NavLink to="/admin/add_accountant" class={`nav-link ${location.pathname === '/admin/add_accountant' ? 'active' : ''}`}>

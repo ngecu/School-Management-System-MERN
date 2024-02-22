@@ -44,7 +44,7 @@ const studentFeeScreen = () => {
   const location = useLocation();
   const { pathname } = location;
 
-  console.log(pathname);
+
 
   const dispatch = useDispatch();
 
@@ -73,7 +73,7 @@ const studentFeeScreen = () => {
 
   useEffect(() => {
     if (fees && fees._id) {
-      console.log("school fees is as followins ",fees)
+   
       dispatch(listPaymentTransactionsByFee(fees._id));
     }
   }, [dispatch, fees,userInfo]);
@@ -86,12 +86,12 @@ const studentFeeScreen = () => {
     values.transactionId = v4()
     
     // makePayment(values);
-    console.log(values)
+ 
     if(values.paymentMethod == "mpesa"){
       dispatch(initiateStkPush(values))
     }
     else{
-      console.log(values);
+   
     dispatch(createPaymentTransaction(values))
 
     }
@@ -276,7 +276,7 @@ const studentFeeScreen = () => {
                                     <div class="card-body">
                                       <h5 class="card-title">paid : </h5>
 
-                                      <p class="card-text"> {fees && fees.amount} </p>
+                                      <p class="card-text"> - </p>
                                     </div>
                                   </div>
                                 </div>

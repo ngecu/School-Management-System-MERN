@@ -9,7 +9,6 @@ export const accessChat = asyncHandler(async (req, res) => {
   const { userId } = req.body;
 
   if (!userId) {
-    console.log("UserId param not sent with request");
     return res.sendStatus(400);
   }
 
@@ -53,7 +52,6 @@ export const accessChat = asyncHandler(async (req, res) => {
 
 export const fetchChats = asyncHandler(async (req, res) => {
   try {
-    // console.log("Fetch Chats aPI : ", req);
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
       .populate("groupAdmin", "-password")
@@ -88,7 +86,6 @@ export const createGroupChat = asyncHandler(async (req, res) => {
   }
 
   var users = JSON.parse(req.body.users);
-  // console.log("chatController/createGroups : ", req);
   users.push(req.user);
 
   try {

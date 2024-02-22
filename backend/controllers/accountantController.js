@@ -76,9 +76,8 @@ export const addAccountant = asyncHandler(async (req, res) => {
 
 export const getAllAccountants = async (req, res) => {
   try {
-    console.log("Fetching all Accountants");
     const accountants = await Accountant.find();
-    console.log(accountants);
+  
     res.status(200).json({ success: true, data: accountants });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
