@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
+    console.log(req.body);
     const password = "studentPassword123";
     const {
       email,
@@ -23,6 +24,7 @@ export const admitStudent = asyncHandler(async (req, res) => {
       course,
       parentFullName,
       relationship,
+      parents,
       parentPhone,
       parentEmail,
       status,
@@ -36,7 +38,7 @@ export const admitStudent = asyncHandler(async (req, res) => {
     const studentExists = await Student.findOne({ email });
 
     if (studentExists) {
-      res.status(400);
+      res.status(400).json({error:"Student already exists"});
       throw new Error('Student already exists');
     }
 
@@ -47,6 +49,8 @@ export const admitStudent = asyncHandler(async (req, res) => {
 
     // Check if the parent already exists
     let parent = await Parent.findOne({ parentEmail });
+    let user_parent = await User.findOne({ email:parents[0].email });
+
 
     // If not, create a new parent
     if (!parent) {
@@ -56,6 +60,15 @@ export const admitStudent = asyncHandler(async (req, res) => {
         phone: parentPhone,
         password: password
       });
+
+      if(!user_parent){
+        user_parent = await User.create({
+          firstName:parents[0].fullName,
+          email:parents[0].email,
+          password:"parentPassword123",
+          userType: "Parent",
+        });
+      }
     }
 
     // Add the parent's ID to the array
