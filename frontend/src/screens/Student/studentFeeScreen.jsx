@@ -16,18 +16,16 @@ import { createPaymentTransaction, initiateStkPush, listPaymentTransactionsByFee
 import {v4} from 'uuid'
 import { NavLink } from 'react-router-dom';
 import Topbar from './components/Topbar';
+import { Badge } from 'react-bootstrap';
+
 
 const localizer = momentLocalizer(moment) 
 const { Option } = Select;
 
 const studentFeeScreen = () => {
- const [isCheque, setIsCheque] = useState(false);
-  const [isMpesa, setIsMpesa] = useState(false);
+  const [isMpesa, setIsMpesa] = useState(true);
 
-  const handlePaymentMethodChange = (value) => {
-    setIsCheque(value === 'cheque');
-    setIsMpesa(value === 'mpesa');
-  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -113,6 +111,11 @@ const studentFeeScreen = () => {
       title: 'approved',
       dataIndex: 'approved',
       key: 'approved',
+      render: (approved) => (
+        <Badge variant={approved ? 'success' : 'danger'}>
+          {approved ? 'Approved' : 'Not Approved'}
+        </Badge>
+      ),
     },
     {
       title: 'Amount Remaining',
@@ -130,6 +133,11 @@ const studentFeeScreen = () => {
       key: 'date',
     },
   ];
+// Calculate the total amount paid from transactions where approved is true
+const totalAmountPaid = paymentTransactions
+  .filter(transaction => transaction.approved) // Filter transactions with approved === true
+  .reduce((total, transaction) => total + transaction.amount, 0); // Sum the amounts
+
 
   const data = paymentTransactions.map((transaction) => ({
     key: transaction._id,
@@ -190,36 +198,12 @@ const studentFeeScreen = () => {
         <Form.Item
           name="paymentMethod"
           label="Payment Method"
-          rules={[{ required: true, message: 'Please select the payment method' }]}
+          
         >
-          <Select onChange={handlePaymentMethodChange}>
-            <Select.Option value="mpesa">Mpesa</Select.Option>
-          </Select>
+          <Input placeholder='M-PESA' type='text' value={`M-PESA`}  disabled />
+         
         </Form.Item>
 
-        {isCheque && (
-          <>
-            <Form.Item
-              name="chequeNumber"
-              label="Cheque Number"
-              rules={[{ required: true, message: 'Please enter the cheque number' }]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item
-              name="bankName"
-              label="Bank Name"
-              rules={[{ required: true, message: 'Please select the bank name' }]}
-            >
-              <Select>
-                <Select.Option value="kcb">KCB </Select.Option>
-                <Select.Option value="copb">Coperative Bank</Select.Option>
-                {/* Add more banks as needed */}
-              </Select>
-            </Form.Item>
-          </>
-        )}
 
 {isMpesa && (
   <Form.Item
@@ -265,7 +249,7 @@ const studentFeeScreen = () => {
                                     <div class="card-body">
                                       <h5 class="card-title">Semester Fee : </h5>
 
-                                      <p class="card-text"> {fees && fees.amount} </p>
+                                      <p class="card-text"> {fees && fees.amount + totalAmountPaid} </p>
                                     
                                     </div>
                                   </div>
@@ -276,7 +260,7 @@ const studentFeeScreen = () => {
                                     <div class="card-body">
                                       <h5 class="card-title">paid : </h5>
 
-                                      <p class="card-text"> - </p>
+                                      <p class="card-text"> {totalAmountPaid} </p>
                                     </div>
                                   </div>
                                 </div>
@@ -300,7 +284,6 @@ const studentFeeScreen = () => {
                         <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                                 Transaction History
-                                <a href="/transactions" class="btn btn-sm btn-primary">Show All Transactions</a>
                             </div>
                         </div>
                         <div class="card-body">

@@ -13,7 +13,7 @@ const paymentTransactionSchema = mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      required: true,
+      default: "M-Pesa",
     },
     bank: {
       type: String,

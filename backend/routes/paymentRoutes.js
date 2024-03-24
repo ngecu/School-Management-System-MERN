@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { protect, admin } from '../middleware/authMiddleware.js';
+import { protect, admin, safaricomAccessToken } from '../middleware/authMiddleware.js';
 import {
   createPaymentTransaction,
   getAllPaymentTransactions,
@@ -10,9 +10,10 @@ import {
   getPaymentTransactionByFee,
   togglePaymentApproval
 } from '../controllers/paymentTransactionControllers.js';
+import { initiateSTKPush } from '../controllers/mpesaControllers.js';
 const router = express.Router();
 // Route to create payment transaction
-router.route('/').post(protect, createPaymentTransaction);
+router.route('/').post(protect,safaricomAccessToken, initiateSTKPush);
 
 // Route to get all payment transactions
 router.route('/').get(protect, getAllPaymentTransactions);

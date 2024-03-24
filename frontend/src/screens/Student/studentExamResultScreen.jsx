@@ -138,19 +138,6 @@ const studentExamResultScreen = () => {
 </div>
 
 
-<div class="col-xl-12 col-md-6 mb-4">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Exam Schedule</h5>
-        </div>
-        <div class="card-body">
-            <MyCalendar />
-
-            </div>
-
-            </div>
-
-            </div>
 
            
        

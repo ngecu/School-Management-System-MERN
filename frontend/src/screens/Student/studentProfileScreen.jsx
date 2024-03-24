@@ -5,14 +5,14 @@ import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { Link, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar'
-import { Form, Input, Select,  Button, Col, Row } from 'antd';
+import { Form, Input, message,  Button, Col, Row } from 'antd';
 import { listSchools } from '../../actions/schoolActions';
 import { listCourses } from '../../actions/courseActions';
 import {useDropzone} from 'react-dropzone'
 import { uploadFile } from '../../actions/cloudinaryAtions';
 import { updateUserProfile } from '../../actions/userActions';
 import Topbar from './components/Topbar';
-
+import moment from 'moment';
 
 const StudentProfileScreen = () => {
   const [errorMsg, setErrorMsg] = useState('');
@@ -52,7 +52,7 @@ const StudentProfileScreen = () => {
     console.log('Received values:', values);
 
     if (values.password && values.password !== values.confirmPassword) {
-      setErrorMsg(`Password and Confirm Password do not match`);
+      message.error(`Password and Confirm Password do not match`);
       return;
     } else {
       if (selectedImages.length > 0) {
@@ -81,6 +81,7 @@ const StudentProfileScreen = () => {
 
         dispatch(updateUserProfile(values))
           .then(() => {
+            console.log("heelo");
             // Handle success
             message.success('Profile updated successfully!');
           })
@@ -246,7 +247,7 @@ const [selectedImages, setSelectedImages] = useState([]);
           },
         ]}
       >
-        <Input />
+        <Input disabled/>
       </Form.Item>
                       </Col>
 
@@ -262,7 +263,7 @@ const [selectedImages, setSelectedImages] = useState([]);
           },
         ]}
       >
-        <Input />
+        <Input disabled />
       </Form.Item>
                       </Col>
 
@@ -284,7 +285,7 @@ const [selectedImages, setSelectedImages] = useState([]);
                       <Col md={6}>
                       <Form.Item
         label="Confirm Password"
-        name="c_password"
+        name="confirmPassword"
         rules={[
           {
             required: false,

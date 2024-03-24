@@ -49,40 +49,46 @@ export const getPaymentTransactionByFee = asyncHandler(async (req, res) => {
 // @route   POST /api/paymentTransactions
 // @access  Private (Admin)
 export const createPaymentTransaction = asyncHandler(async (req, res) => {
-  const {
-    schoolFees,
-    amount,
-    paymentMethod,
-    bank,
-    phone,
-    transactionDate,
-    transactionId,
-    approved,
-  } = req.body;
-
-  console.log(req.body);
-
-  const paymentTransaction = await PaymentTransaction.create({
-    schoolFees,
-    amount,
-    paymentMethod,
-    bank,
-    phone,
-    transactionDate,
-    transactionId,
-    approved,
-  });
-
-  if (paymentTransaction) {
-    res.status(201).json({
-      success: true,
-      data: paymentTransaction,
-      message: 'Payment transaction created successfully',
+  try {
+    console.log("req body is ",req.body);
+    const {
+      schoolFees,
+      amount,
+      paymentMethod,
+      bank,
+      phone,
+      transactionDate,
+      transactionId,
+      approved,
+    } = req.body;
+  
+    console.log(req.body);
+  
+    const paymentTransaction = await PaymentTransaction.create({
+      schoolFees,
+      amount,
+      paymentMethod,
+      bank,
+      phone,
+      transactionDate,
+      transactionId,
+      approved,
     });
-  } else {
-    res.status(400);
-    throw new Error('Invalid payment transaction data');
+  
+    if (paymentTransaction) {
+      res.status(201).json({
+        success: true,
+        data: paymentTransaction,
+        message: 'Payment transaction created successfully',
+      });
+    } else {
+      res.status(400);
+      throw new Error('Invalid payment transaction data');
+    }
+  } catch (error) {
+    console.error("error is ",error)
   }
+ 
 });
 
 // @desc    Update a payment transaction by ID

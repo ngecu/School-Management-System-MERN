@@ -250,7 +250,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     }
 
     const response = await axios.put(`${base_url}/update-profile`, user, config)
-
+    console.log("respons ie ",response);
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,
       payload: response.data,

@@ -65,7 +65,7 @@ const App = () => {
           <Route path="/student/my_attendance" component={studentAttendanceScreen} />
           <Route path="/student/my_exam" component={studentExamResultScreen} />
           <Route path="/student/my_fees" component={studentFeeScreen} />
-          <Route path="/lecturer/my_profile" component={StudentProfileScreen} />
+          <Route path="/student/my_profile" component={StudentProfileScreen} />
           <Route path="/student/invoice" component={studentInvoiceScreen} />
 
           {/* account routes  */}

@@ -95,7 +95,7 @@ const Sidebar = () => {
    
 
 <li className="nav-item">
-  <NavLink to="/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
+  <NavLink to="/student/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
     <i className="nav-icon fas fa-user"></i>
     <p>Profile</p>
   </NavLink>
