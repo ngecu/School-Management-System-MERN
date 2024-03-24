@@ -80,6 +80,15 @@ const AllLecturers = () => {
 
     );
 
+    if (filteredLecturers.length === 0) {
+      return (
+        <tr>
+          <td colSpan="8"><div className="aler alert-danger">
+          No Lecturers found
+            </div> </td>
+        </tr>
+      );
+    }
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentLecturers = filteredLecturers.slice(indexOfFirstItem, indexOfLastItem);

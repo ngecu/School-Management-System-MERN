@@ -51,8 +51,9 @@ const Sidebar = () => {
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src={userInfo && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
-        </div>
+        {userInfo && userInfo.userData.photo && (
+  <img src={userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
+)}        </div>
         <div class="info">
           <a  class="d-block">{userInfo && userInfo.firstName}</a>
         </div>

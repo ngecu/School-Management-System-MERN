@@ -77,8 +77,17 @@ export const addAccountant = asyncHandler(async (req, res) => {
 export const getAllAccountants = async (req, res) => {
   try {
     const accountants = await Accountant.find();
-  
-    res.status(200).json({ success: true, data: accountants });
+    
+    // Fetch user data associated with each accountant
+    const accountantsWithUserData = await Promise.all(accountants.map(async (accountant) => {
+      const associatedUser = await User.findOne({ email: accountant.email });
+      return {
+        accountant,
+        user: associatedUser,
+      };
+    }));
+
+    res.status(200).json({ success: true, data: accountantsWithUserData });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

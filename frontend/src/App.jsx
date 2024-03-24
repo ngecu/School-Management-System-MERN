@@ -7,7 +7,7 @@ import Footer from './components/Footer'
 import LoginScreen from './screens/LoginScreen'
 import LostPasswordScreen from './screens/LostPasswordScreen'
 import NewPasswordScreen from './screens/NewPasswordScreen'
-import ChatScreen from './screens/ChatScreen'
+
 import AllStudents from './screens/Admin/AllStudentsScreen';
 import AdmissionScreen from './screens/Admin/AdmissionScreen';
 import AddLecturerScreen from './screens/Admin/AddLecturerScreen';
@@ -59,10 +59,6 @@ const App = () => {
           <Route path="/admin/allfee" component={AdminFeeScreen} />
           <Route path="/admin/exam_schedule" component={ExanSchedulerScreen} />
           <Route path="/admin/exam_grade" component={ExamGradingScreen} />
-          <Route path="/admin/chat" component={ChatScreen} />
-
-
-          <Route path="/student/chat" component={ChatScreen} />
 
 
           {/* students routes  */}

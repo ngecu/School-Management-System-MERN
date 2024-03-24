@@ -16,9 +16,7 @@ const AllAccountants = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  useEffect(() => {
-    dispatch(listAccountants());
-  }, [dispatch]);
+
 
   const accountantList = useSelector((state) => state.accountantList);
   const { loading, error, accountants } = accountantList;
@@ -27,16 +25,27 @@ const AllAccountants = () => {
   const { loading: loadingDelete, error: errorDelete, success: successDelete } = accountantDelete;
 
 
-  const userToggleActive = useSelector((state) => state.userToggleActive);
-const successToggle = userToggleActive && userToggleActive.success;
+  const userTogleActive = useSelector((state)=> state.userTogleActive)
+
+
+const {
+  success:successToggle
+} = userTogleActive
+
 
   useEffect(() => {
-    if (successDelete || successToggle) {
-      dispatch(listAccountants());
-    }
-  }, [dispatch, successDelete, successToggle]);
+    dispatch(listAccountants());
+  }, [dispatch,successToggle,successDelete]);
+
+
+  const handleToggleSuccess = () => {
+    // Reset the success flag after handling the success action
+    dispatch({ type: 'USER_TOGGLE_SUCCESS_RESET' });
+  };
+
 
   const showModal = (data) => {
+    console.log("show modal ",data);
     setAccountantData(data);
     setIsModalOpen(true);
   };
@@ -56,15 +65,16 @@ const successToggle = userToggleActive && userToggleActive.success;
   };
 
   const toggleStatus = (userId) => {
+    console.log(userId);
     dispatch(toggleUserActive(userId));
   };
 
   const generateAccountantData = () => {
     const filteredAccountants = accountants.filter(
       (accountant) =>
-        accountant.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        accountant.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        accountant.email.toLowerCase().includes(searchQuery.toLowerCase())
+        accountant.accountant.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        accountant.accountant.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        accountant.accountant.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     if (filteredAccountants.length === 0) {
@@ -85,36 +95,34 @@ const successToggle = userToggleActive && userToggleActive.success;
       <>
         {currentItems.map((accountant) => (
           <tr key={accountant._id}>
-            <td>{accountant.firstName} {accountant.lastName}</td>
-            <td>{accountant.gender}</td>
+            <td>{accountant.accountant.firstName} {accountant.lastName}</td>
+            <td>{accountant.accountant.gender}</td>
            
-            <td>{accountant.email}</td>
-            <td>{accountant.dob && new Date(accountant.dob).toLocaleDateString()}</td>
+            <td>{accountant.accountant.email}</td>
+            <td>{accountant.accountant.dob && new Date(accountant.accountant.dob).toLocaleDateString()}</td>
             <td>
-              {accountant.isActive ? (
+              {accountant.user.isActive ? (
                 <span className="badge badge-success">Active</span>
               ) : (
                 <span className="badge badge-danger">Inactive</span>
               )}
             </td>
             <td>
-              <button className="btn btn-success btn-sm" onClick={() => showModal(accountant)}>
+              {/* <button className="btn btn-success btn-sm" onClick={() => showModal(accountant.accountant)}>
                 <i className="fas fa-folder"></i> View
-              </button>
+              </button> */}
               <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(accountant._id)}>
                 <i className="fas fa-trash"></i> Delete
               </button>
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={() => toggleStatus(accountant._id)}
-              >
-                {accountant.isActive ? (
-                  <i className="fas fa-times"></i>
-                ) : (
-                  <i className="fas fa-check"></i>
-                )}{' '}
-                {accountant.isActive ? 'Deactivate' : 'Activate'}
-              </button>
+              {accountant.user?.isActive ? (
+                <button className="btn btn-warning btn-sm" onClick={() => toggleStatus(accountant.user._id)}>
+                  <i className="fas fa-times"></i> Deactivate
+                </button>
+              ) : (
+                <button className="btn btn-primary btn-sm" onClick={() => toggleStatus(accountant.user._id)}>
+                  <i className="fas fa-check"></i> Activate
+                </button>
+              )}
             </td>
           </tr>
         ))}
@@ -153,7 +161,7 @@ const successToggle = userToggleActive && userToggleActive.success;
                       <Form inline>
                         <Form.Control
                           type="text"
-                          placeholder="Search"
+                          placeholder="Search by Name..."
                           className="mr-2"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
