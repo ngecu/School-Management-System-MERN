@@ -155,6 +155,7 @@ export const updateAccountant = (id, updatedAccountantData) => async (dispatch, 
 // Delete Accountant
 export const deleteAccountant = (id) => async (dispatch, getState) => {
   try {
+    console.log("accountant to delet is ",id);
     dispatch({ type: ACCOUNTANT_DELETE_REQUEST });
 
     const {

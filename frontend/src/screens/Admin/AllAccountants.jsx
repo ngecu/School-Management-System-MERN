@@ -111,7 +111,7 @@ const {
               {/* <button className="btn btn-success btn-sm" onClick={() => showModal(accountant.accountant)}>
                 <i className="fas fa-folder"></i> View
               </button> */}
-              <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(accountant._id)}>
+              <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(accountant.accountant._id)}>
                 <i className="fas fa-trash"></i> Delete
               </button>
               {accountant.user?.isActive ? (

@@ -22,9 +22,12 @@ const AccountantPaymentScreen = () => {
   const paymentTransactionList = useSelector((state) => state.paymentTransactionList); // Assuming you have a fees reducer
   const { loading, error, paymentTransactions } = paymentTransactionList;
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
+  const paymentTogleActive = useSelector((state)=> state.paymentTransactionUpdate)
+  const {
+    success:successToggle
+  } = paymentTogleActive
+
+
 
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,16 +38,10 @@ const AccountantPaymentScreen = () => {
     if (userInfo && userInfo._id) {
       dispatch(listPaymentTransactions());
     }
-  }, [dispatch, userInfo]);
+  }, [dispatch, userInfo,successToggle]);
 
   const ApprovePayment =(id,school_fee_id)=>{
-    console.log(school_fee_id);
-    console.log(id);
-
     dispatch(togglePaymentApproval(id,school_fee_id));
-    dispatch(listPaymentTransactions());
-
-    
   }
 
   const generateTransactionData = () => {
@@ -62,30 +59,32 @@ const AccountantPaymentScreen = () => {
   
     return (
       <>
-        {currentItems.map((transaction) => (
-          <tr key={transaction._id}>
-            <td>{transaction.transactionId}</td>
-            <td>{transaction.schoolFees.student.admissionNumber}</td>
-            <td>{transaction.schoolFees.student.firstName} {transaction.schoolFees.student.lastName}</td>
-            <td>{transaction.amount}</td>
-            <td>{transaction.schoolFees.amount}</td>
-            <td>
-              <span className={`badge ${transaction.approved !== true ? 'badge-danger' : 'badge-success'}`}>
-                {`${transaction.approved}`}
-              </span>
-            </td>
-            <td>{transaction.paymentMethod}</td>
-            <td>{transaction.createdAt && new Date(transaction.createdAt).toLocaleDateString()}</td>
-            <td>{transaction.updatedAt && new Date(transaction.updatedAt).toLocaleDateString()}</td>
-            <td>
-              {transaction.approved !== true && (
-                <Button variant="warning" size="sm" onClick={() => ApprovePayment(transaction._id, transaction.schoolFees._id)}>
-                  APPROVE
-                </Button>
-              )}
-            </td>
-          </tr>
-        ))}
+      {currentItems.map((transaction) => (
+  <tr key={transaction._id}>
+    <td>{transaction.transactionId}</td>
+    <td>{transaction.schoolFees.student.admissionNumber}</td>
+    <td>{transaction.schoolFees.student.firstName} {transaction.schoolFees.student.lastName}</td>
+    <td>{transaction.amount}</td>
+    <td>{transaction.schoolFees.amount - transaction.amount}</td>
+    <td>
+      <span className={`badge ${transaction.approved !== true ? 'badge-danger' : 'badge-success'}`}>
+        {`${transaction.approved}`}
+      </span>
+    </td>
+    <td>{transaction.paymentMethod}</td>
+    <td>{transaction.createdAt && new Date(transaction.createdAt).toLocaleDateString()}</td>
+    <td>{transaction.updatedAt && new Date(transaction.updatedAt).toLocaleDateString()}</td>
+    <td>
+      {transaction.approved !== true && (
+        <Button variant="warning" size="sm" onClick={() => ApprovePayment(transaction._id, transaction.schoolFees._id)}>
+          APPROVE
+        </Button>
+      )}
+    </td>
+    
+  </tr>
+))}
+
         <Pagination>
           {[...Array(Math.ceil(filteredTransactions.length / itemsPerPage)).keys()].map((pageNumber) => (
             <Pagination.Item

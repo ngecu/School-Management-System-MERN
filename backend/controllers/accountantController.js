@@ -155,8 +155,15 @@ export const deleteAccountant = asyncHandler(async (req, res) => {
   const accountant = await Accountant.findById(req.params.id);
 
   if (accountant) {
+    // Find associated User and delete it
+    const associatedUser = await User.findOne({ email: accountant.email });
+  
+    if (associatedUser) {
+      await associatedUser.remove();
+    }
+  
     await accountant.remove();
-    res.json({ message: 'Accountant removed' });
+    res.json({ success: true, message: 'Accountant removed' });
   } else {
     res.status(404);
     throw new Error('Accountant not found');
