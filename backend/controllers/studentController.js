@@ -7,6 +7,7 @@ import SchoolFees from '../models/schoolFeesModel.js';
 import Course from '../models/courseModel.js';
 
 import { v4 as uuidv4 } from 'uuid';
+import ExamResult from '../models/examResultModel.js';
 
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
@@ -205,12 +206,19 @@ export const deleteStudent = asyncHandler(async (req, res) => {
      // Find associated User and delete it
   const associatedUser = await User.findOne({ email: student.email });
   const associatedSchoolFees = await SchoolFees.findOne({student:student._id})
-  
+  const associatedExamResults = await ExamResult.find({student:student._id})
+
   if (associatedUser) {
     await associatedUser.remove();
   }
   if (associatedUser) {
     await associatedSchoolFees.remove()
+  }
+  if (associatedExamResults.length > 0) {
+    // Iterate over each associated exam result and remove it
+    for (const examResult of associatedExamResults) {
+      await examResult.remove();
+    }
   }
 
     await student.remove();

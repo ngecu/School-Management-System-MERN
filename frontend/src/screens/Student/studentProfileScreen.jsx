@@ -173,7 +173,7 @@ const [selectedImages, setSelectedImages] = useState([]);
   </tr>
   <tr>
     <td>Date of Birth:</td>
-    <th>{userInfo.userData.dob}</th>
+    <th>{new Date(userInfo.userData.dob).toLocaleDateString()}</th>
   </tr>
 
   <tr>

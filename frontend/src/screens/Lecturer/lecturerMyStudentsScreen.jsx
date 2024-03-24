@@ -1,24 +1,19 @@
 import React, {useCallback, useState, useEffect } from 'react';
-import { Table,Form,Button } from 'react-bootstrap';
+import { Table,Form,Pagination } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../../components/Message';
-import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
+
 import Sidebar from './components/Sidebar'
-import {  Input, Select  , Col, Row } from 'antd';
+
 import { getSchoolDetails, listSchools } from '../../actions/schoolActions';
-import { listCourses } from '../../actions/courseActions';
-import {useDropzone} from 'react-dropzone'
-import { uploadFile } from '../../actions/cloudinaryAtions';
-import { updateUserProfile } from '../../actions/userActions';
 import Topbar from './components/Topbar';
 import { listStudents } from '../../actions/studentActions';
 
 
 const LecturerMyStudentsScreen = () => {
-  
-
   const dispatch = useDispatch();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -39,8 +34,72 @@ const LecturerMyStudentsScreen = () => {
   const filteredStudents =
     students &&
     students.filter((student) =>
-      userInfo.userData.courses.includes(student?.course?._id)
+      userInfo.userData.courses.includes(student?.student?.course?._id)
     );
+
+    const generateStudentData = () => {
+      const newFilteredStudents = filteredStudents && filteredStudents.filter(
+        (student) =>
+        userInfo.userData.courses.includes(student?.student?.course?._id)
+
+        && (
+
+        student.student?.admissionNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
+      ));
+    
+      if (newFilteredStudents && newFilteredStudents.length === 0) {
+        return (
+          <tr>
+            <td colSpan="8"><div className="aler alert-danger">
+            No students found
+              </div> </td>
+          </tr>
+        );
+      }
+    
+      const indexOfLastItem = currentPage * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const currentItems = newFilteredStudents && newFilteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+    
+      return (
+        <>
+          {currentItems && currentItems.map((student) => (
+            <React.Fragment key={student?._id}>
+              <tr key={student.student?._id}>
+                <td>{student.student?.admissionNumber} </td>
+                <td>{student.student?.firstName} {student.student?.lastName}</td>
+                <td>{student.student?.gender}</td>
+                <td>{student.student?.course?.name}</td>     
+                <td>{student.student?.dob && new Date(student.student.dob).toLocaleDateString()}</td>
+                <td>{student.student?.email}</td>
+    
+              
+              </tr>
+            </React.Fragment>
+          ))}
+          { currentItems && currentItems.length > 0 && <>
+            <Pagination>
+            {[...Array(Math.ceil(currentItems.length / itemsPerPage)).keys()].map(
+              (pageNumber) => (
+                <Pagination.Item
+                  key={pageNumber + 1}
+                  active={pageNumber + 1 === currentPage}
+                  onClick={() => paginate(pageNumber + 1)}
+                >
+                  {pageNumber + 1}
+                </Pagination.Item>
+              )
+            )}
+          </Pagination>
+
+          </>}
+         
+        </>
+      );
+    };
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -74,7 +133,7 @@ const LecturerMyStudentsScreen = () => {
               <div class="col-xl-4 col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                 My Students: {students && <>{filteredStudents .length}</>}
+                 My Students: {students && <>{filteredStudents.length}</>}
                     </div>
                     </div>
             </div>
@@ -89,7 +148,14 @@ const LecturerMyStudentsScreen = () => {
 
               </div>
               <div className="col-md-6">
-              <Form.Control type="text" placeholder="Search" className="mr-2" />
+              <Form.Control 
+              type="text" 
+              placeholder="Search student" 
+              className="mr-2"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+
+              />
 
               </div>
             
@@ -104,28 +170,20 @@ const LecturerMyStudentsScreen = () => {
           <Table bordered hover responsive>
             <thead>
               <tr>
+              <th>Admin No.</th>
+
                 <th>Name</th>
                 <th>Gender</th>
                 <th>Course</th>
          
-                <th>Address</th>
+                
                 <th>Date Of Birth</th>
             
                 <th>E-mail</th>
               </tr>
             </thead>
             <tbody style={{ overflowY: 'auto', maxHeight: '400px' }}>
-                        {filteredStudents &&
-                          filteredStudents.map((student) => (
-                            <tr key={student.id}>
-                              <td>{student.student.firstName} {student.lastName}</td>
-                              <td>{student.gender}</td>
-                              <td>{student?.course.name}</td>
-                              <td>{student.address}</td>
-                              <td>{student.dob}</td>
-                              <td>{student.email}</td>
-                            </tr>
-                          ))}
+                        {generateStudentData()}
                       </tbody>
           </Table>
           
