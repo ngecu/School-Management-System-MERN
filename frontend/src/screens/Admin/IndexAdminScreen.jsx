@@ -221,26 +221,6 @@ const data = {
               </div>
              
             </div>
-
-            <div class="col-xl-12 col-md-6 mb-4">
-
-<div className="row">
-  <div className="col-xl-12 col-md-6 mb-4">
-  <div class="card h-100">
-  <div class="card-body">
-    <div class="row no-gutters align-items-center">
-      <div class="col-xl-12 col-md-12 mr-2">
-      
-      </div>
-     
-    </div>
-  </div>
-</div>
-  </div>
-
-</div>
-
-</div>
         
         </div>
         </div>

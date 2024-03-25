@@ -35,7 +35,7 @@ export const admitStudent = asyncHandler(async (req, res) => {
       mos
     } = req.body;
 
-    // Check if the student already exists
+//     // Check if the student already exists
     const studentExists = await Student.findOne({ email });
 
     if (studentExists) {
@@ -43,17 +43,17 @@ export const admitStudent = asyncHandler(async (req, res) => {
       throw new Error('Student already exists');
     }
 
-    // Create an array to store parent IDs
+//     // Create an array to store parent IDs
     const parentIds = [];
 
-    // Iterate through parents array and create/update parent documents
+//     // Iterate through parents array and create/update parent documents
 
     // Check if the parent already exists
     let parent = await Parent.findOne({ parentEmail });
     let user_parent = await User.findOne({ email:parents[0].email });
 
 
-    // If not, create a new parent
+//     // If not, create a new parent
     if (!parent) {
       parent = await Parent.create({
         email: parentEmail,
@@ -68,21 +68,23 @@ export const admitStudent = asyncHandler(async (req, res) => {
           email:parents[0].email,
           password:"parentPassword123",
           userType: "Parent",
+          isActive:true
+
         });
       }
     }
 
-    // Add the parent's ID to the array
+//     // Add the parent's ID to the array
     parentIds.push(parent._id);
 
-    // Find the course by name
+//     // Find the course by name
     const courseExtracted = await Course.findOne({ _id: course });
     if (!course) {
       res.status(400);
       throw new Error('Course not found');
     }
 
-    // Generate admission number
+//     // Generate admission number
     const courseCode = courseExtracted.name.substring(0, 3).toUpperCase(); 
     const courseIndex = await Student.countDocuments({ course }) + 1; // Count existing students in the same course and increment by 1
     const currentYear = new Date().getFullYear();

@@ -18,11 +18,8 @@ import accountRoutes from './routes/accountantRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import feeRoutes from './routes/feeRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
-import timetableRoutes from './routes/timetableRoutes.js';
 import examRoutes from './routes/examRoutes.js'
 import examResultsRoutes from './routes/examResultRoutes.js'
-import assignmentRoutes from './routes/assignmentRoutes.js'
-import assignmentSubmissionRoutes from './routes/assignmentSubmissionRoutes.js'
 
 import cors from 'cors'
 
@@ -55,12 +52,10 @@ app.use('/api/accountants', accountRoutes)
 app.use('/api/admin', adminRoutes)
 app.use("/api/schoolfees", feeRoutes);
 app.use("/api/payment", paymentRoutes);
-app.use('/api/timetable', timetableRoutes);
 app.use('/api/mpesa',mpesaRoutes)
 app.use('/api/exams',examRoutes)
 app.use('/api/exam-results',examResultsRoutes)
-app.use('/api/assignments',assignmentRoutes)
-app.use('/api/submissiions',assignmentSubmissionRoutes)
+
 
 
 

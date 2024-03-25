@@ -56,6 +56,7 @@ import {
   parentDetailsReducer,
   parentUpdateReducer,
   parentDeleteReducer,
+  parentStudentListReducer,
 } from './reducers/parentReducers';
 
 import {
@@ -167,6 +168,7 @@ const reducer = combineReducers({
   parentDetails: parentDetailsReducer,
   parentUpdate: parentUpdateReducer,
   parentDelete: parentDeleteReducer,
+  parentStudentList:parentStudentListReducer,
 
     // Attendance reducers
     attendanceCreate: attendanceCreateReducer,

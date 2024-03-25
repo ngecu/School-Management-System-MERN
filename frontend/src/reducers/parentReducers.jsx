@@ -26,6 +26,10 @@ import {
     PARENT_DELETE_REQUEST,
     PARENT_DELETE_SUCCESS,
     PARENT_DELETE_FAIL,
+    PARENT_STUDENT_LIST_REQUEST,
+    PARENT_STUDENT_LIST_RESET,
+    PARENT_STUDENT_LIST_FAIL,
+    PARENT_STUDENT_LIST_SUCCESS,
   } from '../constants/parentConstants';
   
   export const parentCreateReducer = (state = {}, action) => {
@@ -51,6 +55,21 @@ import {
         return { loading: false, error: action.payload };
       case PARENT_LIST_RESET:
         return { parents: [] };
+      default:
+        return state;
+    }
+  };
+
+  export const parentStudentListReducer = (state = { students: [] }, action) => {
+    switch (action.type) {
+      case PARENT_STUDENT_LIST_REQUEST:
+        return { loading: true, students: [] };
+      case PARENT_STUDENT_LIST_SUCCESS:
+        return { loading: false, students: action.payload };
+      case PARENT_STUDENT_LIST_FAIL:
+        return { loading: false, error: action.payload };
+      case PARENT_STUDENT_LIST_RESET:
+        return { students: [] };
       default:
         return state;
     }

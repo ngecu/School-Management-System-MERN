@@ -14,6 +14,7 @@ import IndexAccountantScreen from './Accountant/IndexAccountantScreen'
 import IndexLecturerScreen from './Lecturer/IndexLecturerScreen'
 
 import IndexStudentScreen from './Student/IndexStudentScreen'
+import IndexParentScreen from './Parent/IndexParentScreen'
 
 
 const LoginScreen = ({ location, history }) => {
@@ -159,21 +160,7 @@ const LoginScreen = ({ location, history }) => {
 
  </Form>
 
-{/* 
 
-                   <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
-                       <div class="border-bottom w-100 ml-5"></div>
-                       <span class="px-2 small text-muted font-weight-bold text-muted">OR</span>
-                       <div class="border-bottom w-100 mr-5"></div>
-                   </div>
-
-                   <div class="d-grid mb-2 google-btn-holder">
-                  
-               <button class="btn  btn-google w-100  btn-login fw-bold text-uppercase" disabled={true} type="submit" style={{
- color: "white",backgroundColor: "#ea4335"}}>
-                 <i class="fab fa-google me-2"></i> Login in with Google
-               </button>
-             </div> */}
 
 <div className="text-center">
 <Link to="/lost-password">Lost Your Password?</Link>
@@ -198,6 +185,8 @@ const LoginScreen = ({ location, history }) => {
     {userInfo.userType === 'Accountant' && <IndexAccountantScreen />}
     {userInfo.userType === 'Lecturer' && <IndexLecturerScreen />}
     {userInfo.userType === 'Student' && <IndexStudentScreen />}
+    {userInfo.userType === 'Parent' && <IndexParentScreen />}
+
   
   </>
 )}

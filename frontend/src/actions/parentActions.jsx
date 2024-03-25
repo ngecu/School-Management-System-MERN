@@ -15,6 +15,9 @@ import {
   PARENT_DELETE_REQUEST,
   PARENT_DELETE_SUCCESS,
   PARENT_DELETE_FAIL,
+  PARENT_STUDENT_LIST_REQUEST,
+  PARENT_STUDENT_LIST_FAIL,
+  PARENT_STUDENT_LIST_SUCCESS,
 } from '../constants/parentConstants';
 
 const base_url = `http://localhost:5000/api/parents`
@@ -63,6 +66,34 @@ export const listParents = () => async (dispatch,getState) => {
   } catch (error) {
     dispatch({
       type: PARENT_LIST_FAIL,
+      payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+    });
+  }
+};
+
+export const listParentStudents = (parentID) => async (dispatch,getState) => {
+  try {
+    dispatch({ type: PARENT_STUDENT_LIST_REQUEST });
+
+    const { userLogin: { userInfo } } = getState();
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+
+    // Make API request to get list of parents
+    const { data } = await axios.get(`${base_url}/${parentID}`,config);
+    console.log("students from actions are ",data);
+    dispatch({
+      type: PARENT_STUDENT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PARENT_STUDENT_LIST_FAIL,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
   }

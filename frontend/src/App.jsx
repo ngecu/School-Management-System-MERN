@@ -31,6 +31,8 @@ import LecturerMyStudentsScreen from './screens/Lecturer/lecturerMyStudentsScree
 import LecturerAssignmentsScreen from './screens/Lecturer/lecturerAssignmentsScreen';
 import LecturerGradeScreen from './screens/Lecturer/lecturerGradeScreen';
 import AllAccountants from './screens/Admin/AllAccountants';
+import ParentProfileScreen from './screens/Parent/parentProfileScreen';
+import parentFeeScreen from './screens/Parent/parentFeeScreen';
 
 const App = () => {
 
@@ -68,6 +70,14 @@ const App = () => {
           <Route path="/student/my_profile" component={StudentProfileScreen} />
           <Route path="/student/invoice" component={studentInvoiceScreen} />
 
+
+          {/* parents routes  */}
+          <Route path="/student/my_attendance" component={studentAttendanceScreen} />
+          <Route path="/parent/exam" component={studentExamResultScreen} />
+          <Route path="/parent/fees" component={parentFeeScreen} />
+          <Route path="/parent/my_profile" component={ParentProfileScreen} />
+
+
           {/* account routes  */}
           <Route path="/accountant/fee" component={AccountantFeeScreen} />
           <Route path="/accountant/payments" component={AccountantPaymentScreen} />
@@ -78,6 +88,9 @@ const App = () => {
        <Route path="/lecturer/assignments" component={LecturerAssignmentsScreen} />
        <Route path="/lecturer/grades" component={LecturerGradeScreen} />
        <Route path="/lecturer/profile" component={LecturerProfileScreen} />
+
+       {/* lecrurer routes  */}
+
 
       </main>
       
