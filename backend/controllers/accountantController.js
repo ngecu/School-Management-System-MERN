@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Accountant from '../models/accountantModel.js';
 import User from '../models/userModel.js';
+import { sendWelcomeEmail } from '../utils/sendEmail.js';
 
 export const addAccountant = asyncHandler(async (req, res) => {
   const password = "accountantPassword123";
@@ -60,6 +61,8 @@ export const addAccountant = asyncHandler(async (req, res) => {
     })
 
     if (user) {
+      sendWelcomeEmail(user,password,req.headers['user-agent'])
+
       res.status(200).json({
         message: "Accountant registered successfully",
       })

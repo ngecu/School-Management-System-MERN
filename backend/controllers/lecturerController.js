@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Lecturer from '../models/lecturerModel.js';
 import User from '../models/userModel.js';
+import { sendWelcomeEmail } from '../utils/sendEmail.js';
 
 export const addLecturer = asyncHandler(async (req, res) => {
   const {
@@ -57,10 +58,10 @@ export const addLecturer = asyncHandler(async (req, res) => {
       email,
       password,
       userType: "Lecturer",
-      // Add other relevant fields based on your User schema
     });
 
     if (user) {
+      sendWelcomeEmail(user,password,req.headers['user-agent'])
       res.status(200).json({
         message: "Lecturer registered successfully",
       });

@@ -8,6 +8,7 @@ import Course from '../models/courseModel.js';
 
 import { v4 as uuidv4 } from 'uuid';
 import ExamResult from '../models/examResultModel.js';
+import { sendWelcomeEmail } from '../utils/sendEmail.js';
 
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
@@ -71,6 +72,10 @@ export const admitStudent = asyncHandler(async (req, res) => {
           isActive:true
 
         });
+
+        sendWelcomeEmail(user_parent,password,req.headers['user-agent'])
+
+
       }
     }
 
@@ -133,6 +138,7 @@ export const admitStudent = asyncHandler(async (req, res) => {
       });
 
       if (user) {
+        sendWelcomeEmail(user,password,req.headers['user-agent'])
 
         const studentId = student._id;
 
