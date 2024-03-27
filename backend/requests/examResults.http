@@ -1,0 +1,12 @@
+GET http://localhost:5000/api/exam-results
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDE2Zjg2MWYxMzBmYzBhY2QxNDRiYSIsImlhdCI6MTcxMTUyNzYwMiwiZXhwIjoxNzE0MTE5NjAyfQ.v4BwGwcund1mLtOp3NOwceH0GN4OOEnEeQy3ZbkD1h8
+
+###
+POST http://localhost:5000/api/exam-results/student/
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MDE2Zjg2MWYxMzBmYzBhY2QxNDRiYSIsImlhdCI6MTcxMTUyNzYwMiwiZXhwIjoxNzE0MTE5NjAyfQ.v4BwGwcund1mLtOp3NOwceH0GN4OOEnEeQy3ZbkD1h8
+
+{
+    "students":["66016f851f130fc0acd144b6"]
+}

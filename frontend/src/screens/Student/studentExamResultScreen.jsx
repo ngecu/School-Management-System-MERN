@@ -11,6 +11,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Topbar from './components/Topbar';
+import { getExamResultsByStudents } from '../../actions/examResultActions';
 
 
 const localizer = momentLocalizer(moment) // or globalizeLocalizer
@@ -27,13 +28,6 @@ const MyCalendar = (props) => (
 )
 
 const studentExamResultScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
-  const match = useRouteMatch();
-  const history = useHistory();
 
   const location = useLocation();
   const { pathname } = location;
@@ -42,28 +36,21 @@ const studentExamResultScreen = () => {
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
+
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
+  const examResultsByStudents = useSelector(state => state.examResultsByStudents);
+  const { loading,error,examResults} = examResultsByStudents;
 
-  const localizer = momentLocalizer(moment) // or globalizeLocalizer
+  console.log("user info ",userInfo);
+  const students = [userInfo.userData._id]
 
-  const MyCalendar = (props) => (
-    <div style={{height:"100vh"}}>
-      <Calendar
-        localizer={localizer}
-        // events={myEventsList}
-        startAccessor="start"
-        endAccessor="end"
-      />
-    </div>
-  )
+  useEffect(() => {
+    dispatch(getExamResultsByStudents(students));
+  }, [dispatch]);
+
     return (
     <div class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -75,72 +62,42 @@ const studentExamResultScreen = () => {
       <div class="container-fluid">
 
         <div class="row pt-3">
-     
-        <div class="col-xl-12 col-md-6 mb-4">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Exam Results</h5>
-        </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Exam Name"/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Course Unit"/>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Grade"/>
-                </div>
-                <div class="col-md-3 ">
-                    <button class="btn btn-primary w-100">Search</button>
-                </div>
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Exam Type</th>
-                        <th>Course Unit</th>
-                        <th>Grade</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Main</td>
-                        <td>Criminal Law</td>
-                        <td>A</td>
-                        <td>2023-01-01</td>
-                    </tr>
-                  
-
-                    <tr>
-                        <td>Cat</td>
-                        <td>Criminal Law</td>
-                        <td>C</td>
-                        <td>2023-02-01</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-end">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-           
-       
+        {loading ? (
+                  <Loader />
+                ) : error ? (
+                  <Message variant="danger">{error}</Message>
+                ) : (
+                  <div class="col-xl-12 col-md-6 mb-4">
+                    <div class="card">
+                      <div class="card-header">
+                        <h5 class="mb-0">Exam Results</h5>
+                      </div>
+                      <div class="card-body">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Exam Type</th>
+                              <th>Type</th>
+                              <th>Marks</th>
+                              <th>Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {examResults.map((result, index) => (
+                              <tr key={index}>
+                                <td>{result.exam.examType}</td>
+                                <td>{result.exam.title}</td>
+                                <td>{result.marksObtained}</td>
+                                <td>{new Date(result.exam.date).toLocaleDateString()}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                    
+                      </div>
+                    </div>
+                  </div>
+                )}
         </div>
 
         

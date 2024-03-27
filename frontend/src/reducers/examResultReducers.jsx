@@ -16,6 +16,9 @@ import {
     EXAM_RESULT_DELETE_REQUEST,
     EXAM_RESULT_DELETE_SUCCESS,
     EXAM_RESULT_DELETE_FAIL,
+    GET_EXAM_RESULTS_BY_STUDENT_REQUEST,
+    GET_EXAM_RESULTS_BY_STUDENT_SUCCESS,
+    GET_EXAM_RESULTS_BY_STUDENT_FAIL,
   } from '../constants/examResultConstants';
   
   const initialState = {
@@ -45,6 +48,19 @@ import {
         return { loading: false, examResults: action.payload };
       case GET_ALL_EXAM_RESULTS_FAIL:
         return { loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  export const examResultsByStudentsReducer = (state = { examResults: [] }, action) => {
+    switch (action.type) {
+      case GET_EXAM_RESULTS_BY_STUDENT_REQUEST:
+        return {  loading: true, success: false, error: null };
+      case GET_EXAM_RESULTS_BY_STUDENT_SUCCESS:
+        return {  loading: false, success: true, error: null, examResults: action.payload };
+      case GET_EXAM_RESULTS_BY_STUDENT_FAIL:
+        return { loading: false, success: false, error: action.payload, examResults: [] };
       default:
         return state;
     }

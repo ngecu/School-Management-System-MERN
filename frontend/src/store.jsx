@@ -118,6 +118,7 @@ import {
   getExamResultDetailsReducer,
   examResultUpdateReducer,
   examResultDeleteReducer,
+  examResultsByStudentsReducer
 } from './reducers/examResultReducers';
 
 
@@ -238,6 +239,7 @@ const reducer = combineReducers({
   examResultDetails: getExamResultDetailsReducer,
   examResultUpdate: examResultUpdateReducer,
   examResultDelete: examResultDeleteReducer,
+  examResultsByStudents:examResultsByStudentsReducer,
 
   courseUnitCreate: courseUnitCreateReducer,
   getAllCourseUnits: getAllCourseUnitsReducer,

@@ -38,6 +38,30 @@ export const getExamResultById = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get a single exam result by ID
+// @route   GET /api/exam-results/:id
+// @access  Public
+export const getExamResultByStudents = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  const {students} = req.body;
+
+  try {
+    const examResults = [];
+    for (const studentId of students) {
+      console.log("Student ID: ", studentId);
+      const examResult = await ExamResult.find({ student: studentId }).populate('student exam');
+      examResults.push(...examResult);
+    }
+
+    res.json(examResults);
+  } catch (error) {
+
+    res.status(500).json({ message: `Server Error : ${error}` });
+  }
+});
+
+
+
 // @desc    Update an existing exam result
 // @route   PUT /api/exam-results/:id
 // @access  Private
