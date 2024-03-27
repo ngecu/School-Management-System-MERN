@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import { listStudents } from '../../actions/studentActions';
+import { Badge } from 'react-bootstrap';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -57,20 +58,38 @@ const LecturerGradeScreen = () => {
       title: 'Date',
       dataIndex: 'date',
       key: 'date',
+      render: date => new Date(date).toLocaleDateString(),
     },
     {
       title: 'Exam Type',
       dataIndex: 'examType',
       key: 'examType',
     },
+    {
+      title: 'Expiry',
+      key: 'expiry',
+      render: (text, record) => {
+        const currentDate = new Date();
+        const examDate = new Date(record.date);
+        return examDate < currentDate ? (
+          <span className="badge badge-danger">Expired</span>
+        ) : (
+          <span className="badge badge-success">Active</span>
+
+        );
+      },
+    },
     // Add more columns as needed
   ];
+  
+  
 
   const examResultColumns = [
     {
       title: 'Student',
       dataIndex: 'student',
       key: 'student',
+      render: student => student && student.firstName, 
     },
     {
       title: 'Marks Obtained',
@@ -106,13 +125,15 @@ const LecturerGradeScreen = () => {
         name="student"
         rules={[{ required: true, message: 'Please select the student' }]}
       >
-       <Select>
-                        {students && students.map((student) => (
-                          <Option key={student._id} value={student._id}>
-                            {student.firstName} {/* Modify this based on your student data structure */}
-                          </Option>
-                        ))}
-                      </Select>
+<Select>
+  {students && students
+    .filter(student => userInfo.userData.courses.includes(student?.student?.course?._id))
+    .map(student => (
+      <Option key={student.student._id} value={student.student._id}>
+        {student.student.firstName} {/* Modify this based on your student data structure */}
+      </Option>
+    ))}
+</Select>
       </Form.Item>
 
       <Form.Item

@@ -15,7 +15,6 @@ var formattedTimestamp = timestamp.getFullYear().toString() +
     ("0" + timestamp.getSeconds()).slice(-2);
 
 // Print the formatted timestamp
-console.log(formattedTimestamp);
 
   
     return `${formattedTimestamp}`;

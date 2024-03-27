@@ -7,6 +7,7 @@ import SchoolFees from '../models/schoolFeesModel.js';
 import Course from '../models/courseModel.js';
 
 import { v4 as uuidv4 } from 'uuid';
+import ExamResult from '../models/examResultModel.js';
 
 export const admitStudent = asyncHandler(async (req, res) => {
   try {
@@ -24,6 +25,7 @@ export const admitStudent = asyncHandler(async (req, res) => {
       course,
       parentFullName,
       relationship,
+      parents,
       parentPhone,
       parentEmail,
       status,
@@ -33,23 +35,25 @@ export const admitStudent = asyncHandler(async (req, res) => {
       mos
     } = req.body;
 
-    // Check if the student already exists
+//     // Check if the student already exists
     const studentExists = await Student.findOne({ email });
 
     if (studentExists) {
-      res.status(400);
+      res.status(400).json({error:"Student already exists"});
       throw new Error('Student already exists');
     }
 
-    // Create an array to store parent IDs
+//     // Create an array to store parent IDs
     const parentIds = [];
 
-    // Iterate through parents array and create/update parent documents
+//     // Iterate through parents array and create/update parent documents
 
     // Check if the parent already exists
     let parent = await Parent.findOne({ parentEmail });
+    let user_parent = await User.findOne({ email:parents[0].email });
 
-    // If not, create a new parent
+
+//     // If not, create a new parent
     if (!parent) {
       parent = await Parent.create({
         email: parentEmail,
@@ -57,28 +61,35 @@ export const admitStudent = asyncHandler(async (req, res) => {
         phone: parentPhone,
         password: password
       });
+
+      if(!user_parent){
+        user_parent = await User.create({
+          firstName:parents[0].fullName,
+          email:parents[0].email,
+          password:"parentPassword123",
+          userType: "Parent",
+          isActive:true
+
+        });
+      }
     }
 
-    // Add the parent's ID to the array
+//     // Add the parent's ID to the array
     parentIds.push(parent._id);
 
-    // Find the course by name
+//     // Find the course by name
     const courseExtracted = await Course.findOne({ _id: course });
-    console.log("course extracted is ",courseExtracted);
     if (!course) {
       res.status(400);
       throw new Error('Course not found');
     }
 
-    // Generate admission number
+//     // Generate admission number
     const courseCode = courseExtracted.name.substring(0, 3).toUpperCase(); 
-    const courseIndex = await Student.countDocuments({ course }); // Count existing students in the same course
+    const courseIndex = await Student.countDocuments({ course }) + 1; // Count existing students in the same course and increment by 1
     const currentYear = new Date().getFullYear();
     const admissionNumber = `${courseCode}/${courseIndex}/${currentYear}/${year_of_study}`;
-    console.log("Admission Number:", admissionNumber);
 
-    // Create the student with the parent IDs
-    console.log("password is ", password);
 
     const student = await Student.create({
       email,
@@ -126,6 +137,11 @@ export const admitStudent = asyncHandler(async (req, res) => {
         const studentId = student._id;
 
         // Check if school fees already exist for the student
+        const today = new Date();
+
+// Calculate 3 months from today's date
+const dueDate = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
+
         const existingFees = await SchoolFees.findOne({ student: studentId });
 
         if (!existingFees) {
@@ -133,10 +149,9 @@ export const admitStudent = asyncHandler(async (req, res) => {
           await SchoolFees.create({
             student: studentId,
             amount: 30000,
-            dueDate: new Date("2024-12-30"), // Corrected date format
+            dueDate,
             transactionId: uuidv4()
           });
-          console.log('School fees created successfully.');
 
         }
 
@@ -163,7 +178,6 @@ export const admitStudent = asyncHandler(async (req, res) => {
 
 export const getAllStudents = async (req, res) => {
   try {
-    console.log("fetching all students");
     // Fetch all students and populate the 'course' field
     const students = await Student.find().populate('course');
 
@@ -194,12 +208,19 @@ export const deleteStudent = asyncHandler(async (req, res) => {
      // Find associated User and delete it
   const associatedUser = await User.findOne({ email: student.email });
   const associatedSchoolFees = await SchoolFees.findOne({student:student._id})
-  
+  const associatedExamResults = await ExamResult.find({student:student._id})
+
   if (associatedUser) {
     await associatedUser.remove();
   }
   if (associatedUser) {
     await associatedSchoolFees.remove()
+  }
+  if (associatedExamResults.length > 0) {
+    // Iterate over each associated exam result and remove it
+    for (const examResult of associatedExamResults) {
+      await examResult.remove();
+    }
   }
 
     await student.remove();

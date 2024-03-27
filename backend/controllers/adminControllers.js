@@ -58,6 +58,9 @@ export const addAdmin = asyncHandler(async (req, res) => {
       email,
       password,
       userType: "Admin",
+      isActive:true,
+      isAdmin:true
+
     });
 
     if (user) {

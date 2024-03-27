@@ -14,7 +14,7 @@ import { updateUserProfile } from '../../actions/userActions';
 import Topbar from './components/Topbar';
 import moment from 'moment';
 
-const StudentProfileScreen = () => {
+const ParentProfileScreen = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const location = useLocation();
@@ -136,7 +136,7 @@ const [selectedImages, setSelectedImages] = useState([]);
 
         <div class="row pt-3">
      
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-12 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -159,27 +159,6 @@ const [selectedImages, setSelectedImages] = useState([]);
     <th>{userInfo.email}</th>
   </tr>
 
-  <tr>
-    <td>First Name:</td>
-    <th>{userInfo.userData.firstName}</th>
-  </tr>
-  <tr>
-    <td>Last Name:</td>
-    <th>{userInfo.userData.lastName}</th>
-  </tr>
-  <tr>
-    <td>Gender:</td>
-    <th>{userInfo.userData.gender}</th>
-  </tr>
-  <tr>
-    <td>Date of Birth:</td>
-    <th>{new Date(userInfo.userData.dob).toLocaleDateString()}</th>
-  </tr>
-
-  <tr>
-    <td>Religion:</td>
-    <th>{userInfo.userData.religion}</th>
-  </tr>
 
   <tr>
     <td>Phone Number:</td>
@@ -189,17 +168,7 @@ const [selectedImages, setSelectedImages] = useState([]);
 </tbody>
     </table>
 
-  
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xl-8 col-md-6 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                <Form
+    <Form
       name="admissionForm"
       onFinish={onFinish}
       layout="vertical"
@@ -314,9 +283,15 @@ const [selectedImages, setSelectedImages] = useState([]);
         </Button>
       </Form.Item>
     </Form>
+
+  
                     </div>
-                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+           
        
         </div>
 
@@ -334,4 +309,4 @@ const [selectedImages, setSelectedImages] = useState([]);
   );
 };
 
-export default StudentProfileScreen;
+export default ParentProfileScreen;

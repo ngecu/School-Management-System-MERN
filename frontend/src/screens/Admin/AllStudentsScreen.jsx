@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Row, Col, ListGroup, Container, Card, Pagination } from 'react-bootstrap';
+import { Table, Form, Button, Row, Col, Card, Pagination } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -78,81 +78,89 @@ const AllStudents = () => {
   const toggleStatus = (userId)=>{
     dispatch(toggleUserActive(userId))
   }
-  const generateStudentData = () => {
-    const filteredStudents = students.filter(
-      (student) =>
-        student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
-  
+
+ const generateStudentData = () => {
+  const filteredStudents = students.filter(
+    (student) =>
+    student.student?.admissionNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (filteredStudents.length === 0) {
     return (
-      <>
-        {currentItems.map((student) => (
-          <React.Fragment key={student?._id}>
-            <tr key={student.student?._id}>
+      <tr>
+        <td colSpan="8"><div className="aler alert-danger">
+        No students found
+          </div> </td>
+      </tr>
+    );
+  }
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredStudents.slice(indexOfFirstItem, indexOfLastItem);
+
+  return (
+    <>
+      {currentItems.map((student) => (
+        <React.Fragment key={student?._id}>
+          <tr key={student.student?._id}>
             <td>{student.student?.admissionNumber} </td>
             <td>{student.student?.firstName} {student.student?.lastName}</td>
             <td>{student.student?.gender}</td>
             <td>{student.student?.course?.name}</td>     
             <td>{student.student?.email}</td>
             <td>{student.student?.dob && new Date(student.student.dob).toLocaleDateString()}</td>
-            
-<td>
-  {student.student?.isActive ? (
-    <span className="badge badge-success">Active</span>
-  ) : (
-    <span className="badge badge-danger">Inactive</span>
-  )}
 
-  
-</td>
-<td>
-<button
-    className="btn btn-success btn-sm"
-    onClick={() => showModal(student.student)}
-  >
-    <i className="fas fa-folder"></i> View
-  </button>
- 
-    <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student.student._id)}>
-      <i className="fas fa-trash"></i> Delete
-    </button>
-
-    {student.user?.isActive ? (
-    <button className="btn btn-warning btn-sm" onClick={() => toggleStatus(student.user._id)}>
-      <i className="fas fa-times"></i> Deactivate
-    </button>
-  ) : (
-    <button className="btn btn-primary btn-sm" onClick={() => toggleStatus(student.user._id)}>
-      <i className="fas fa-check"></i> Activate
-    </button>
-  )}
-
-</td>
-            </tr>
-          </React.Fragment>
-        ))}
-        <Pagination>
-          {[...Array(Math.ceil(filteredStudents.length / itemsPerPage)).keys()].map(
-            (pageNumber) => (
-              <Pagination.Item
-                key={pageNumber + 1}
-                active={pageNumber + 1 === currentPage}
-                onClick={() => paginate(pageNumber + 1)}
+            <td>
+              {student.user?.isActive ? (
+                <span className="badge badge-success">Active</span>
+              ) : (
+                <span className="badge badge-danger">Inactive</span>
+              )}
+            </td>
+            <td>
+              <button
+                className="btn btn-success btn-sm"
+                onClick={() => showModal(student.student)}
               >
-                {pageNumber + 1}
-              </Pagination.Item>
-            )
-          )}
-        </Pagination>
-      </>
-    );
-  };
+                <i className="fas fa-folder"></i> View
+              </button>
+              <button className="btn btn-danger btn-sm" onClick={() => deleteHandler(student.student._id)}>
+                <i className="fas fa-trash"></i> Delete
+              </button>
+              {student.user?.isActive ? (
+                <button className="btn btn-warning btn-sm" onClick={() => toggleStatus(student.user._id)}>
+                  <i className="fas fa-times"></i> Deactivate
+                </button>
+              ) : (
+                <button className="btn btn-primary btn-sm" onClick={() => toggleStatus(student.user._id)}>
+                  <i className="fas fa-check"></i> Activate
+                </button>
+              )}
+            </td>
+          </tr>
+        </React.Fragment>
+      ))}
+      <Pagination>
+        {[...Array(Math.ceil(filteredStudents.length / itemsPerPage)).keys()].map(
+          (pageNumber) => (
+            <Pagination.Item
+              key={pageNumber + 1}
+              active={pageNumber + 1 === currentPage}
+              onClick={() => paginate(pageNumber + 1)}
+            >
+              {pageNumber + 1}
+            </Pagination.Item>
+          )
+        )}
+      </Pagination>
+    </>
+  );
+};
+
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
@@ -182,7 +190,7 @@ const AllStudents = () => {
                   <Form inline>
                     <Form.Control
                       type="text"
-                      placeholder="Search"
+                      placeholder="Search by Admission No."
                       className="mr-2"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
@@ -223,7 +231,7 @@ const AllStudents = () => {
 </div>
 
 <Modal
-  title="Student Details"
+  title={`Student Details (${studentData?.admissionNumber})` }
   visible={isModalOpen}
   onOk={handleOk}
   onCancel={handleCancel}

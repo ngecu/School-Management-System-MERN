@@ -173,7 +173,7 @@ const [selectedImages, setSelectedImages] = useState([]);
   </tr>
   <tr>
     <td>Date of Birth:</td>
-    <th>{userInfo.userData.dob}</th>
+    <th>{new Date(userInfo.userData.dob).toLocaleDateString()}</th>
   </tr>
 
   <tr>
@@ -246,7 +246,7 @@ const [selectedImages, setSelectedImages] = useState([]);
           },
         ]}
       >
-        <Input />
+        <Input disabled />
       </Form.Item>
                       </Col>
 
@@ -262,7 +262,7 @@ const [selectedImages, setSelectedImages] = useState([]);
           },
         ]}
       >
-        <Input />
+        <Input disabled />
       </Form.Item>
                       </Col>
 

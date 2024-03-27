@@ -14,7 +14,6 @@ const Sidebar = () => {
   const logoutHandler = () => {
     dispatch(logout())
   }
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -40,7 +39,8 @@ const Sidebar = () => {
 
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-        <img src={userInfo && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
+          {userInfo.userData.photo &&         <img src={userInfo.length > 0 && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
+}
         </div>
         <div class="info">
         <a  class="d-block">{userInfo && userInfo.firstName}</a>
@@ -78,15 +78,15 @@ const Sidebar = () => {
         </li> */}
 
         <li className="nav-item">
-          <NavLink to="/student/my_exam" className={`nav-link ${location.pathname === '/my_exam_results' ? 'active' : ''}`}>
+          <NavLink to="/parent/exam" className={`nav-link ${location.pathname === '/my_exam_results' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-poll"></i>
-            <p>Exam</p>
+            <p>Student Exam Result</p>
           </NavLink>
         </li>
 
       
         <li className="nav-item">
-          <NavLink to="/student/my_fees" className={`nav-link ${location.pathname === '/my_fees' ? 'active' : ''}`}>
+          <NavLink to="/parent/fees" className={`nav-link ${location.pathname === '/my_fees' ? 'active' : ''}`}>
             <i className="nav-icon fas fa-money-bill"></i>
             <p>School Fees</p>
           </NavLink>
@@ -95,7 +95,7 @@ const Sidebar = () => {
    
 
 <li className="nav-item">
-  <NavLink to="/student/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
+  <NavLink to="/parent/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>
     <i className="nav-icon fas fa-user"></i>
     <p>Profile</p>
   </NavLink>

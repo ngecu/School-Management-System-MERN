@@ -34,7 +34,8 @@ const AdminFeeScreen = () => {
   const { pathname } = location;
 
   const filteredFees = fees.filter((fee) =>
-  fee.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase())
+  fee.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  fee.student?.admissionNumber.toLowerCase().includes(searchQuery.toLowerCase()) 
 );
   useEffect(() => {
     if (userInfo && userInfo._id) {
@@ -76,7 +77,7 @@ const AdminFeeScreen = () => {
               <Col md={12}>
               <Form.Control
                       type="text"
-                      placeholder="Search"
+                      placeholder="Search By Admission No."
                       className="mr-2"
                       value={searchQuery}
                       onChange={(e) => {
@@ -93,7 +94,8 @@ const AdminFeeScreen = () => {
         {!search ? <Table striped bordered hover responsive className="table-sm">
                 <thead>
                   <tr>
-                    <th>Student</th>
+                    <th></th>
+                    <th>First Name</th>
                     <th>Amount</th>
                     <th>Status</th>
                    
@@ -103,6 +105,8 @@ const AdminFeeScreen = () => {
                 <tbody>
                 {filteredFees.map((fee) => (
                                 <tr key={fee._id}>
+                                  <td>{fee.student?.admissionNumber}</td>
+
                                   <td>{fee.student?.firstName}</td>
                                   <td>{fee.amount}</td>
                                   <td>

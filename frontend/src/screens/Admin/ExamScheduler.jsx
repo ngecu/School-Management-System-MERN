@@ -176,21 +176,7 @@ const ExanSchedulerScreen = () => {
                       </Select>
                     </Form.Item>
                   </Col>
-                  {courseUnits &&  <Col span={12}>
-        <Form.Item
-          label={`Course Units ${courseUnits.length}`}
-          name="courseUnit"
-          rules={[{ required: true, message: 'Please select the course unit!' }]}
-        >
-          <Select>
-            {courseUnits && courseUnits.length > 0 && courseUnits.map((courseUnit) => (
-              <Option key={courseUnit._id} value={courseUnit._id}>
-               {courseUnit.name}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
-      </Col> }
+               
 
 
       <Col md={12}>
@@ -234,23 +220,44 @@ const ExanSchedulerScreen = () => {
                     <th>DATE</th>
                     <th>START TIME</th>
                     <th>EXAM TYPE</th>
-                  
+                    <th></th>
                    
 
                   </tr>
                 </thead>
                 <tbody>
-                  {exams && exams.map((fee) => (
-                    <tr key={fee._id}>
-                      <td>{fee.title}</td>
-                      <td>{fee.date}</td>
+                {exams && exams.map((exam) => {
+  // Parse exam date and time
+  const examDateTime = new Date(exam.date);
 
-                      <td>{fee.startTime}</td>
-                      <td>{fee.examType}</td>
-                     
-                      
-                    </tr>
-                  ))}
+  // Extract hours and minutes from the start time
+  const startTimeParts = exam.startTime.split(':');
+  examDateTime.setHours(startTimeParts[0], startTimeParts[1], 0);
+
+  // Calculate current date and time
+  const currentDateTime = new Date();
+
+  // Check if the exam date and time have passed
+  const isExpired = currentDateTime > examDateTime;
+
+  return (
+    <tr key={exam._id}>
+      <td>{exam.title}</td>
+      <td>{new Date(exam.date).toLocaleDateString()}</td>
+      <td>{exam.startTime}</td>
+      <td>{exam.examType}</td>
+      <td>
+        {isExpired ? (
+          <span className="badge badge-danger">Expired</span>
+        ) : (
+          <span className="badge badge-success">Active</span>
+        )}
+      </td>
+    </tr>
+  );
+})}
+
+
                 </tbody>
               </Table>
             </div>

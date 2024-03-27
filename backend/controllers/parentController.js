@@ -1,6 +1,23 @@
 import asyncHandler from 'express-async-handler';
 import Parent from '../models/parentModel.js';
 import User from '../models/userModel.js';
+import Student from '../models/studentModel.js';
+
+// Controller to fetch the students belonging to a particular parent
+export const getParentsStudents = asyncHandler(async (req, res) => {
+  const { parent_id } = req.params;
+  console.log("params ",parent_id);
+  // Query the database to find students associated with the parent_id
+  const students = await Student.find({ parents: parent_id }).populate('course', 'name'); // Assuming 'course' is the field referencing the Course model
+
+  if (students) {
+    res.json(students);
+  } else {
+    res.status(404);
+    throw new Error('Students not found for the given parent');
+  }
+});
+
 
 export const addParent = asyncHandler(async (req, res) => {
   const {

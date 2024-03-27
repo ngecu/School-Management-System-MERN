@@ -51,8 +51,9 @@ const Sidebar = () => {
 
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src={userInfo && userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
-        </div>
+        {userInfo && userInfo.userData.photo && (
+  <img src={userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
+)}        </div>
         <div class="info">
           <a  class="d-block">{userInfo && userInfo.firstName}</a>
         </div>
@@ -110,6 +111,14 @@ const Sidebar = () => {
               <NavLink to="/admin/add_lecturer" class={`nav-link ${location.pathname === '/admin/add_lecturer' ? 'active' : ''}`}>
               <FaUserPlus />
                   <p>Add Lecturer</p>
+                </NavLink>
+              </li>
+
+              <li clas
+              s="nav-item">
+              <NavLink to="/admin/allAccountants" class={`nav-link ${location.pathname === '/admin/allAccountants' ? 'active' : ''}`}>
+              <FaChalkboardTeacher />
+                  <p>All Accountants</p>
                 </NavLink>
               </li>
              

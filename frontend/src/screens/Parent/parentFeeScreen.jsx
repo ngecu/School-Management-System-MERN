@@ -22,7 +22,7 @@ import { Badge } from 'react-bootstrap';
 const localizer = momentLocalizer(moment) 
 const { Option } = Select;
 
-const studentFeeScreen = () => {
+const parentFeeScreen = () => {
   const [isMpesa, setIsMpesa] = useState(true);
 
 
@@ -314,4 +314,4 @@ const totalAmountPaid = paymentTransactions
   );
 };
 
-export default studentFeeScreen;
+export default parentFeeScreen;

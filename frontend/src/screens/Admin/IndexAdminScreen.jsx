@@ -11,6 +11,9 @@ import Topbar from './components/Topbar';
 import { listStudents } from '../../actions/studentActions';
 import { listLecturers } from '../../actions/lecturerActions';
 import { listCourses } from '../../actions/courseActions';
+import { listAccountants } from '../../actions/accountantActions';
+import { Chart as ChartJS, defaults } from "chart.js/auto";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 const IndexAdminScreen = () => {
 
   const location = useLocation();
@@ -28,6 +31,8 @@ const IndexAdminScreen = () => {
     dispatch(listStudents());
     dispatch(listLecturers());
     dispatch(listCourses());
+    dispatch(listAccountants());
+
   }, [dispatch]);
 
   const studentList = useSelector((state) => state.studentList);
@@ -36,9 +41,29 @@ const IndexAdminScreen = () => {
   const lecturerList = useSelector((state) => state.lecturerList);
   const {  lecturers } = lecturerList;
 
+  const accountantLists = useSelector((state) => state.accountantList);
+  const {  accountants } = accountantLists;
+
   const coursesList = useSelector((state) => state.courseList);
 const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
+const data = {
+  labels: ['Accountants', 'Students', 'Lecturers'],
+  datasets: [{
+      data: [accountants?.length, students?.length, lecturers.length],
+      backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)'
+      ],
+      borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)'
+      ],
+      borderWidth: 1
+  }]
+};
 
   return (
     <div class="hold-transition sidebar-mini layout-fixed">
@@ -62,7 +87,7 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
         <div class="row pt-3">
      
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -81,7 +106,7 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
               </div>
             </div>
 
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
                           <div class="card h-100">
                             <div class="card-body">
                               <div class="row no-gutters align-items-center">
@@ -99,8 +124,27 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
                             </div>
                           </div>
                         </div>
+
+                        <div class="col-xl-3 col-md-6 mb-4">
+                          <div class="card h-100">
+                            <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                  <div class="text-xs font-weight-bold text-uppercase mb-1">Accountants</div>
+                                  <div class="h5 mb-0 font-weight-bold text-gray-800">{accountants && <>{accountants.length}</>}</div>
+                                  <div class="mt-2 mb-0 text-muted text-xs">
+                                 
+                                  </div>
+                                </div>
+                                <div class="col-auto">
+                                  <i class="fas fa-chalkboard-teacher fa-2x text-danger"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
           
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4">
               <div class="card h-100">
                 <div class="card-body">
                   <div class="row align-items-center">
@@ -129,7 +173,7 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
                 <div className="col-xl-12 col-md-6 mb-4">
                 <div class="card h-100">
                 <div class="card-body">
-                  <div class="row no-gutters align-items-center">
+                <div class="row align-items-center" style={{ margin: '0 !important' }}>
                     <div class="col-xl-12 col-md-12 mr-2">
                     <div class="no-gutters align-items-center">
                       <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
@@ -141,7 +185,7 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
                       </div>
                       </div>
                     </div>
-                    <div class="col-xl-12 col-md-12 mr-2">
+                    <div class="col-xl-6 col-md-6">
                     <table className='w-100'>
                     <tbody>
   <tr>
@@ -163,6 +207,12 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
 
     </table>
                     </div>
+
+                    <div className="col-xl-6 col-md-6">
+    <div style={{ width: '100%', maxWidth: '400px' }}> {/* Set a max-width to prevent it from overflowing */}
+      <Doughnut data={data} />
+    </div>
+  </div>
                   </div>
                 </div>
               </div>
@@ -171,7 +221,6 @@ const { loading: loadingCourses, courses, error: errorCourses } = coursesList;
               </div>
              
             </div>
-
         
         </div>
         </div>

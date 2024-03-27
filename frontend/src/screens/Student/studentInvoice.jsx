@@ -7,37 +7,18 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
-import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { getFeesByStudent } from '../../actions/feeActions';
-import { Modal, Form, Input, DatePicker, Select,Table } from 'antd';
+import {  Form,Table } from 'antd';
 import { createPaymentTransaction, initiateStkPush, listPaymentTransactionsByFee } from '../../actions/paymentActions';
 import {v4} from 'uuid'
 import { NavLink } from 'react-router-dom';
 import Topbar from './components/Topbar';
+import { Badge } from 'react-bootstrap';
 
-const localizer = momentLocalizer(moment) // or globalizeLocalizer
-const { Option } = Select;
 
 const studentInvoiceScreen = () => {
- const [isCheque, setIsCheque] = useState(false);
-  const [isMpesa, setIsMpesa] = useState(false);
-
-  const handlePaymentMethodChange = (value) => {
-    setIsCheque(value === 'cheque');
-    setIsMpesa(value === 'mpesa');
-  };
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
 
 
@@ -59,11 +40,25 @@ const studentInvoiceScreen = () => {
 
 
   console.log("fees is ",fees)
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
 
-  
+  const today = new Date();
+
+  // Extract day, month, and year
+  const day = today.getDate();
+  const month = today.getMonth() + 1; // Adding 1 because months are zero-based
+  const year = today.getFullYear();
+  const formattedDate = `${day}/${month}/${year}`;
+ 
+    // Generate a random invoice number (7 digits)
+    const invoiceNumber = Math.floor(Math.random() * 9000000) + 1000000;
+
+    // Generate a random order ID (6 characters)
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let orderId = '';
+    for (let i = 0; i < 6; i++) {
+      orderId += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
   useEffect(() => {
     if (userInfo && userInfo._id) {
       dispatch(getFeesByStudent(userInfo.userData._id)); // Dispatch the action with the student's ID
@@ -79,20 +74,7 @@ const studentInvoiceScreen = () => {
 
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    // Handle the form submission, e.g., send the payment details to the backend
-    values.schoolFees = fees._id
-    values.transactionId = v4()
-    // makePayment(values);
-    console.log(values)
-    if(values.paymentMethod == "mpesa"){
-      dispatch(initiateStkPush(values.amount,values.phone))
-    }
-    else{
-    dispatch(createPaymentTransaction(values))
-
-    }
-  };
+  
 
 
   const columns = [
@@ -110,6 +92,11 @@ const studentInvoiceScreen = () => {
       title: 'approved',
       dataIndex: 'approved',
       key: 'approved',
+      render: (approved) => (
+        <Badge variant={approved ? 'success' : 'danger'}>
+          {approved ? 'Approved' : 'Not Approved'}
+        </Badge>
+      ),
     },
     {
       title: 'Amount Remaining',
@@ -163,7 +150,7 @@ const studentInvoiceScreen = () => {
                 <div class="col-12">
                   <h4>
                     <i class="fas fa-globe"></i> EVE SMS, Inc.
-                    <small class="float-right">Date: 2/10/2014</small>
+                    <small class="float-right">Date: {formattedDate}</small>
                   </h4>
                 </div>
                
@@ -197,12 +184,11 @@ const studentInvoiceScreen = () => {
 </div>
 
                 
-                <div class="col-sm-4 invoice-col">
-                  <b>Invoice #007612</b><br/>
-                  <br/>
-                  <b>Order ID:</b> 4F3S8J<br/>
-                 
-                </div>
+<div className="col-sm-4 invoice-col">
+      <b>Invoice #{invoiceNumber}</b><br/>
+      <br/>
+      <b>Order ID:</b> {orderId}<br/>
+    </div>
                 
               </div>
               

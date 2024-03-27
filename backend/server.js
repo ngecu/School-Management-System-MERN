@@ -15,20 +15,11 @@ import courseUnitsRoutes from './routes/courseUnitRoutes.js'
 import mpesaRoutes from "./routes/mpesaRoutes.js"
 import lecturerRoutes from './routes/lecturerRoutes.js'
 import accountRoutes from './routes/accountantRoutes.js'
-import attendanceRoutes from './routes/attendanceRoutes.js'
-
-
-import chatRoutes from './routes/chatRoutes.js'
-import messageRoutes from './routes/messageRoutes.js'
-import conversationRoutes from './routes/conversationRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import feeRoutes from './routes/feeRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
-import timetableRoutes from './routes/timetableRoutes.js';
 import examRoutes from './routes/examRoutes.js'
 import examResultsRoutes from './routes/examResultRoutes.js'
-import assignmentRoutes from './routes/assignmentRoutes.js'
-import assignmentSubmissionRoutes from './routes/assignmentSubmissionRoutes.js'
 
 import cors from 'cors'
 
@@ -58,19 +49,13 @@ app.use('/api/courses', courseRoutes)
 app.use('/api/courseunits', courseUnitsRoutes)
 app.use('/api/lecturers', lecturerRoutes)
 app.use('/api/accountants', accountRoutes)
-app.use('/api/attendance', attendanceRoutes)
 app.use('/api/admin', adminRoutes)
-app.use("/api/chat", chatRoutes);
-app.use("/api/message", messageRoutes);
-app.use("/api/conversation", conversationRoutes);
 app.use("/api/schoolfees", feeRoutes);
 app.use("/api/payment", paymentRoutes);
-app.use('/api/timetable', timetableRoutes);
 app.use('/api/mpesa',mpesaRoutes)
 app.use('/api/exams',examRoutes)
 app.use('/api/exam-results',examResultsRoutes)
-app.use('/api/assignments',assignmentRoutes)
-app.use('/api/submissiions',assignmentSubmissionRoutes)
+
 
 
 

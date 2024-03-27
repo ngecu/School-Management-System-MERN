@@ -76,10 +76,18 @@ export const addAccountant = asyncHandler(async (req, res) => {
 
 export const getAllAccountants = async (req, res) => {
   try {
-    console.log("Fetching all Accountants");
     const accountants = await Accountant.find();
-    console.log(accountants);
-    res.status(200).json({ success: true, data: accountants });
+    
+    // Fetch user data associated with each accountant
+    const accountantsWithUserData = await Promise.all(accountants.map(async (accountant) => {
+      const associatedUser = await User.findOne({ email: accountant.email });
+      return {
+        accountant,
+        user: associatedUser,
+      };
+    }));
+
+    res.status(200).json({ success: true, data: accountantsWithUserData });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -147,8 +155,15 @@ export const deleteAccountant = asyncHandler(async (req, res) => {
   const accountant = await Accountant.findById(req.params.id);
 
   if (accountant) {
+    // Find associated User and delete it
+    const associatedUser = await User.findOne({ email: accountant.email });
+  
+    if (associatedUser) {
+      await associatedUser.remove();
+    }
+  
     await accountant.remove();
-    res.json({ message: 'Accountant removed' });
+    res.json({ success: true, message: 'Accountant removed' });
   } else {
     res.status(404);
     throw new Error('Accountant not found');

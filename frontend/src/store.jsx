@@ -56,6 +56,7 @@ import {
   parentDetailsReducer,
   parentUpdateReducer,
   parentDeleteReducer,
+  parentStudentListReducer,
 } from './reducers/parentReducers';
 
 import {
@@ -98,7 +99,7 @@ import { uploadFileReducer } from './reducers/uploadReducers';
 import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReducer, timetableDetailsReducer, timetableListReducer, timetableUpdateReducer } from './reducers/timetableReducers';
 import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
 import { createConversationReducer, getAllConversationsReducer, getUserConversationsReducer } from './reducers/conversationReducers';
-import { accountantCreateReducer } from './reducers/accountantReducers';
+import { accountantCreateReducer, accountantDeleteReducer, accountantDetailsReducer, accountantListReducer, accountantUpdateReducer } from './reducers/accountantReducers';
 import { courseUnitCreateReducer, getAllCourseUnitsReducer, getCourseUnitsByCourseReducer } from './reducers/courseUnitReducers';
 
 import {
@@ -167,6 +168,7 @@ const reducer = combineReducers({
   parentDetails: parentDetailsReducer,
   parentUpdate: parentUpdateReducer,
   parentDelete: parentDeleteReducer,
+  parentStudentList:parentStudentListReducer,
 
     // Attendance reducers
     attendanceCreate: attendanceCreateReducer,
@@ -217,8 +219,12 @@ const reducer = combineReducers({
   AllConversations: getAllConversationsReducer,
   userConversationR: getUserConversationsReducer,
 
+  // Accountant reducers
   createAccountant:accountantCreateReducer,
-
+  accountantList: accountantListReducer,
+  accountantDetails: accountantDetailsReducer,
+  accountantUpdate: accountantUpdateReducer,
+  accountantDelete: accountantDeleteReducer,
   // Exam reducers
   examCreate: examCreateReducer,
   examList: getAllExamsReducer,

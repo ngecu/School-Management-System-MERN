@@ -10,14 +10,6 @@ import Sidebar from './components/Sidebar'
 import Topbar from './components/Topbar';
 
 const IndexStudentScreen = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState(null);
-  const match = useRouteMatch();
-  const history = useHistory();
-
   const location = useLocation();
   const { pathname } = location;
 
@@ -25,15 +17,9 @@ const IndexStudentScreen = () => {
 
   const dispatch = useDispatch();
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
 
 
   return (
@@ -89,7 +75,7 @@ const IndexStudentScreen = () => {
   </tr>
   <tr>
     <td>Date of Birth:</td>
-    <th>{userInfo.userData.dob}</th>
+    <th>{new Date(userInfo.userData.dob).toLocaleDateString()}</th>
   </tr>
 
   <tr>
@@ -138,7 +124,8 @@ const IndexStudentScreen = () => {
   </tr>
   <tr>
     <td>Date of Birth:</td>
-    <th>{userInfo.userData.dob}</th>
+    <th>{new Date(userInfo.userData.dob).toLocaleDateString()}</th>
+
   </tr>
 
   <tr>
@@ -165,7 +152,7 @@ const IndexStudentScreen = () => {
               <div class="col-xl-12 col-md-6 mb-4">
                 <div className="row">
                 
-                <div class="col-xl-4 col-md-6 mb-4">
+                <div class="col-xl-6 col-md-6 mb-4">
     <div class="card h-100">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -183,7 +170,7 @@ const IndexStudentScreen = () => {
     </div>
 </div>
 
-<div class="col-xl-4 col-md-6 mb-4">
+<div class="col-xl-6 col-md-6 mb-4">
     <div class="card h-100">
         <div class="card-body">
             <div class="row no-gutters align-items-center">
@@ -202,24 +189,7 @@ const IndexStudentScreen = () => {
     </div>
 </div>
 
-<div class="col-xl-4 col-md-6 mb-4">
-    <div class="card h-100">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-uppercase mb-1">COURSE UNITS</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
-                    <div class="mt-2 mb-0 text-muted text-xs">
 
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-user-check fa-2x text-info"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="col-xl-12 col-md-6 mb-4">
     <div class="card">

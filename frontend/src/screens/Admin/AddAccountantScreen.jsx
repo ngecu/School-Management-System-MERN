@@ -50,7 +50,7 @@ const AddAccountant = () => {
        
          // Check if age is at least 18 years
          if (age < 18) {
-           message.error('Lecturer must be at least 18 years old.');
+           message.error('Accountant must be at least 18 years old.');
            return; // Stop execution if age is less than 18
          }
          
@@ -122,16 +122,6 @@ const AddAccountant = () => {
       </Form.Item>
       </Col>
 
-                    <Col span={6}>
-
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: 'Please enter a password!' }]}
-      >
-        <Input.Password />
-      </Form.Item>
-      </Col>
 
 <Col span={6}>
       <Form.Item
