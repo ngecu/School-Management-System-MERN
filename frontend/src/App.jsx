@@ -33,6 +33,7 @@ import LecturerGradeScreen from './screens/Lecturer/lecturerGradeScreen';
 import AllAccountants from './screens/Admin/AllAccountants';
 import ParentProfileScreen from './screens/Parent/parentProfileScreen';
 import parentFeeScreen from './screens/Parent/parentFeeScreen';
+import ParentStudentExamResultScreen from './screens/Parent/ParentstudentExamResultScreen';
 
 const App = () => {
 
@@ -73,7 +74,7 @@ const App = () => {
 
           {/* parents routes  */}
           <Route path="/student/my_attendance" component={studentAttendanceScreen} />
-          <Route path="/parent/exam" component={studentExamResultScreen} />
+          <Route path="/parent/exam" component={ParentStudentExamResultScreen} />
           <Route path="/parent/fees" component={parentFeeScreen} />
           <Route path="/parent/my_profile" component={ParentProfileScreen} />
 
