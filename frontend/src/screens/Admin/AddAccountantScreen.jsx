@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Form, Input, Select,  message,Row,Col } from 'antd'
-import { useDispatch, useSelector } from 'react-redux';
-import Message from '../../components/Message';
-import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {  useLocation } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { Collapse } from 'antd';
 import Sidebar from './components/Sidebar'
-import { listStudents } from '../../actions/studentActions';
 import { createAccountant } from '../../actions/accountantActions';
 import {useDropzone} from 'react-dropzone'
 import { uploadFile } from '../../actions/cloudinaryAtions';
@@ -33,7 +29,6 @@ const AddAccountant = () => {
       const uploadedFileUrl = await dispatch(uploadFile(selectedImages[0]));
 
       if (uploadedFileUrl !== null) {
-        // If the file is uploaded successfully, add the secure_url to the values
         values.photo = uploadedFileUrl;
         values.userType = "Accountant"
     
@@ -42,16 +37,15 @@ const AddAccountant = () => {
   };
 
 
-         // Calculate age based on date of birth
          const dob = new Date(values.dob);
          const ageDiffMs = Date.now() - dob.getTime();
          const ageDate = new Date(ageDiffMs); // Epoch
          const age = Math.abs(ageDate.getUTCFullYear() - 1970);
        
-         // Check if age is at least 18 years
+      
          if (age < 18) {
            message.error('Accountant must be at least 18 years old.');
-           return; // Stop execution if age is less than 18
+           return; 
          }
          
   dispatch(createAccountant(values))
@@ -63,8 +57,8 @@ const AddAccountant = () => {
   });
   }
   const [selectedImages, setSelectedImages] = useState([]);
-    // Add this
-    const [uploadStatus, setUploadStatus] = useState("");
+   
+
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
         acceptedFiles.forEach((file) => {
           setSelectedImages((prevState) => [...prevState, file]);
@@ -76,9 +70,7 @@ const AddAccountant = () => {
     const {
         getRootProps,
         getInputProps,
-        isDragActive,
-        isDragAccept,
-        isDragReject,
+        isDragActive
     } = useDropzone({
     onDrop,
     accept: acceptedImageTypes.join(','), 

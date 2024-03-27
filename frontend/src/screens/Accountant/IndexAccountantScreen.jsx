@@ -147,7 +147,6 @@ const data = {
       <div class="col-xl-12 col-md-12 mr-2">
       <div class="no-gutters align-items-center">
         <div class="text-xs font-weight-bold text-uppercase mb-1 text-center">
-          {/* <img src={userInfo.userData.photo} width={100} alt="" /> */}
         </div>
 
         <div class="mt-2 mb-0 text-muted text-xs">
@@ -201,7 +200,7 @@ const data = {
 
 </div>
 <div className="col-xl-12 col-md-6 mb-4">
- <div style={{ width: '100%', maxWidth: '400px' }}> {/* Set a max-width to prevent it from overflowing */}
+ <div style={{ width: '100%', maxWidth: '400px' }}> 
       <Doughnut data={data} />
     </div>
 </div>

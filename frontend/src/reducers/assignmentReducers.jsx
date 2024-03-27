@@ -1,5 +1,3 @@
-// assignmentReducers.js
-
 import {
     ASSIGNMENT_CREATE_REQUEST,
     ASSIGNMENT_CREATE_SUCCESS,

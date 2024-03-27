@@ -35,7 +35,6 @@ export const createExam = (examData) => async (dispatch,getState) => {
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
-    // Assuming you have a backend API endpoint for creating exams
     const { data } = await axios.post(`${base_url}`, examData,config);
 
     dispatch({

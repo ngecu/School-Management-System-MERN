@@ -3,23 +3,18 @@ import { Table, Form, Button, Row, Col,Pagination } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
-import { AllFees } from '../../actions/feeActions';
 import { listPaymentTransactions, togglePaymentApproval } from '../../actions/paymentActions';
 import Topbar from './components/Topbar';
 
 const AccountantPaymentScreen = () => {
- const [studentId, setStudentId] = useState('');
   const dispatch = useDispatch();
 
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const paymentTransactionList = useSelector((state) => state.paymentTransactionList); // Assuming you have a fees reducer
+  const paymentTransactionList = useSelector((state) => state.paymentTransactionList); 
   const { loading, error, paymentTransactions } = paymentTransactionList;
 
   const paymentTogleActive = useSelector((state)=> state.paymentTransactionUpdate)

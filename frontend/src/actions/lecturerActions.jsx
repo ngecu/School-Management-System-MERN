@@ -29,11 +29,6 @@ export const createLecturer = (lecturerData) => async (dispatch, getState) => {
         payload: response.data,
       });
 
-        // Get access to the history object
-  // const history = useHistory();
-
-  // // Redirect to the desired route
-  // history.push('/allLecturers');
 
   return response.data;
     } catch (error) {

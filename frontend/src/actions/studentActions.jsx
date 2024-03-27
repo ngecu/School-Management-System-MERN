@@ -39,11 +39,7 @@ export const createStudent = (studentData) => async (dispatch, getState) => {
         type: STUDENT_CREATE_SUCCESS,
         payload: response.data,
       });
-  // Get access to the history object
-  // const history = useHistory();
-  // alert()
-  // // Redirect to the desired route
-  // history.push('/allStudents');
+
   return response.data;
 
     } catch (error) {
@@ -142,7 +138,6 @@ export const updateStudent = (id, updatedStudentData) => async (dispatch, getSta
       payload: data.data,
     });
 
-    // Optionally, you can redirect or dispatch other actions after a successful update
 
   } catch (error) {
     dispatch({
@@ -176,7 +171,6 @@ export const deleteStudent = (id) => async (dispatch, getState) => {
       type: STUDENT_DELETE_SUCCESS,
     });
 
-    // Optionally, you can dispatch other actions or update the state after successful deletion
 
   } catch (error) {
     dispatch({

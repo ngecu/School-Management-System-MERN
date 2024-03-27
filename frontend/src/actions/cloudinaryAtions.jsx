@@ -5,7 +5,7 @@ import {
   UPLOAD_FILE_REQUEST,
   UPLOAD_FILE_SUCCESS,
   UPLOAD_FILE_FAILURE,
-} from '../constants/uploadConstants'; // Make sure to adjust the file path
+} from '../constants/uploadConstants'; 
 
 export const uploadFile = (file) => async (dispatch) => {
     try {
