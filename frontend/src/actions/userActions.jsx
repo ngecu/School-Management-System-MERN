@@ -35,7 +35,6 @@ import {
   USER_TOGGLE_ACTIVE_SUCCESS,
   USER_TOGGLE_ACTIVE_FAIL,
 } from '../constants/userConstants'
-import { useHistory } from 'react-router-dom';
 
 const base_url = `http://localhost:5000/api/users`
 
@@ -79,10 +78,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: USER_DETAILS_RESET })
   dispatch({ type: USER_LIST_RESET })
-  const history = useHistory();
-
-  // Redirect to the desired route
-  history.push('/');
+  window.location = '/';
 }
 
 export const register = (name, email, password) => async (dispatch) => {
