@@ -99,9 +99,6 @@ export const markFeesAsPaid = (studentId) => async (dispatch,getState) => {
   try {
     dispatch({ type: MARK_FEES_AS_PAID_REQUEST });
 
-    // Your logic to mark fees as paid goes here
-    // ...
-
     const response = await axios.put(`${BASE_URL}/fees/student/${studentId}`);
     
     dispatch({ type: MARK_FEES_AS_PAID_SUCCESS });

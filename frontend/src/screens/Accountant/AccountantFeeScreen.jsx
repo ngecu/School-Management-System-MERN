@@ -3,11 +3,9 @@ import { Table, Form,  Row, Col, Pagination } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useLocation } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
-import { AllFees, getFeesByStudent } from '../../actions/feeActions';
+import { AllFees} from '../../actions/feeActions';
 import Topbar from './components/Topbar';
 
 const AccountantFeeScreen = () => {
@@ -18,7 +16,7 @@ const AccountantFeeScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-    const getAllFees = useSelector((state) => state.getAllFees); // Assuming you have a fees reducer
+    const getAllFees = useSelector((state) => state.getAllFees); 
   const { loading, error, fees } = getAllFees;
 
 

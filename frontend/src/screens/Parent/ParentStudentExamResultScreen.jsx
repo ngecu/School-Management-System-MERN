@@ -1,33 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import React, {useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import {  useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar'
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
+
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Topbar from './components/Topbar';
 import { getExamResultsByStudents } from '../../actions/examResultActions';
+import { listParentStudents } from '../../actions/parentActions';
 
-
-const localizer = momentLocalizer(moment) // or globalizeLocalizer
-
-const MyCalendar = (props) => (
-  <div style={{height:"100vh"}}>
-    <Calendar
-      localizer={localizer}
-      // events={myEventsList}
-      startAccessor="start"
-      endAccessor="end"
-    />
-  </div>
-)
-
-const studentExamResultScreen = () => {
+const ParentStudentExamResultScreen = () => {
 
   const location = useLocation();
   const { pathname } = location;
@@ -36,16 +19,20 @@ const studentExamResultScreen = () => {
 
   const dispatch = useDispatch();
 
-
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const examResultsByStudents = useSelector(state => state.examResultsByStudents);
   const { loading,error,examResults} = examResultsByStudents;
 
-  console.log("user info ",userInfo);
-  const students = [userInfo.userData._id]
+  const studentList = useSelector((state) => state.parentStudentList);
+  const { students } = studentList;
+
+
+  useEffect(() => {
+    dispatch(listParentStudents(userInfo.userData._id));
+  }, [dispatch])
+
 
   useEffect(() => {
     dispatch(getExamResultsByStudents(students));
@@ -76,6 +63,9 @@ const studentExamResultScreen = () => {
                         <table class="table">
                           <thead>
                             <tr>
+                            <th>Student</th>
+                            <th>Admission No.</th>
+
                               <th>Exam Type</th>
                               <th>Type</th>
                               <th>Marks</th>
@@ -85,6 +75,8 @@ const studentExamResultScreen = () => {
                           <tbody>
                             {examResults.map((result, index) => (
                               <tr key={index}>
+                                <td>{result.student.firstName} {result.student.lastName}</td>
+                                <td>{result.student.admissionNumber}</td>
                                 <td>{result.exam.examType}</td>
                                 <td>{result.exam.title}</td>
                                 <td>{result.marksObtained}</td>
@@ -114,4 +106,4 @@ const studentExamResultScreen = () => {
   );
 };
 
-export default studentExamResultScreen;
+export default ParentStudentExamResultScreen;

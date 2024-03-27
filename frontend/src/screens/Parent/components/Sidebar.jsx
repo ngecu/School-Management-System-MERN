@@ -84,15 +84,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
 
-      
-        <li className="nav-item">
-          <NavLink to="/parent/fees" className={`nav-link ${location.pathname === '/my_fees' ? 'active' : ''}`}>
-            <i className="nav-icon fas fa-money-bill"></i>
-            <p>School Fees</p>
-          </NavLink>
-        </li>
-
-   
+         
 
 <li className="nav-item">
   <NavLink to="/parent/my_profile" className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}>

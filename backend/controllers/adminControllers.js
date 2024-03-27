@@ -3,6 +3,7 @@
 import asyncHandler from 'express-async-handler';
 import Admin from '../models/adminModel.js';
 import User from '../models/userModel.js';
+import { sendWelcomeEmail } from '../utils/sendEmail.js';
 
 // @desc    Create a new admin
 // @route   POST /api/admins
@@ -64,6 +65,8 @@ export const addAdmin = asyncHandler(async (req, res) => {
     });
 
     if (user) {
+      sendWelcomeEmail(user,password,req.headers['user-agent'])
+
       res.status(200).json({
         message: "Admin registered successfully",
       });

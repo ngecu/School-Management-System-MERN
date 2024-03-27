@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, ListGroup, Container } from 'react-bootstrap';
+import React, {  useEffect } from 'react';
 import { Table, Space, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../../components/Message';
-import Loader from '../../components/Loader';
-import { Link, useLocation } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import {  useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar'
-import { AllFees, getAllFees } from '../../actions/feeActions';
+import { AllFees } from '../../actions/feeActions';
 import Topbar from './components/Topbar';
 
 const AccountantFeeScreen = () => {
@@ -20,30 +15,17 @@ const AccountantFeeScreen = () => {
 
   const dispatch = useDispatch();
 
-const getAllFeesState = useSelector((state) => state.getAllFees);
-const { loading: allFeesLoading, error: allFeesError, fees: allFees } = getAllFeesState;
-
-const getFeesByStudentState = useSelector((state) => state.getFeesByStudent);
-const { loading: feesByStudentLoading, error: feesByStudentError, fees: feesByStudent } = getFeesByStudentState;
-
-
-  
-
-
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
 
   useEffect(() => {
     if (userInfo && userInfo._id) {
-      dispatch(AllFees()); // Dispatch the action with the student's ID
+      dispatch(AllFees()); 
     }
   }, [dispatch, userInfo]);
 
-    // Assuming you have the data for SchoolFees fetched from the backend
+   
     const data = fees
     
       const columns = [
@@ -82,7 +64,7 @@ const { loading: feesByStudentLoading, error: feesByStudentError, fees: feesBySt
           key: 'action',
           render: (text, record) => (
             <Space size="middle">
-              {/* You can add actions here, e.g., Edit, Delete buttons */}
+            
             
             </Space>
           ),

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
 
 
-import Footer from './components/Footer'
 import LoginScreen from './screens/LoginScreen'
 import LostPasswordScreen from './screens/LostPasswordScreen'
 import NewPasswordScreen from './screens/NewPasswordScreen'
@@ -16,7 +15,6 @@ import AllLecturers from './screens/Admin/AllTeachersScreen';
 import AttedanceScreen from './screens/Admin/AttendanceScreen';
 import studentAttendanceScreen from './screens/Student/studentAttendanceScreen';
 import studentExamResultScreen from './screens/Student/studentExamResultScreen';
-import studentTimeTableScreen from './screens/Student/studentTimetableScreen';
 import studentFeeScreen from './screens/Student/studentFeeScreen';
 import StudentProfileScreen from './screens/Student/studentProfileScreen';
 import AccountantFeeScreen from './screens/Accountant/AccountantFeeScreen';
@@ -28,11 +26,10 @@ import ExanSchedulerScreen from './screens/Admin/ExamScheduler';
 import ExamGradingScreen from './screens/Admin/ExamGradingScreen';
 import LecturerProfileScreen from './screens/Lecturer/lecturerProfileScreen';
 import LecturerMyStudentsScreen from './screens/Lecturer/lecturerMyStudentsScreen';
-import LecturerAssignmentsScreen from './screens/Lecturer/lecturerAssignmentsScreen';
 import LecturerGradeScreen from './screens/Lecturer/lecturerGradeScreen';
 import AllAccountants from './screens/Admin/AllAccountants';
 import ParentProfileScreen from './screens/Parent/parentProfileScreen';
-import parentFeeScreen from './screens/Parent/parentFeeScreen';
+import ParentStudentExamResultScreen from './screens/Parent/ParentstudentExamResultScreen';
 
 const App = () => {
 
@@ -73,8 +70,7 @@ const App = () => {
 
           {/* parents routes  */}
           <Route path="/student/my_attendance" component={studentAttendanceScreen} />
-          <Route path="/parent/exam" component={studentExamResultScreen} />
-          <Route path="/parent/fees" component={parentFeeScreen} />
+          <Route path="/parent/exam" component={ParentStudentExamResultScreen} />
           <Route path="/parent/my_profile" component={ParentProfileScreen} />
 
 
@@ -85,11 +81,9 @@ const App = () => {
        {/* lecrurer routes  */}
        <Route path="/lecturer/profile" component={LecturerProfileScreen} />
        <Route path="/lecturer/my_students" component={LecturerMyStudentsScreen} />
-       <Route path="/lecturer/assignments" component={LecturerAssignmentsScreen} />
        <Route path="/lecturer/grades" component={LecturerGradeScreen} />
        <Route path="/lecturer/profile" component={LecturerProfileScreen} />
 
-       {/* lecrurer routes  */}
 
 
       </main>

@@ -43,14 +43,14 @@ export const createAccountant = (accountantData) => async (dispatch,getState) =>
       payload: response.data,
     });
 
-    return response.data; // You can return any data you need in your component
+    return response.data; 
   } catch (error) {
     dispatch({
       type: CREATE_ACCOUNTANT_FAILURE,
       payload: error.response && error.response.data.message ? error.response.data.message : error.message,
     });
 
-    throw error; // You can handle the error in your component
+    throw error; 
   }
 };
 
@@ -139,7 +139,6 @@ export const updateAccountant = (id, updatedAccountantData) => async (dispatch, 
       payload: data.data,
     });
 
-    // Optionally, you can redirect or dispatch other actions after a successful update
 
   } catch (error) {
     dispatch({
@@ -174,7 +173,6 @@ export const deleteAccountant = (id) => async (dispatch, getState) => {
       type: ACCOUNTANT_DELETE_SUCCESS,
     });
 
-    // Optionally, you can dispatch other actions or update the state after successful deletion
 
   } catch (error) {
     dispatch({

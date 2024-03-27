@@ -59,20 +59,9 @@ import {
   parentStudentListReducer,
 } from './reducers/parentReducers';
 
-import {
-  // Attendance reducers
-  attendanceCreateReducer,
-  attendanceListReducer,
-  attendanceDetailsReducer,
-} from './reducers/attendanceReducers';
 
-import {
-  // Chat reducers
-  chatFetchMessagesReducer,
-  chatSendMessageReducer,
-  chatActiveConversationReducer,
-  chatEditDeleteMessageReducer,
-} from './reducers/chatReducers';  
+
+ 
 
 import {
   // Payment Transaction reducers
@@ -98,7 +87,6 @@ import {
 import { uploadFileReducer } from './reducers/uploadReducers';
 import { timetableByCourseReducer, timetableCreateReducer, timetableDeleteReducer, timetableDetailsReducer, timetableListReducer, timetableUpdateReducer } from './reducers/timetableReducers';
 import { createFeesReducer, getAllFeesReducer, getFeesByStudentReducer, markFeesAsPaidReducer } from './reducers/feeReducers';
-import { createConversationReducer, getAllConversationsReducer, getUserConversationsReducer } from './reducers/conversationReducers';
 import { accountantCreateReducer, accountantDeleteReducer, accountantDetailsReducer, accountantListReducer, accountantUpdateReducer } from './reducers/accountantReducers';
 import { courseUnitCreateReducer, getAllCourseUnitsReducer, getCourseUnitsByCourseReducer } from './reducers/courseUnitReducers';
 
@@ -118,6 +106,7 @@ import {
   getExamResultDetailsReducer,
   examResultUpdateReducer,
   examResultDeleteReducer,
+  examResultsByStudentsReducer
 } from './reducers/examResultReducers';
 
 
@@ -169,17 +158,6 @@ const reducer = combineReducers({
   parentUpdate: parentUpdateReducer,
   parentDelete: parentDeleteReducer,
   parentStudentList:parentStudentListReducer,
-
-    // Attendance reducers
-    attendanceCreate: attendanceCreateReducer,
-    attendanceList: attendanceListReducer,
-    attendanceDetails: attendanceDetailsReducer,
-
-    // Chat reducers
-    chatMessages: chatFetchMessagesReducer,
-    chatSendMessage: chatSendMessageReducer,
-    chatActiveConversation: chatActiveConversationReducer,
-    chatEditDeleteMessage: chatEditDeleteMessageReducer,
     
       // Timetable reducers
   timetableList: timetableListReducer,
@@ -212,12 +190,7 @@ const reducer = combineReducers({
     submissionCreate: submissionCreateReducer,
     submissionList: submissionListReducer,
     submissionDetails: submissionDetailsReducer,
-    
 
-      // Reducers for conversation module
-  createConversation: createConversationReducer,
-  AllConversations: getAllConversationsReducer,
-  userConversationR: getUserConversationsReducer,
 
   // Accountant reducers
   createAccountant:accountantCreateReducer,
@@ -238,6 +211,7 @@ const reducer = combineReducers({
   examResultDetails: getExamResultDetailsReducer,
   examResultUpdate: examResultUpdateReducer,
   examResultDelete: examResultDeleteReducer,
+  examResultsByStudents:examResultsByStudentsReducer,
 
   courseUnitCreate: courseUnitCreateReducer,
   getAllCourseUnits: getAllCourseUnitsReducer,

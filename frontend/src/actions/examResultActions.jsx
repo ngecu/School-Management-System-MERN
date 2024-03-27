@@ -15,6 +15,9 @@ import {
   EXAM_RESULT_DELETE_REQUEST,
   EXAM_RESULT_DELETE_SUCCESS,
   EXAM_RESULT_DELETE_FAIL,
+  GET_EXAM_RESULTS_BY_STUDENT_REQUEST,
+  GET_EXAM_RESULTS_BY_STUDENT_SUCCESS,
+  GET_EXAM_RESULTS_BY_STUDENT_FAIL,
 } from '../constants/examResultConstants';
 
 const base_url = `http://localhost:5000/api/exam-results`;
@@ -166,6 +169,37 @@ export const deleteExamResult = (examResultId) => async (dispatch, getState) => 
   } catch (error) {
     dispatch({
       type: EXAM_RESULT_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getExamResultsByStudents = (studentIds) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: GET_EXAM_RESULTS_BY_STUDENT_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`${base_url}/student/`,{students:studentIds}, config); 
+
+    dispatch({
+      type: GET_EXAM_RESULTS_BY_STUDENT_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_EXAM_RESULTS_BY_STUDENT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

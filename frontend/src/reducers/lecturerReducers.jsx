@@ -1,4 +1,3 @@
-// Import your lecturer action constants
 import {
     LECTURER_CREATE_REQUEST,
     LECTURER_CREATE_SUCCESS,
