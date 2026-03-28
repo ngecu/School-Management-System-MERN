@@ -26,7 +26,6 @@ export const admitStudent = asyncHandler(async (req, res) => {
       course,
       parentFullName,
       relationship,
-      parents,
       parentPhone,
       parentEmail,
       status,
@@ -36,25 +35,21 @@ export const admitStudent = asyncHandler(async (req, res) => {
       mos
     } = req.body;
 
-//     // Check if the student already exists
+    // Check if the student already exists
     const studentExists = await Student.findOne({ email });
 
     if (studentExists) {
-      res.status(400).json({error:"Student already exists"});
-      throw new Error('Student already exists');
+      return res.status(400).json({ error: "Student already exists" });
     }
 
-//     // Create an array to store parent IDs
+    // Create an array to store parent IDs
     const parentIds = [];
-
-//     // Iterate through parents array and create/update parent documents
 
     // Check if the parent already exists
     let parent = await Parent.findOne({ parentEmail });
-    let user_parent = await User.findOne({ email:parents[0].email });
+    let user_parent = await User.findOne({ email: parentEmail }); // Fix: Use parentEmail instead of parents[0].email
 
-
-//     // If not, create a new parent
+    // If not, create a new parent
     if (!parent) {
       parent = await Parent.create({
         email: parentEmail,
@@ -63,38 +58,33 @@ export const admitStudent = asyncHandler(async (req, res) => {
         password: password
       });
 
-      if(!user_parent){
+      if (!user_parent) {
         user_parent = await User.create({
-          firstName:parents[0].fullName,
-          email:parents[0].email,
-          password:"parentPassword123",
+          firstName: parentFullName, // Fix: Use parentFullName instead of parents[0].fullName
+          email: parentEmail, // Fix: Use parentEmail instead of parents[0].email
+          password: "parentPassword123",
           userType: "Parent",
-          isActive:true
-
+          isActive: true
         });
 
-        sendWelcomeEmail(user_parent,password,req.headers['user-agent'])
-
-
+        sendWelcomeEmail(user_parent, password, req.headers['user-agent']);
       }
     }
 
-//     // Add the parent's ID to the array
+    // Add the parent's ID to the array
     parentIds.push(parent._id);
 
-//     // Find the course by name
+    // Find the course by ID
     const courseExtracted = await Course.findOne({ _id: course });
-    if (!course) {
-      res.status(400);
-      throw new Error('Course not found');
+    if (!courseExtracted) { // Fix: Check courseExtracted, not course
+      return res.status(400).json({ error: 'Course not found' });
     }
 
-//     // Generate admission number
-    const courseCode = courseExtracted.name.substring(0, 3).toUpperCase(); 
-    const courseIndex = await Student.countDocuments({ course }) + 1; // Count existing students in the same course and increment by 1
+    // Generate admission number
+    const courseCode = courseExtracted.name.substring(0, 3).toUpperCase();
+    const courseIndex = await Student.countDocuments({ course }) + 1;
     const currentYear = new Date().getFullYear();
     const admissionNumber = `${courseCode}/${courseIndex}/${currentYear}/${year_of_study}`;
-
 
     const student = await Student.create({
       email,
@@ -111,10 +101,9 @@ export const admitStudent = asyncHandler(async (req, res) => {
       status,
       lastLoginDate,
       lastLoginIp,
-      password,
       year_of_study,
       mos,
-      admissionNumber 
+      admissionNumber
     });
 
     if (student) {
@@ -124,60 +113,51 @@ export const admitStudent = asyncHandler(async (req, res) => {
       const userExists = await User.findOne({ email });
 
       if (userExists) {
-        res.status(400);
-        throw new Error('User already exists');
+        return res.status(400).json({ error: 'User already exists' });
       }
 
       const user = await User.create({
         firstName,
-        secondName: lastName, // Assuming you have a variable named secondName
+        secondName: lastName,
         email,
         password,
         userType: "Student",
-        // Add other relevant fields based on your User schema
       });
 
       if (user) {
-        sendWelcomeEmail(user,password,req.headers['user-agent'])
+        sendWelcomeEmail(user, password, req.headers['user-agent']);
 
         const studentId = student._id;
 
         // Check if school fees already exist for the student
         const today = new Date();
-
-// Calculate 3 months from today's date
-const dueDate = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
+        const dueDate = new Date(today.getFullYear(), today.getMonth() + 3, today.getDate());
 
         const existingFees = await SchoolFees.findOne({ student: studentId });
 
         if (!existingFees) {
-          // If school fees don't exist, create them
           await SchoolFees.create({
             student: studentId,
             amount: 30000,
             dueDate,
             transactionId: uuidv4()
           });
-
         }
 
-        res.status(200).json({
+        return res.status(200).json({
           admissionNumber,
           message: "Student registered successfully",
         });
       } else {
-        res.status(400);
-        throw new Error('Invalid user data');
+        return res.status(400).json({ error: 'Invalid user data' });
       }
-
     } else {
-      res.status(400);
-      throw new Error('Invalid student data');
+      return res.status(400).json({ error: 'Invalid student data' });
     }
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error: error.message });
   }
-
 });
 
 

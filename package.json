@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "babel-node backend/server",
-    "server": "node backend/server",
+    "server": "nodemon backend/server",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
@@ -35,11 +35,11 @@
     "ngrok": "^5.0.0-beta.2",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.3",
+    "nodemon": "^3.1.14",
     "react-icons": "^4.10.1",
     "request": "^2.88.2",
     "useragent": "^2.3.0",
     "ws": "^8.16.0"
-
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",
