@@ -13,8 +13,8 @@ import {v4} from 'uuid'
 export const initiateSTKPush = async (req, res) => {
   try {
     const { amount, phoneNumber,transactionId,schoolFees } = req.body;
-    console.log("req body is ", req.body);
-    const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+    
+    const url = process.env.URL;
     const auth = "Bearer " + req.safaricom_access_token;
 
     const timestamp = getTimestamp();
@@ -24,7 +24,7 @@ export const initiateSTKPush = async (req, res) => {
       process.env.BUSINESS_SHORT_CODE + process.env.PASS_KEY + timestamp
     ).toString("base64");
     // create callback url
-    const callback_url = `https://silent-glasses-jam.loca.lt`;
+    const callback_url = `${process.env.CALLBACKURL}`;
 
     const requestObject = {
       url: url,

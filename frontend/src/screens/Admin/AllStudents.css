@@ -1,0 +1,370 @@
+/* AllStudents.css */
+.all-students-page {
+  background: #f8f9fc;
+  min-height: 100vh;
+}
+
+/* Page Header */
+.page-header {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.page-subtitle {
+  color: #6c757d;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.stats-summary {
+  display: flex;
+  gap: 1rem;
+}
+
+.stat-badge {
+  background: #f8f9fc;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  border: 1px solid #e3e6f0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Filters Card */
+.filters-card {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.filters-card .card-body {
+  padding: 1.25rem;
+}
+
+/* Students Table Card */
+.students-table-card {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.students-table-card .card-header {
+  background: white;
+  border-bottom: 1px solid #e3e6f0;
+  padding: 1rem 1.5rem;
+}
+
+/* Students Table */
+.students-table {
+  margin-bottom: 0;
+}
+
+.students-table thead th {
+  background: #f8f9fc;
+  border-bottom: 2px solid #e3e6f0;
+  color: #4e73df;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1rem;
+}
+
+.students-table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #e3e6f0;
+}
+
+.students-table tbody tr:hover {
+  background: #f8f9fc;
+  transition: background 0.3s ease;
+}
+
+/* Student Avatar */
+.student-avatar {
+  border: 2px solid #e3e6f0;
+  transition: transform 0.3s ease;
+}
+
+.student-avatar:hover {
+  transform: scale(1.1);
+}
+
+/* Admission Number */
+.admission-number {
+  font-size: 0.9rem;
+  font-family: monospace;
+  color: #4e73df;
+}
+
+/* Student Name */
+.student-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+/* Course Name */
+.course-name {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn.btn-info {
+  background: #36b9cc;
+  border-color: #36b9cc;
+}
+
+.action-btn.btn-info:hover {
+  background: #258391;
+  border-color: #258391;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+}
+
+.empty-state h6 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+/* Pagination Info */
+.pagination-info {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+/* Pagination Customization */
+.pagination .page-link {
+  color: #4e73df;
+  border: none;
+  margin: 0 2px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+  background: #e3e6f0;
+  color: #224abe;
+}
+
+.pagination .page-item.active .page-link {
+  background: #4e73df;
+  border-color: #4e73df;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #b7b9cc;
+}
+
+/* Modal Styles */
+.student-modal .ant-modal-header {
+  border-bottom: 2px solid #e3e6f0;
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.student-profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.student-profile-header h4 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+/* Ant Design Tabs Customization */
+.student-modal .ant-tabs-tab {
+  padding: 12px 0;
+  margin-right: 24px;
+}
+
+.student-modal .ant-tabs-tab-active {
+  color: #4e73df;
+}
+
+.student-modal .ant-tabs-ink-bar {
+  background: #4e73df;
+}
+
+/* Descriptions Customization */
+.ant-descriptions-item-label {
+  background: #f8f9fc;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.2rem;
+  }
+
+  .stats-summary {
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .stat-badge {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .students-table thead th {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .students-table tbody td {
+    padding: 0.75rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .action-btn {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 576px) {
+  .filters-card .card-body {
+    padding: 1rem;
+  }
+
+  .students-table-card .card-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .pagination-info {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+}
+
+/* Loading Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.students-table-card {
+  animation: fadeIn 0.5s ease;
+}
+
+/* Hover Effects */
+.students-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.students-table tbody tr:hover td {
+  background: #f8f9fc;
+}
+
+/* Custom Scrollbar */
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}

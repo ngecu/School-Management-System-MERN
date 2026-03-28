@@ -20,7 +20,6 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (!userInfo) {
-      alert('Please login first.');
       history.push('/');
     }
   }, [userInfo, history]);

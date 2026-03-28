@@ -1,0 +1,245 @@
+/* AdmissionScreen.css */
+.admission-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.admission-card .ant-card-body {
+  padding: 32px;
+}
+
+/* Dropzone Styles */
+.dropzone-container {
+  width: 100%;
+}
+
+.dropzone {
+  border: 2px dashed #d9d9d9;
+  border-radius: 12px;
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.dropzone:hover {
+  border-color: #1890ff;
+  background: #f0f5ff;
+  transform: translateY(-2px);
+}
+
+.dropzone.active {
+  border-color: #1890ff;
+  background: #e6f7ff;
+  border-style: solid;
+}
+
+/* Image Preview */
+.image-preview {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.preview-item {
+  text-align: center;
+  position: relative;
+}
+
+.preview-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.preview-image:hover {
+  transform: scale(1.05);
+}
+
+.remove-image {
+  margin-top: 12px;
+  display: block;
+  width: 100%;
+}
+
+/* Review Section */
+.review-section .review-card {
+  background: #fafafa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  height: 100%;
+}
+
+.review-section .review-card .ant-card-head {
+  border-bottom: 2px solid #e8e8e8;
+  background: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.review-section .review-card p {
+  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.review-section .review-card p strong {
+  display: inline-block;
+  width: 130px;
+  color: #595959;
+  font-weight: 600;
+}
+
+.review-photo {
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Step Buttons */
+.step-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.step-buttons .ant-btn {
+  min-width: 140px;
+  height: 44px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.step-buttons .ant-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Item Enhancements */
+.ant-form-item {
+  margin-bottom: 20px;
+}
+
+.ant-form-item-label > label {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.ant-input-affix-wrapper, .ant-select-selector, .ant-picker {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.ant-input-affix-wrapper:hover, 
+.ant-select-selector:hover, 
+.ant-picker:hover {
+  border-color: #1890ff;
+}
+
+.ant-input-affix-wrapper:focus, 
+.ant-select-selector:focus, 
+.ant-picker-focused {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admission-card .ant-card-body {
+    padding: 20px;
+  }
+  
+  .step-buttons .ant-btn {
+    min-width: 120px;
+    height: 40px;
+    font-size: 14px;
+  }
+  
+  .review-section .review-card p strong {
+    width: 100%;
+    display: block;
+    margin-bottom: 4px;
+  }
+  
+  .dropzone {
+    padding: 24px 16px;
+  }
+  
+  .preview-image {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 576px) {
+  .admission-card .ant-card-body {
+    padding: 16px;
+  }
+  
+  .step-buttons {
+    flex-direction: column;
+  }
+  
+  .step-buttons .ant-btn {
+    width: 100%;
+  }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admission-card {
+  animation: fadeInUp 0.5s ease;
+}
+
+/* Loading Overlay */
+.ant-spin-nested-loading {
+  position: relative;
+}
+
+.ant-spin-container::after {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* Success Message Animation */
+.ant-message {
+  animation: fadeInUp 0.3s ease;
+}

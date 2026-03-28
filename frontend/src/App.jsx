@@ -1,6 +1,9 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
+import 'admin-lte/dist/css/adminlte.min.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
+
 
 
 import LoginScreen from './screens/LoginScreen'
