@@ -4,11 +4,11 @@ Content-Type: application/json
 
 
 {
-  "email": "admin2@admin.com",
-  "password": "adminPassword123",
-  "firstName": "John2",
-  "lastName": "Doe2",
-  "gender": "Male",
+  "email": "eve@admin.com",
+  "password": "evePassword123",
+  "firstName": "Eve",
+  "lastName": "Mayah",
+  "gender": "Female",
   "dob": "1990-01-01",
   "phone": "1234567891",
   "nationalID": "123456788",

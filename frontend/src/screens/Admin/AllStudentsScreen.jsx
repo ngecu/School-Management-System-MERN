@@ -82,18 +82,20 @@ const AllStudents = () => {
  const generateStudentData = () => {
   const filteredStudents = students.filter(
     (student) =>
-    student.student?.admissionNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.student?.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.student?.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.student?.email.toLowerCase().includes(searchQuery.toLowerCase())
+      student?.student?.admissionNumber?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student?.student?.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student?.student?.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student?.student?.email?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (filteredStudents.length === 0) {
     return (
       <tr>
-        <td colSpan="8"><div className="aler alert-danger">
-        No students found
-          </div> </td>
+        <td colSpan="8">
+          <div className="alert alert-danger">
+            No students found
+          </div>
+        </td>
       </tr>
     );
   }

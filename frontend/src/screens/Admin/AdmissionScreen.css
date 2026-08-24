@@ -243,3 +243,98 @@
 .ant-message {
   animation: fadeInUp 0.3s ease;
 }
+
+.ant-card {
+  border-radius: 12px !important;
+  transition: all 0.3s ease;
+}
+
+.ant-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.ant-card-head {
+  border-bottom: 2px solid #f0f0f0 !important;
+}
+
+.ant-form-item-label > label {
+  font-weight: 600 !important;
+  color: #333 !important;
+}
+
+.ant-input:hover,
+.ant-select-selector:hover {
+  border-color: #667eea !important;
+}
+
+.ant-input:focus,
+.ant-select-selector:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
+}
+
+.ant-btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  height: 45px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.ant-steps-item-process .ant-steps-item-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+  border-color: #52c41a !important;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: #52c41a !important;
+}
+
+.drop-zone-container {
+  transition: all 0.3s ease;
+}
+
+.drop-zone-container:hover {
+  border-color: #667eea !important;
+}
+
+.ant-badge {
+  margin-left: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ant-col {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .ant-card {
+    margin: 10px !important;
+  }
+}
+
+/* Animated entrance */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ant-card {
+  animation: fadeInUp 0.5s ease;
+}
