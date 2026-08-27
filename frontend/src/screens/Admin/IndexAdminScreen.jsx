@@ -183,7 +183,7 @@ const IndexAdminScreen = () => {
       value: totalStudents,
       icon: FaUserGraduate,
       color: '#4e73df',
-      bgColor: 'linear-gradient(135deg, #4e73df 0%, #224abe 100%)',
+      bgColor: '#224abe',
       link: '/admin/allStudents',
       trend: '+12%',
       trendUp: true
@@ -193,7 +193,7 @@ const IndexAdminScreen = () => {
       value: totalLecturers,
       icon: FaChalkboardTeacher,
       color: '#1cc88a',
-      bgColor: 'linear-gradient(135deg, #1cc88a 0%, #13855c 100%)',
+      bgColor: '#13855c',
       link: '/admin/allLecturers',
       trend: '+5%',
       trendUp: true
@@ -203,7 +203,7 @@ const IndexAdminScreen = () => {
       value: totalCourses,
       icon: FaBook,
       color: '#36b9cc',
-      bgColor: 'linear-gradient(135deg, #36b9cc 0%, #258391 100%)',
+      bgColor: '#258391',
       link: '/admin/courses',
       trend: '+8%',
       trendUp: true
@@ -213,7 +213,7 @@ const IndexAdminScreen = () => {
       value: totalUsers,
       icon: FaUsers,
       color: '#f6c23e',
-      bgColor: 'linear-gradient(135deg, #f6c23e 0%, #dda20a 100%)',
+      bgColor: 'black',
       link: '#',
       trend: '+10%',
       trendUp: true
@@ -403,133 +403,7 @@ const IndexAdminScreen = () => {
               </div>
             </div>
 
-            {/* Recent Activities and Events */}
-            <div className="row mb-4">
-              <div className="col-xl-6 col-md-12 mb-4">
-                <div className="dashboard-card">
-                  <div className="card-header-custom">
-                    <h5 className="card-title">
-                      <FaClock className="mr-2" />
-                      Recent Activities
-                    </h5>
-                    <Link to="/admin/activities" className="view-all-link">
-                      View All →
-                    </Link>
-                  </div>
-                  <div className="card-body-custom p-0">
-                    <div className="activities-list">
-                      {recentActivities.map(activity => (
-                        <div key={activity.id} className="activity-item">
-                          <div className={`activity-icon bg-${activity.type}`}>
-                            {activity.type === 'success' && <FaUserGraduate />}
-                            {activity.type === 'info' && <FaMoneyBillWave />}
-                            {activity.type === 'warning' && <FaBook />}
-                            {activity.type === 'primary' && <FaTrophy />}
-                          </div>
-                          <div className="activity-content">
-                            <p className="activity-action">{activity.action}</p>
-                            <div className="activity-details">
-                              <span className="activity-user">{activity.user}</span>
-                              {activity.amount && (
-                                <Badge bg="success" className="ml-2">{activity.amount}</Badge>
-                              )}
-                              {activity.course && (
-                                <Badge bg="info" className="ml-2">{activity.course}</Badge>
-                              )}
-                              <span className="activity-time">{activity.time}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-xl-6 col-md-12 mb-4">
-                <div className="dashboard-card">
-                  <div className="card-header-custom">
-                    <h5 className="card-title">
-                      <FaCalendarAlt className="mr-2" />
-                      Upcoming Events
-                    </h5>
-                    <Link to="/admin/events" className="view-all-link">
-                      View All →
-                    </Link>
-                  </div>
-                  <div className="card-body-custom p-0">
-                    <div className="events-list">
-                      {upcomingEvents.map(event => (
-                        <div key={event.id} className="event-item">
-                          <div className="event-icon">
-                            <event.icon />
-                          </div>
-                          <div className="event-content">
-                            <div className="event-title">{event.title}</div>
-                            <div className="event-date">{event.date}</div>
-                            <div className="event-days">{event.days}</div>
-                          </div>
-                          <Button 
-                            variant="outline-primary" 
-                            size="sm" 
-                            className="event-button"
-                          >
-                            Remind Me
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="row mb-4">
-              <div className="col-12">
-                <div className="dashboard-card">
-                  <div className="card-header-custom">
-                    <h5 className="card-title">Quick Actions</h5>
-                  </div>
-                  <div className="card-body-custom">
-                    <div className="quick-actions-grid">
-                      <Button 
-                        variant="primary" 
-                        className="quick-action-btn"
-                        onClick={() => history.push('/admin/admission')}
-                      >
-                        <FaUserGraduate className="mr-2" />
-                        Add New Student
-                      </Button>
-                      <Button 
-                        variant="success" 
-                        className="quick-action-btn"
-                        onClick={() => history.push('/admin/add_lecturer')}
-                      >
-                        <FaChalkboardTeacher className="mr-2" />
-                        Add New Lecturer
-                      </Button>
-                      <Button 
-                        variant="info" 
-                        className="quick-action-btn"
-                        onClick={() => history.push('/admin/add_accountant')}
-                      >
-                        <FaMoneyBillWave className="mr-2" />
-                        Add Accountant
-                      </Button>
-                      <Button 
-                        variant="warning" 
-                        className="quick-action-btn"
-                        onClick={() => history.push('/admin/exam_schedule')}
-                      >
-                        <FaCalendarAlt className="mr-2" />
-                        Schedule Exam
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+    
           </div>
         </div>
       </div>

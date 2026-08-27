@@ -162,7 +162,7 @@ const AdmissionScreen = () => {
                   style={{ 
                     borderRadius: '15px',
                     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                    background: '#343A40'
                   }}
                 >
                   <div className="text-center text-white">
@@ -176,7 +176,7 @@ const AdmissionScreen = () => {
                       }} 
                     />
                     <Title level={2} style={{ color: 'white', margin: 0 }}>
-                      🎓 Student Admission Form
+                       Student Admission Form
                     </Title>
                     <Text style={{ color: 'rgba(255,255,255,0.8)' }}>
                       Please fill in all required fields to register a new student
@@ -213,7 +213,7 @@ const AdmissionScreen = () => {
                       <Card 
                         title={
                           <Space>
-                            <UserOutlined style={{ color: '#667eea' }} />
+                            <UserOutlined style={{ color: 'white' }} />
                             <span>Personal Information</span>
                             <Badge count="Required" style={{ backgroundColor: '#52c41a' }} />
                           </Space>

@@ -5,6 +5,7 @@ import { NavLink, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import {FaUsers,FaUserPlus,FaChalkboardTeacher,FaMoneyBillWave } from "react-icons/fa";
 import { PiExam,PiExamFill  } from "react-icons/pi";
 import { MdLogout } from "react-icons/md";
+import logo from '../../../assets/logo.jpg'
 
 const Sidebar = () => {
   const dispatch = useDispatch()
@@ -40,7 +41,7 @@ const Sidebar = () => {
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
   
     <a href="#" class="brand-link">
-      <img src="https://raw.githubusercontent.com/ngecu/PHP-School-Management-System/main/img/logo/attnlg.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
+      <img src={logo} alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
       <span class="brand-text font-weight-light">EVE SMS</span>
     </a>
 

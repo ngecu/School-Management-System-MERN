@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from './components/Sidebar'
 import { AllFees, getFeesByStudent } from '../../actions/feeActions';
 import Topbar from './components/Topbar';
+import logo from '../../assets/logo.jpg'
 
 const AdminFeeScreen = () => {
   const [studentId, setStudentId] = useState('');
@@ -158,7 +159,7 @@ const AdminFeeScreen = () => {
             {/* Receipt Header with Logo */}
             <div className="receipt-header" style={{ textAlign: 'center' }}>
               <img 
-                src="https://raw.githubusercontent.com/ngecu/PHP-School-Management-System/main/img/logo/attnlg.jpg" // Replace with your actual logo path
+                src={logo} // Replace with your actual logo path
                 alt="School Logo" 
                 style={{ maxWidth: '120px' }}
                 onError={(e) => {

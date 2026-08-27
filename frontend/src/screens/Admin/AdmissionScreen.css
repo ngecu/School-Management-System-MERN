@@ -338,3 +338,11 @@
 .ant-card {
   animation: fadeInUp 0.5s ease;
 }
+
+:where(.css-dev-only-do-not-override-dkbvqv).ant-steps .ant-steps-item-wait>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
+    color: white;
+}
+
+:where(.css-dev-only-do-not-override-dkbvqv).ant-steps .ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title {
+  color:white;
+}
