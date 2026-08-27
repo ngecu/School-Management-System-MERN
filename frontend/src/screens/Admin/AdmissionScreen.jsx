@@ -1,18 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
-import { Form, Input, Select, DatePicker, Upload, message, Col, Row, Card, Space, Typography, Divider, Avatar, Badge, Steps } from 'antd';
-import { UploadOutlined, UserOutlined, TeamOutlined, BookOutlined, CalendarOutlined, PhoneOutlined, MailOutlined, IdcardOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Form, Input, Select, DatePicker, Upload, message, Col, Row, Card, Space, Typography, Divider, Avatar, Badge, Steps, Spin, Alert } from 'antd';
+import { UploadOutlined, UserOutlined, TeamOutlined, BookOutlined, CalendarOutlined, PhoneOutlined, MailOutlined, IdcardOutlined, PlusOutlined, SaveOutlined, LoadingOutlined } from '@ant-design/icons';
 import Sidebar from './components/Sidebar'
 import { useSelector, useDispatch } from 'react-redux';
 import { listSchools } from '../../actions/schoolActions';
 import { listCourses } from '../../actions/courseActions';
 import { createStudent } from '../../actions/studentActions';
 import Topbar from './components/Topbar';
-import { useState } from 'react';
 import { useDropzone } from 'react-dropzone'
 import { uploadFile } from '../../actions/cloudinaryAtions';
 import { useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap'
-import './AdmissionScreen.css'; // We'll create this CSS file
+import './AdmissionScreen.css';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -22,9 +21,15 @@ const AdmissionScreen = () => {
   const [yearofstudyselected, setYearofstudy] = useState(null);
   const [courseselected, setcourse] = useState(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success' | 'error' | null
+  const [form] = Form.useForm();
+  const history = useHistory();
 
   const onFinish = async (values) => {
     console.log('Received values:', values);
+    setIsSubmitting(true);
+    setSubmitStatus(null);
 
     const generateUniqueId = () => {
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -40,6 +45,7 @@ const AdmissionScreen = () => {
 
     if (age < 18) {
       message.error('Student must be at least 18 years old.');
+      setIsSubmitting(false);
       return;
     }
 
@@ -52,35 +58,73 @@ const AdmissionScreen = () => {
     const dataToSend = {
       ...values,
       parents: formattedParents,
+      admissionNumber: admissionNumber,
     };
 
-    if (selectedImages.length > 0) {
-      const uploadedFileUrl = await dispatch(uploadFile(selectedImages[0]));
-
-      if (uploadedFileUrl !== null) {
-        values.photo = uploadedFileUrl;
-        values.userType = "student";
-        dispatch(createStudent(values))
-          .then(() => {
+    try {
+      if (selectedImages.length > 0) {
+        const uploadedFileUrl = await dispatch(uploadFile(selectedImages[0]));
+        
+        if (uploadedFileUrl !== null) {
+          values.photo = uploadedFileUrl;
+          values.userType = "student";
+          
+          const result = await dispatch(createStudent(values));
+          console.log('Student creation result:', result);
+          
+          if (result && result.message) {
             message.success('🎉 Student added successfully!');
-            history.push('/admin/allStudents');
-          })
-          .catch((error) => {
-            console.log('Error adding student:', error);
-            message.error('Failed to add student. Please try again.');
-          });
-      } else {
-        message.error('Error uploading file');
-      }
-    } else {
-      dispatch(createStudent(dataToSend)).then((response) => {
-        console.log("response is ", response);
-        if (response.message) {
-          message.success(response.message);
+            setSubmitStatus('success');
+            form.resetFields();
+            setSelectedImages([]);
+            setSchoolSelect(null);
+            setYearofstudy(null);
+            setcourse(null);
+            setCurrentStep(0);
+            setIsSubmitting(false);
+            
+            setTimeout(() => {
+              history.push('/admin/allStudents');
+            }, 2000);
+          } else if (result && result.error) {
+            message.error(result.error);
+            setSubmitStatus('error');
+            setIsSubmitting(false);
+          }
         } else {
-          message.error(response.error);
+          message.error('Error uploading file');
+          setSubmitStatus('error');
+          setIsSubmitting(false);
         }
-      });
+      } else {
+        const result = await dispatch(createStudent(dataToSend));
+        console.log("response is ", result);
+        
+        if (result && result.message) {
+          message.success(result.message);
+          setSubmitStatus('success');
+          form.resetFields();
+          setSelectedImages([]);
+          setSchoolSelect(null);
+          setYearofstudy(null);
+          setcourse(null);
+          setCurrentStep(0);
+          setIsSubmitting(false);
+          
+          setTimeout(() => {
+            history.push('/admin/allStudents');
+          }, 2000);
+        } else if (result && result.error) {
+          message.error(result.error);
+          setSubmitStatus('error');
+          setIsSubmitting(false);
+        }
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      message.error(error.message || 'Failed to add student. Please try again.');
+      setSubmitStatus('error');
+      setIsSubmitting(false);
     }
   };
 
@@ -149,12 +193,14 @@ const AdmissionScreen = () => {
     },
   ];
 
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
   return (
     <div className="hold-transition sidebar-mini layout-fixed">
       <div className="wrapper">
         <Topbar />
         <Sidebar />
-        <div className="content-wrapper" style={{ background: '#f0f2f5' }}>
+        <div className="content-wrapper" style={{ background: '#f0f4f8' }}>
           <section className="content">
             <div className="container-fluid">
               <div className="pt-3 w-100">
@@ -162,7 +208,7 @@ const AdmissionScreen = () => {
                   style={{ 
                     borderRadius: '15px',
                     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    background: '#343A40'
+                    background: '#1a2332'
                   }}
                 >
                   <div className="text-center text-white">
@@ -170,13 +216,13 @@ const AdmissionScreen = () => {
                       size={64} 
                       icon={<UserOutlined />} 
                       style={{ 
-                        background: 'rgba(255,255,255,0.2)',
+                        background: '#3498db',
                         border: '2px solid white',
                         marginBottom: '10px'
                       }} 
                     />
                     <Title level={2} style={{ color: 'white', margin: 0 }}>
-                       Student Admission Form
+                      Student Admission Form
                     </Title>
                     <Text style={{ color: 'rgba(255,255,255,0.8)' }}>
                       Please fill in all required fields to register a new student
@@ -203,19 +249,55 @@ const AdmissionScreen = () => {
                   }}
                 >
                   <Form
+                    form={form}
                     name="admissionForm"
                     onFinish={onFinish}
                     layout="vertical"
                     labelCol={{ span: 32 }}
                     wrapperCol={{ span: 32 }}
                   >
-                    <div style={{ display: currentStep === 0 ? 'block' : 'none' }}>
+                    {/* Submit Status Messages */}
+                    {submitStatus === 'success' && (
+                      <Alert
+                        message="Success!"
+                        description="Student has been successfully registered. Redirecting to student list..."
+                        type="success"
+                        showIcon
+                        style={{ marginBottom: '20px', borderRadius: '10px' }}
+                      />
+                    )}
+                    {submitStatus === 'error' && (
+                      <Alert
+                        message="Error"
+                        description="There was an error submitting the form. Please try again."
+                        type="error"
+                        showIcon
+                        style={{ marginBottom: '20px', borderRadius: '10px' }}
+                      />
+                    )}
+
+                    {isSubmitting && (
+                      <div style={{ 
+                        textAlign: 'center', 
+                        padding: '20px',
+                        background: '#f0f4f8',
+                        borderRadius: '10px',
+                        marginBottom: '20px'
+                      }}>
+                        <Spin indicator={antIcon} />
+                        <p style={{ marginTop: '10px', color: '#1a2332', fontWeight: '500' }}>
+                          Submitting student application... Please wait
+                        </p>
+                      </div>
+                    )}
+
+                    <div style={{ display: currentStep === 0 && !isSubmitting ? 'block' : 'none' }}>
                       <Card 
                         title={
                           <Space>
-                            <UserOutlined style={{ color: 'white' }} />
+                            <UserOutlined style={{ color: '#3498db' }} />
                             <span>Personal Information</span>
-                            <Badge count="Required" style={{ backgroundColor: '#52c41a' }} />
+                            <Badge count="Required" style={{ backgroundColor: '#3498db' }} />
                           </Space>
                         }
                         style={{ marginBottom: '20px', borderRadius: '10px' }}
@@ -346,7 +428,7 @@ const AdmissionScreen = () => {
                                           maxWidth: '100px', 
                                           maxHeight: '100px', 
                                           borderRadius: '10px',
-                                          border: '2px solid #667eea'
+                                          border: '2px solid #3498db'
                                         }} 
                                       />
                                     ))}
@@ -358,13 +440,13 @@ const AdmissionScreen = () => {
                       </Card>
                     </div>
 
-                    <div style={{ display: currentStep === 1 ? 'block' : 'none' }}>
+                    <div style={{ display: currentStep === 1 && !isSubmitting ? 'block' : 'none' }}>
                       <Card 
                         title={
                           <Space>
-                            <BookOutlined style={{ color: '#667eea' }} />
+                            <BookOutlined style={{ color: '#3498db' }} />
                             <span>Academic Information</span>
-                            <Badge count="Required" style={{ backgroundColor: '#52c41a' }} />
+                            <Badge count="Required" style={{ backgroundColor: '#3498db' }} />
                           </Space>
                         }
                         style={{ marginBottom: '20px', borderRadius: '10px' }}
@@ -410,7 +492,7 @@ const AdmissionScreen = () => {
                                 loading={loadingCourses}
                               >
                                 {courses && courses
-                                  .filter(course => course.school._id === schoolselected)
+                                  .filter(course => course.school && course.school._id === schoolselected)
                                   .map((course) => (
                                     <Select.Option key={course._id} value={course._id}>
                                       📚 {course.name}
@@ -466,13 +548,13 @@ const AdmissionScreen = () => {
                       </Card>
                     </div>
 
-                    <div style={{ display: currentStep === 2 ? 'block' : 'none' }}>
+                    <div style={{ display: currentStep === 2 && !isSubmitting ? 'block' : 'none' }}>
                       <Card 
                         title={
                           <Space>
-                            <TeamOutlined style={{ color: '#667eea' }} />
+                            <TeamOutlined style={{ color: '#3498db' }} />
                             <span>Parent/Guardian Details</span>
-                            <Badge count="Required" style={{ backgroundColor: '#52c41a' }} />
+                            <Badge count="Required" style={{ backgroundColor: '#3498db' }} />
                           </Space>
                         }
                         style={{ marginBottom: '20px', borderRadius: '10px' }}
@@ -530,7 +612,8 @@ const AdmissionScreen = () => {
                           variant="secondary" 
                           className="w-100" 
                           onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                          style={{ display: currentStep > 0 ? 'block' : 'none' }}
+                          style={{ display: currentStep > 0 && !isSubmitting ? 'block' : 'none' }}
+                          disabled={isSubmitting}
                         >
                           ← Previous
                         </Button>
@@ -541,21 +624,51 @@ const AdmissionScreen = () => {
                             variant="primary" 
                             className="w-100" 
                             onClick={() => setCurrentStep(Math.min(2, currentStep + 1))}
+                            disabled={isSubmitting}
                           >
                             Next →
                           </Button>
                         ) : (
                           <Form.Item wrapperCol={{ offset: 0, span: 32 }}>
                             <Button 
-                              type="primary" 
-                              className="w-100" 
+                              type="submit"
                               htmlType="submit"
+                              className="w-100"
+                              disabled={isSubmitting}
                               style={{ 
-                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                                border: 'none'
+                                background: '#3498db',
+                                border: 'none',
+                                color: 'white',
+                                padding: '12px',
+                                fontWeight: '600',
+                                fontSize: '16px',
+                                borderRadius: '10px',
+                                transition: 'all 0.3s ease',
+                                opacity: isSubmitting ? 0.7 : 1
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!isSubmitting) {
+                                  e.target.style.background = '#2980b9';
+                                  e.target.style.transform = 'translateY(-2px)';
+                                  e.target.style.boxShadow = '0 5px 20px rgba(52, 152, 219, 0.4)';
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!isSubmitting) {
+                                  e.target.style.background = '#3498db';
+                                  e.target.style.transform = 'translateY(0)';
+                                  e.target.style.boxShadow = 'none';
+                                }
                               }}
                             >
-                              <SaveOutlined /> Submit Application
+                              {isSubmitting ? (
+                                <span>
+                                  <Spin size="small" indicator={antIcon} style={{ marginRight: '10px' }} />
+                                  Submitting...
+                                </span>
+                              ) : (
+                                <span><SaveOutlined /> Submit Application</span>
+                              )}
                             </Button>
                           </Form.Item>
                         )}
