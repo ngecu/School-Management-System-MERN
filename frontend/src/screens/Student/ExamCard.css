@@ -1,0 +1,157 @@
+.exam-card {
+  max-width: 100%;
+  margin: 0 auto;
+  background: white;
+  border: 2px solid #1a2332;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.exam-card-header {
+  background: #1a2332;
+  color: white;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.school-logo {
+  flex-shrink: 0;
+}
+
+.logo-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: white;
+  padding: 5px;
+}
+
+.school-info h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.school-info p {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.exam-card-body {
+  padding: 20px;
+}
+
+.exam-title {
+  text-align: center;
+  color: #1a2332;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.exam-details p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.exam-details p strong {
+  color: #1a2332;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.qr-code-section {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.qr-code {
+  max-width: 120px;
+  height: auto;
+}
+
+.qr-code-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.exam-card-footer {
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-top: 2px solid #1a2332;
+}
+
+.signature-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.signature-section p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.terms small {
+  color: #6c757d;
+  font-size: 11px;
+}
+
+/* Print Styles */
+@media print {
+  .exam-card-modal .modal-header,
+  .exam-card-modal .modal-footer {
+    display: none !important;
+  }
+  
+  .exam-card {
+    border: 2px solid #000 !important;
+  }
+  
+  .exam-card-header {
+    background: #1a2332 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .exam-card-body {
+    padding: 20px !important;
+  }
+  
+  .exam-card-footer {
+    background: #f8f9fa !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .qr-code-section {
+    background: #f8f9fa !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .exam-card-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .exam-details p strong {
+    min-width: 100px;
+  }
+  
+  .signature-section {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

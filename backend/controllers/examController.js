@@ -1,28 +1,31 @@
 import asyncHandler from 'express-async-handler';
 import Exam from '../models/examModel.js';
 import ExamResult from '../models/examResultModel.js';
+import ExamBooking from '../models/examBookingModel.js';
 import SchoolFees from '../models/schoolFeesModel.js';
 import Student from '../models/studentModel.js';
+import User from '../models/userModel.js';
+import QRCode from 'qrcode';
 
 // @desc    Create a new exam
 // @route   POST /api/exams
 // @access  Private
 export const createExam = asyncHandler(async (req, res) => {
-  const { title, date, examType, courseUnit, startTime } = req.body;
+  const { title, date, examType, courseUnit, startTime, venue, duration } = req.body;
 
-  // Check if an exam with the same date and start time exists
   const existingExam = await Exam.findOne({ date, startTime });
 
   if (existingExam) {
     res.status(400).json({ message: 'An exam with the same date and start time already exists.' });
   } else {
-    // Create the new exam
     const exam = await Exam.create({
       title,
       date,
       examType,
       courseUnit,
       startTime,
+      venue,
+      duration
     });
 
     res.status(201).json(exam);
@@ -36,7 +39,6 @@ export const registerForExam = asyncHandler(async (req, res) => {
   const { examId } = req.params;
   const userId = req.user._id;
 
-  // Find the user
   const user = await User.findById(userId);
   
   if (!user) {
@@ -44,13 +46,11 @@ export const registerForExam = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  // Only students can register for exams
   if (user.userType !== 'Student') {
     res.status(403);
     throw new Error('Only students can register for exams');
   }
 
-  // Find the student
   const student = await Student.findOne({ email: user.email });
   
   if (!student) {
@@ -58,7 +58,6 @@ export const registerForExam = asyncHandler(async (req, res) => {
     throw new Error('Student not found');
   }
 
-  // Check if the exam exists
   const exam = await Exam.findById(examId);
   
   if (!exam) {
@@ -66,7 +65,6 @@ export const registerForExam = asyncHandler(async (req, res) => {
     throw new Error('Exam not found');
   }
 
-  // Check school fees payment status
   const schoolFees = await SchoolFees.find({ student: student._id });
   
   if (schoolFees.length === 0) {
@@ -87,7 +85,6 @@ export const registerForExam = asyncHandler(async (req, res) => {
     }
   });
 
-  // Check if at least 50% is paid
   const fiftyPercent = totalFees * 0.5;
 
   if (paidAmount < fiftyPercent) {
@@ -95,14 +92,12 @@ export const registerForExam = asyncHandler(async (req, res) => {
     throw new Error(`Cannot register for exams: You have only paid ${paidAmount} out of ${totalFees}. You need to pay at least 50% (${fiftyPercent}) of your school fees.`);
   }
 
-  // Check if there are any pending fees (unpaid)
   if (hasPendingFees) {
     const pendingAmount = totalFees - paidAmount;
     res.status(403);
     throw new Error(`Cannot register for exams: You have pending fees of ${pendingAmount}. Please clear all pending fees to register.`);
   }
 
-  // Check if student is already registered for this exam
   const existingResult = await ExamResult.findOne({ 
     student: student._id, 
     exam: examId 
@@ -113,7 +108,6 @@ export const registerForExam = asyncHandler(async (req, res) => {
     throw new Error('You are already registered for this exam');
   }
 
-  // Register the student for the exam
   const examResult = await ExamResult.create({
     student: student._id,
     exam: examId,
@@ -236,7 +230,6 @@ export const getAvailableExams = asyncHandler(async (req, res) => {
     throw new Error('Student not found');
   }
 
-  // Check eligibility first
   const schoolFees = await SchoolFees.find({ student: student._id });
   
   let totalFees = 0;
@@ -254,8 +247,6 @@ export const getAvailableExams = asyncHandler(async (req, res) => {
 
   const fiftyPercent = totalFees * 0.5;
 
-  // Check if student can view exams (not necessarily register)
-  let canViewExams = true;
   let registrationEligible = true;
   let message = '';
 
@@ -267,10 +258,8 @@ export const getAvailableExams = asyncHandler(async (req, res) => {
     message = `Cannot register: Has pending fees of ${totalFees - paidAmount}`;
   }
 
-  // Get exams with registration status
   const exams = await Exam.find().populate('examType courseUnit');
   
-  // Check which exams the student is already registered for
   const examResults = await ExamResult.find({ student: student._id });
   const registeredExamIds = examResults.map(result => result.exam.toString());
 
@@ -310,23 +299,23 @@ export const getExamById = asyncHandler(async (req, res) => {
 // @route   PUT /api/exams/:id
 // @access  Private
 export const updateExam = asyncHandler(async (req, res) => {
-  const { title, date, examType, courseUnit, startTime } = req.body;
+  const { title, date, examType, courseUnit, startTime, venue, duration } = req.body;
 
   const exam = await Exam.findById(req.params.id);
 
   if (exam) {
-    // Check if an exam with the same date and start time already exists
     const existingExam = await Exam.findOne({ date, startTime, _id: { $ne: req.params.id } });
 
     if (existingExam) {
       res.status(400).json({ message: 'An exam with the same date and start time already exists.' });
     } else {
-      // Update the exam details
-      exam.title = title;
-      exam.date = date;
-      exam.examType = examType;
-      exam.courseUnit = courseUnit;
-      exam.startTime = startTime;
+      exam.title = title || exam.title;
+      exam.date = date || exam.date;
+      exam.examType = examType || exam.examType;
+      exam.courseUnit = courseUnit || exam.courseUnit;
+      exam.startTime = startTime || exam.startTime;
+      exam.venue = venue || exam.venue;
+      exam.duration = duration || exam.duration;
 
       const updatedExam = await exam.save();
       res.json(updatedExam);
@@ -384,4 +373,337 @@ export const getMyExamResults = asyncHandler(async (req, res) => {
     });
 
   res.json(examResults);
+});
+
+// @desc    Book an exam (requires full fee payment)
+// @route   POST /api/exams/:examId/book
+// @access  Private (Student)
+export const bookExam = asyncHandler(async (req, res) => {
+  const { examId } = req.params;
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+  
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  if (user.userType !== 'Student') {
+    res.status(403);
+    throw new Error('Only students can book exams');
+  }
+
+  const student = await Student.findOne({ email: user.email });
+  
+  if (!student) {
+    res.status(404);
+    throw new Error('Student not found');
+  }
+
+  const exam = await Exam.findById(examId).populate('examType courseUnit');
+  
+  if (!exam) {
+    res.status(404);
+    throw new Error('Exam not found');
+  }
+
+  if (exam.status === 'Closed' || new Date(exam.date) < new Date()) {
+    res.status(400);
+    throw new Error('This exam is no longer available for booking');
+  }
+
+  const schoolFees = await SchoolFees.find({ student: student._id });
+  
+  if (schoolFees.length === 0) {
+    res.status(403);
+    throw new Error('You have no school fees record. Please contact the administration.');
+  }
+
+  let totalFees = 0;
+  let paidAmount = 0;
+  let hasPendingFees = false;
+
+  schoolFees.forEach(fee => {
+    totalFees += fee.amount;
+    if (fee.status === 'Paid') {
+      paidAmount += fee.amount;
+    } else if (fee.status === 'Pending') {
+      hasPendingFees = true;
+    }
+  });
+
+  if (paidAmount < totalFees) {
+    const remainingAmount = totalFees - paidAmount;
+    res.status(403);
+    throw new Error(`Cannot book exam: You have pending fees of ${remainingAmount}. Please clear ALL school fees to book exams.`);
+  }
+
+  if (hasPendingFees) {
+    res.status(403);
+    throw new Error('Cannot book exam: You have pending fees. Please clear ALL school fees to book exams.');
+  }
+
+  const existingBooking = await ExamBooking.findOne({ 
+    student: student._id, 
+    exam: examId,
+    status: { $in: ['Booked', 'Confirmed'] }
+  });
+
+  if (existingBooking) {
+    res.status(400);
+    throw new Error('You have already booked this exam');
+  }
+
+  const existingResult = await ExamResult.findOne({ 
+    student: student._id, 
+    exam: examId 
+  });
+
+  if (existingResult) {
+    res.status(400);
+    throw new Error('You have already taken this exam');
+  }
+
+  const bookingReference = `EXAM-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+
+  const examBooking = await ExamBooking.create({
+    student: student._id,
+    exam: examId,
+    bookingReference,
+    status: 'Booked',
+    bookingDate: new Date(),
+    isEligible: true
+  });
+
+  const examCardData = {
+    bookingReference: examBooking.bookingReference,
+    studentName: `${student.firstName} ${student.lastName}`,
+    studentId: student.studentId || student._id,
+    course: student.course || 'N/A',
+    examTitle: exam.title,
+    examType: exam.examType ? exam.examType.name : 'N/A',
+    examDate: new Date(exam.date).toLocaleDateString(),
+    examTime: exam.startTime || '09:00 AM',
+    venue: exam.venue || 'Main Hall',
+    duration: exam.duration || '3 hours',
+    registrationNumber: student.registrationNumber || student._id,
+    school: student.school ? student.school.name : 'N/A'
+  };
+
+  const qrCodeData = JSON.stringify({
+    bookingRef: examBooking.bookingReference,
+    studentId: student._id,
+    examId: examId
+  });
+  
+  const qrCodeUrl = await QRCode.toDataURL(qrCodeData);
+
+  res.status(201).json({
+    success: true,
+    message: 'Exam booked successfully!',
+    data: {
+      booking: examBooking,
+      examCard: examCardData,
+      qrCode: qrCodeUrl
+    }
+  });
+});
+
+// @desc    Get exam card for a booked exam
+// @route   GET /api/exams/:examId/exam-card
+// @access  Private (Student)
+export const getExamCard = asyncHandler(async (req, res) => {
+  const { examId } = req.params;
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+  
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  if (user.userType !== 'Student') {
+    res.status(403);
+    throw new Error('Only students can view exam cards');
+  }
+
+  const student = await Student.findOne({ email: user.email });
+  
+  if (!student) {
+    res.status(404);
+    throw new Error('Student not found');
+  }
+
+  const exam = await Exam.findById(examId).populate('examType courseUnit');
+  
+  if (!exam) {
+    res.status(404);
+    throw new Error('Exam not found');
+  }
+
+  const booking = await ExamBooking.findOne({ 
+    student: student._id, 
+    exam: examId,
+    status: { $in: ['Booked', 'Confirmed'] }
+  });
+
+  if (!booking) {
+    res.status(404);
+    throw new Error('No booking found for this exam');
+  }
+
+  const examCardData = {
+    bookingReference: booking.bookingReference,
+    studentName: `${student.firstName} ${student.lastName}`,
+    studentId: student.studentId || student._id,
+    course: student.course || 'N/A',
+    examTitle: exam.title,
+    examType: exam.examType ? exam.examType.name : 'N/A',
+    examDate: new Date(exam.date).toLocaleDateString(),
+    examTime: exam.startTime || '09:00 AM',
+    venue: exam.venue || 'Main Hall',
+    duration: exam.duration || '3 hours',
+    registrationNumber: student.registrationNumber || student._id,
+    school: student.school ? student.school.name : 'N/A',
+    bookingDate: new Date(booking.bookingDate).toLocaleDateString(),
+    status: booking.status
+  };
+
+  const qrCodeData = JSON.stringify({
+    bookingRef: booking.bookingReference,
+    studentId: student._id,
+    examId: examId
+  });
+  
+  const qrCodeUrl = await QRCode.toDataURL(qrCodeData);
+
+  res.json({
+    success: true,
+    data: {
+      examCard: examCardData,
+      qrCode: qrCodeUrl
+    }
+  });
+});
+
+// @desc    Get all booked exams for a student
+// @route   GET /api/exams/my-bookings
+// @access  Private (Student)
+export const getMyExamBookings = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+  
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  if (user.userType !== 'Student') {
+    res.status(403);
+    throw new Error('Only students can view bookings');
+  }
+
+  const student = await Student.findOne({ email: user.email });
+  
+  if (!student) {
+    res.status(404);
+    throw new Error('Student not found');
+  }
+
+  const bookings = await ExamBooking.find({ student: student._id })
+    .populate({
+      path: 'exam',
+      populate: ['examType', 'courseUnit']
+    })
+    .sort({ bookingDate: -1 });
+
+  res.json({
+    success: true,
+    count: bookings.length,
+    data: bookings
+  });
+});
+
+// @desc    Confirm exam booking (Admin only)
+// @route   PUT /api/exams/bookings/:bookingId/confirm
+// @access  Private (Admin)
+export const confirmExamBooking = asyncHandler(async (req, res) => {
+  const { bookingId } = req.params;
+
+  const booking = await ExamBooking.findById(bookingId);
+  
+  if (!booking) {
+    res.status(404);
+    throw new Error('Booking not found');
+  }
+
+  if (booking.status === 'Confirmed') {
+    res.status(400);
+    throw new Error('Booking is already confirmed');
+  }
+
+  booking.status = 'Confirmed';
+  booking.confirmedAt = new Date();
+  await booking.save();
+
+  res.json({
+    success: true,
+    message: 'Booking confirmed successfully',
+    data: booking
+  });
+});
+
+// @desc    Cancel exam booking
+// @route   PUT /api/exams/bookings/:bookingId/cancel
+// @access  Private (Student)
+export const cancelExamBooking = asyncHandler(async (req, res) => {
+  const { bookingId } = req.params;
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
+  
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  const student = await Student.findOne({ email: user.email });
+  
+  if (!student) {
+    res.status(404);
+    throw new Error('Student not found');
+  }
+
+  const booking = await ExamBooking.findOne({ 
+    _id: bookingId,
+    student: student._id
+  });
+  
+  if (!booking) {
+    res.status(404);
+    throw new Error('Booking not found');
+  }
+
+  if (booking.status === 'Cancelled') {
+    res.status(400);
+    throw new Error('Booking is already cancelled');
+  }
+
+  if (booking.status === 'Confirmed') {
+    res.status(400);
+    throw new Error('Cannot cancel a confirmed booking. Please contact administration.');
+  }
+
+  booking.status = 'Cancelled';
+  booking.cancelledAt = new Date();
+  await booking.save();
+
+  res.json({
+    success: true,
+    message: 'Booking cancelled successfully',
+    data: booking
+  });
 });

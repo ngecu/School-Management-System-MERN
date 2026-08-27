@@ -9,7 +9,12 @@ import {
   registerForExam,
   checkExamEligibility,
   getAvailableExams,
-  getMyExamResults
+  getMyExamResults,
+  bookExam,
+  getExamCard,
+  getMyExamBookings,
+  confirmExamBooking,
+  cancelExamBooking
 } from '../controllers/examController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -28,8 +33,23 @@ router.route('/check-eligibility')
 router.route('/my-results')
   .get(protect, getMyExamResults);
 
+router.route('/my-bookings')
+  .get(protect, getMyExamBookings);
+
+router.route('/:examId/book')
+  .post(protect, bookExam);
+
+router.route('/:examId/exam-card')
+  .get(protect, getExamCard);
+
 router.route('/:examId/register')
   .post(protect, registerForExam);
+
+router.route('/bookings/:bookingId/confirm')
+  .put(protect, confirmExamBooking);
+
+router.route('/bookings/:bookingId/cancel')
+  .put(protect, cancelExamBooking);
 
 router.route('/:id')
   .get(getExamById)

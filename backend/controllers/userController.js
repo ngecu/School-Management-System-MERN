@@ -27,37 +27,37 @@ const authUser = asyncHandler(async (req, res) => {
       throw new Error('Account is inactive. Please contact the administrator.');
     }
 
-    // Check school fees for Student user type
-    if (user.userType === 'Student') {
-      const student = await Student.findOne({ email: user.email });
+    // // Check school fees for Student user type
+    // if (user.userType === 'Student') {
+    //   const student = await Student.findOne({ email: user.email });
       
-      if (student) {
-        // Get all school fees for this student
-        const schoolFees = await SchoolFees.find({ student: student._id });
+    //   if (student) {
+    //     // Get all school fees for this student
+    //     const schoolFees = await SchoolFees.find({ student: student._id });
         
-        // Calculate total fees and paid amount
-        let totalFees = 0;
-        let paidAmount = 0;
+    //     // Calculate total fees and paid amount
+    //     let totalFees = 0;
+    //     let paidAmount = 0;
         
-        schoolFees.forEach(fee => {
-          totalFees += fee.amount;
-          if (fee.status === 'Paid') {
-            paidAmount += fee.amount;
-          }
-        });
+    //     schoolFees.forEach(fee => {
+    //       totalFees += fee.amount;
+    //       if (fee.status === 'Paid') {
+    //         paidAmount += fee.amount;
+    //       }
+    //     });
         
-        // Check if at least 50% is paid
-        const fiftyPercent = totalFees * 0.5;
+    //     // Check if at least 50% is paid
+    //     const fiftyPercent = totalFees * 0.5;
         
-        if (totalFees > 0 && paidAmount < fiftyPercent) {
-          res.status(403);
-          throw new Error(`Access Denied: You must pay at least 50% of your school fees (${paidAmount}/${totalFees}) to access the system.`);
-        }
+    //     if (totalFees > 0 && paidAmount < fiftyPercent) {
+    //       res.status(403);
+    //       throw new Error(`Access Denied: You must pay at least 50% of your school fees (${paidAmount}/${totalFees}) to access the system.`);
+    //     }
         
-        // Check if there are any pending fees for exam registration
-        // This will be used in the exam registration check
-      }
-    }
+    //     // Check if there are any pending fees for exam registration
+    //     // This will be used in the exam registration check
+    //   }
+    // }
     
     const userDetails = {
       _id: user._id,

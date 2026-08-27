@@ -4,8 +4,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import 'admin-lte/dist/css/adminlte.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
-
-
 import LoginScreen from './screens/LoginScreen'
 import LostPasswordScreen from './screens/LostPasswordScreen'
 import NewPasswordScreen from './screens/NewPasswordScreen'
@@ -34,64 +32,56 @@ import AllAccountants from './screens/Admin/AllAccountants';
 import ParentProfileScreen from './screens/Parent/parentProfileScreen';
 import ParentStudentExamResultScreen from './screens/Parent/ParentstudentExamResultScreen';
 
+// Import the Available Exams Screen
+import AvailableExamsScreen from './screens/Student/AvailableExamsScreen';
+
 const App = () => {
 
   return (
     <HelmetProvider>
-    <Router>
-      
-      <main>
-          {/* GENERAL ROUTES  */}
+      <Router>
+        <main>
+          {/* GENERAL ROUTES */}
           <Route path='/' component={LoginScreen} exact />
           <Route path="/lost-password" component={LostPasswordScreen} />
           <Route path="/new-password/:id/:token" component={NewPasswordScreen} />
           
-          {/* ADMIN ROUTES  */}
+          {/* ADMIN ROUTES */}
           <Route path="/admin/allStudents" component={AllStudents} />
           <Route path="/admin/admission" component={AdmissionScreen} />
           <Route path="/admin/add_lecturer" component={AddLecturerScreen} />
           <Route path="/admin/allLecturers" component={AllLecturers} />
           <Route path="/admin/AllAccountants" component={AllAccountants} />
-         
           <Route path="/admin/allAttedance" component={AttedanceScreen} />
-
-          
-
           <Route path="/admin/add_accountant" component={AddAccountant} />
           <Route path="/admin/allfee" component={AdminFeeScreen} />
           <Route path="/admin/exam_schedule" component={ExanSchedulerScreen} />
           <Route path="/admin/exam_grade" component={ExamGradingScreen} />
 
-
-          {/* students routes  */}
+          {/* STUDENT ROUTES */}
           <Route path="/student/my_attendance" component={studentAttendanceScreen} />
           <Route path="/student/my_exam" component={studentExamResultScreen} />
           <Route path="/student/my_fees" component={studentFeeScreen} />
           <Route path="/student/my_profile" component={StudentProfileScreen} />
           <Route path="/student/invoice" component={studentInvoiceScreen} />
+          <Route path="/student/available-exams" component={AvailableExamsScreen} />
 
-
-          {/* parents routes  */}
+          {/* PARENT ROUTES */}
           <Route path="/student/my_attendance" component={studentAttendanceScreen} />
           <Route path="/parent/exam" component={ParentStudentExamResultScreen} />
           <Route path="/parent/my_profile" component={ParentProfileScreen} />
 
-
-          {/* account routes  */}
+          {/* ACCOUNTANT ROUTES */}
           <Route path="/accountant/fee" component={AccountantFeeScreen} />
           <Route path="/accountant/payments" component={AccountantPaymentScreen} />
           
-       {/* lecrurer routes  */}
-       <Route path="/lecturer/profile" component={LecturerProfileScreen} />
-       <Route path="/lecturer/my_students" component={LecturerMyStudentsScreen} />
-       <Route path="/lecturer/grades" component={LecturerGradeScreen} />
-       <Route path="/lecturer/profile" component={LecturerProfileScreen} />
-
-
-
-      </main>
-      
-    </Router>
+          {/* LECTURER ROUTES */}
+          <Route path="/lecturer/profile" component={LecturerProfileScreen} />
+          <Route path="/lecturer/my_students" component={LecturerMyStudentsScreen} />
+          <Route path="/lecturer/grades" component={LecturerGradeScreen} />
+          <Route path="/lecturer/profile" component={LecturerProfileScreen} />
+        </main>
+      </Router>
     </HelmetProvider>
   )
 }
