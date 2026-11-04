@@ -1,190 +1,312 @@
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from '../../../actions/userActions'
 import { useEffect, useState } from "react"
-import { NavLink, useHistory } from 'react-router-dom/cjs/react-router-dom.min';import { Button } from "react-bootstrap"
-import {FaUsers,FaUserPlus,FaChalkboardTeacher,FaMoneyBillWave } from "react-icons/fa";
-import { PiExam,PiExamFill  } from "react-icons/pi";
+import { NavLink, useHistory, useLocation } from 'react-router-dom'
+import { Button } from "react-bootstrap"
+import {
+  FaUsers, FaUserPlus, FaChalkboardTeacher, FaMoneyBillWave,
+  FaClipboardList, FaUserGraduate, FaBook, FaFileInvoiceDollar,
+  FaCalendarCheck, FaClipboardCheck, FaUserTie, FaChartBar,
+  FaUniversity, FaCog, FaUserEdit
+} from "react-icons/fa";
+import { PiExam } from "react-icons/pi";
 import { MdLogout } from "react-icons/md";
 import logo from '../../../assets/logo.jpg'
 
 const Sidebar = () => {
   const dispatch = useDispatch()
-  const history = useHistory();
+  const history = useHistory()
+  const location = useLocation()
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   const logoutHandler = () => {
     dispatch(logout())
   }
+
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
-  
+
   useEffect(() => {
     if (!userInfo) {
-  
       history.push('/');
     }
   }, [userInfo, history]);
-
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentDateTime(new Date());
     }, 1000);
-
     return () => clearInterval(intervalId);
   }, []);
 
-  
+  // Adjust these role checks to match your backend's role values
+  const role = userInfo?.userData?.role || userInfo?.role;
 
-    return (
+  const isActive = (path) =>
+    location.pathname === path ? 'active' : '';
 
-<aside class="main-sidebar sidebar-dark-primary elevation-4" style={{minHeight:"100vh"}}>
-  
-    <a href="#" class="brand-link">
-      <img src={logo} alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style={{opacity: .8}}/>
-      <span class="brand-text font-weight-light">EVE SMS</span>
-    </a>
+  return (
+    <aside className="main-sidebar sidebar-dark-primary elevation-4" style={{ minHeight: "100vh" }}>
 
+      <a href="#" className="brand-link">
+        <img src={logo} alt="EVE SMS Logo" className="brand-image img-circle elevation-3" style={{ opacity: .8 }} />
+        <span className="brand-text font-weight-light">EVE SMS</span>
+      </a>
 
-    <div class="sidebar">
+      <div className="sidebar">
 
-
-
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-        {userInfo && userInfo.userData.photo && (
-  <img src={userInfo.userData.photo} class="img-circle elevation-2" alt="User Image"/>
-)}        </div>
-        <div class="info">
-          <a  class="d-block">{userInfo && userInfo.firstName}</a>
-        </div>
-      </div>
-
-    
-
-      {/* <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search"/>
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
+        <div className="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div className="image">
+            {userInfo && userInfo.userData.photo && (
+              <img src={userInfo.userData.photo} className="img-circle elevation-2" alt="User" />
+            )}
+          </div>
+          <div className="info">
+            <a className="d-block">{userInfo && userInfo.firstName}</a>
           </div>
         </div>
-      </div> */}
 
-  
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column"  data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item menu-open">
-            <NavLink to="/" class={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-               
-              </p>
-            </NavLink>
-        
-          </li>
+        <nav className="mt-2">
+          <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-          <li class="nav-item">
-              <NavLink to="/admin/allStudents" class={`nav-link ${location.pathname === '/admin/allStudents' ? 'active' : ''}`}>
-              <FaUsers />
-                  <p>All Students</p>
-                </NavLink>
-              </li>
-        
-              <li class="nav-item">
-              <NavLink to="/admin/admission" class={`nav-link ${location.pathname === '/admin/admission' ? 'active' : ''}`}>
-              <FaUserPlus />
-                  <p>Admit Student</p>
-                </NavLink>
-              </li>
+            {/* ============ DASHBOARD (everyone) ============ */}
+            <li className="nav-item">
+              <NavLink to="/" className={`nav-link ${isActive('/')}`}>
+                <i className="nav-icon fas fa-tachometer-alt"></i>
+                <p>Dashboard</p>
+              </NavLink>
+            </li>
 
-              <li class="nav-item">
-              <NavLink to="/admin/allLecturers" class={`nav-link ${location.pathname === '/admin/allLecturers' ? 'active' : ''}`}>
-              <FaChalkboardTeacher />
-              
-                  <p>All Lecturers</p>
-                </NavLink>
-              </li>
-              <li class="nav-item">
-              <NavLink to="/admin/add_lecturer" class={`nav-link ${location.pathname === '/admin/add_lecturer' ? 'active' : ''}`}>
-              <FaUserPlus />
-                  <p>Add Lecturer</p>
-                </NavLink>
-              </li>
+            {/* ============ ADMIN MENU ============ */}
+            {(!role || role === 'admin') && (
+              <>
+                <li className="nav-header">STUDENTS</li>
+                <li className="nav-item">
+                  <NavLink to="/admin/allStudents" className={`nav-link ${isActive('/admin/allStudents')}`}>
+                    <FaUsers />
+                    <p>All Students</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/admin/admission" className={`nav-link ${isActive('/admin/admission')}`}>
+                    <FaUserPlus />
+                    <p>Admit Student</p>
+                  </NavLink>
+                </li>
 
-              <li clas
-              s="nav-item">
-              <NavLink to="/admin/allAccountants" class={`nav-link ${location.pathname === '/admin/allAccountants' ? 'active' : ''}`}>
-              <FaChalkboardTeacher />
-                  <p>All Accountants</p>
-                </NavLink>
-              </li>
-             
-              <li class="nav-item">
-              <NavLink to="/admin/add_accountant" class={`nav-link ${location.pathname === '/admin/add_accountant' ? 'active' : ''}`}>
-              <FaUserPlus />
-                  <p>Add Accountant</p>
-                </NavLink>
-              </li>
+                <li className="nav-header">STAFF</li>
+                <li className="nav-item">
+                  <NavLink to="/admin/allLecturers" className={`nav-link ${isActive('/admin/allLecturers')}`}>
+                    <FaChalkboardTeacher />
+                    <p>All Lecturers</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/admin/add_lecturer" className={`nav-link ${isActive('/admin/add_lecturer')}`}>
+                    <FaUserPlus />
+                    <p>Add Lecturer</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/admin/allAccountants" className={`nav-link ${isActive('/admin/allAccountants')}`}>
+                    <FaChalkboardTeacher />
+                    <p>All Accountants</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/admin/add_accountant" className={`nav-link ${isActive('/admin/add_accountant')}`}>
+                    <FaUserPlus />
+                    <p>Add Accountant</p>
+                  </NavLink>
+                </li>
 
-              <li class="nav-item">
-              <NavLink to="/admin/allfee" class={`nav-link ${location.pathname === '/admin/allfee' ? 'active' : ''}`}>
-              <FaMoneyBillWave />
-                  <p>All Fees Collection</p>
-                </NavLink>
-              </li>
+                <li className="nav-header">ACADEMICS</li>
+                <li className="nav-item">
+                  <NavLink to="/admin/programs" className={`nav-link ${isActive('/admin/programs')}`}>
+                    <FaBook />
+                    <p>Programs</p>
+                  </NavLink>
+                </li>
 
-              <li class="nav-item">
-              <NavLink to="/admin/exam_schedule" class={`nav-link ${location.pathname === '/admin/exam_schedule' ? 'active' : ''}`}>
-              <PiExam />
-                  <p>Exam Schedule</p>
-                </NavLink>
-              </li>
-              {/* <li class="nav-item">
-              <NavLink to="/admin/exam_grade" class={`nav-link ${location.pathname === '/admin/exam_grade' ? 'active' : ''}`}>
-              <PiExamFill />
-                  <p>Exam Grade</p>
-                </NavLink>
-              </li> */}
-          
-          {/* <li class="nav-item">
-          <NavLink to="/allAttedance" class={`nav-link ${location.pathname === '/allAttedance' ? 'active' : ''}`}>
-            <i class="nav-icon fas fa-person"></i>
-              <p>
-                Attendance
-                
-              </p>
-            </NavLink>
-          
-          </li> */}
+                <li className="nav-item">
+                  <NavLink
+                    to="/admin/departments"
+                    className={`nav-link ${isActive('/admin/departments')}`}
+                  >
+                    <FaUniversity />
+                    <p>Departments</p>
+                  </NavLink>
+                </li>
 
+                <li className="nav-item">
+                  <NavLink to="/admin/exam_schedule" className={`nav-link ${isActive('/admin/exam_schedule')}`}>
+                    <PiExam />
+                    <p>Exam Schedule</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/admin/exam_grade" className={`nav-link ${isActive('/admin/exam_grade')}`}>
+                    <FaClipboardCheck />
+                    <p>Exam Grading</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/admin/process-results" className={`nav-link ${isActive('/admin/process-results')}`}>
+                    <FaCog />
+                    <p>Process Results</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/admin/department-reports" className={`nav-link ${isActive('/admin/department-reports')}`}>
+                    <FaChartBar />
+                    <p>Department Reports</p>
+                  </NavLink>
+                </li>
 
-          {/* <li class="nav-item">
-          <NavLink to="/admin/chat" class={`nav-link ${location.pathname === '/admin/chat' ? 'active' : ''}`}>
-            <i class="nav-icon fas fa-person"></i>
-            <p>Message</p>
-          </NavLink>
-        </li> */}
+                <li className="nav-header">FINANCE</li>
+                <li className="nav-item">
+                  <NavLink to="/admin/allfee" className={`nav-link ${isActive('/admin/allfee')}`}>
+                    <FaMoneyBillWave />
+                    <p>All Fees Collection</p>
+                  </NavLink>
+                </li>
+              </>
+            )}
 
+            {/* ============ STUDENT MENU ============ */}
+            {role === 'student' && (
+              <>
+                <li className="nav-header">MY ACADEMICS</li>
+                <li className="nav-item">
+                  <NavLink to="/student/registration" className={`nav-link ${isActive('/student/registration')}`}>
+                    <FaUserEdit />
+                    <p>Course Registration</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/student/academic-record" className={`nav-link ${isActive('/student/academic-record')}`}>
+                    <FaClipboardList />
+                    <p>Academic Record</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/student/available-exams" className={`nav-link ${isActive('/student/available-exams')}`}>
+                    <PiExam />
+                    <p>Available Exams</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/student/my_exam" className={`nav-link ${isActive('/student/my_exam')}`}>
+                    <FaClipboardCheck />
+                    <p>My Exam Results</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/student/my_attendance" className={`nav-link ${isActive('/student/my_attendance')}`}>
+                    <FaCalendarCheck />
+                    <p>My Attendance</p>
+                  </NavLink>
+                </li>
 
-        <li class="nav-item" onClick={logoutHandler}>
-          <Button variant="danger" className="w-100 btn-sm" >
-          <MdLogout /> LOGOUT
-          </Button>
-        </li>
-        
-        
-        </ul>
-      </nav>
-      
-    </div>
-  
-  </aside>
+                <li className="nav-header">FINANCE</li>
+                <li className="nav-item">
+                  <NavLink to="/student/my_fees" className={`nav-link ${isActive('/student/my_fees')}`}>
+                    <FaMoneyBillWave />
+                    <p>My Fees</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/student/invoice" className={`nav-link ${isActive('/student/invoice')}`}>
+                    <FaFileInvoiceDollar />
+                    <p>Invoice</p>
+                  </NavLink>
+                </li>
 
-  )}
+                <li className="nav-header">ACCOUNT</li>
+                <li className="nav-item">
+                  <NavLink to="/student/my_profile" className={`nav-link ${isActive('/student/my_profile')}`}>
+                    <FaUserGraduate />
+                    <p>My Profile</p>
+                  </NavLink>
+                </li>
+              </>
+            )}
 
+            {/* ============ PARENT MENU ============ */}
+            {role === 'parent' && (
+              <>
+                <li className="nav-header">MY CHILD</li>
+                <li className="nav-item">
+                  <NavLink to="/parent/exam" className={`nav-link ${isActive('/parent/exam')}`}>
+                    <PiExam />
+                    <p>Exam Results</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/parent/my_profile" className={`nav-link ${isActive('/parent/my_profile')}`}>
+                    <FaUserTie />
+                    <p>My Profile</p>
+                  </NavLink>
+                </li>
+              </>
+            )}
 
-  export default Sidebar;
+            {/* ============ ACCOUNTANT MENU ============ */}
+            {role === 'accountant' && (
+              <>
+                <li className="nav-header">FINANCE</li>
+                <li className="nav-item">
+                  <NavLink to="/accountant/fee" className={`nav-link ${isActive('/accountant/fee')}`}>
+                    <FaMoneyBillWave />
+                    <p>Fee Management</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/accountant/payments" className={`nav-link ${isActive('/accountant/payments')}`}>
+                    <FaFileInvoiceDollar />
+                    <p>Payments</p>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* ============ LECTURER MENU ============ */}
+            {role === 'lecturer' && (
+              <>
+                <li className="nav-header">TEACHING</li>
+                <li className="nav-item">
+                  <NavLink to="/lecturer/my_students" className={`nav-link ${isActive('/lecturer/my_students')}`}>
+                    <FaUsers />
+                    <p>My Students</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/lecturer/grades" className={`nav-link ${isActive('/lecturer/grades')}`}>
+                    <FaClipboardCheck />
+                    <p>Grade Students</p>
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/lecturer/profile" className={`nav-link ${isActive('/lecturer/profile')}`}>
+                    <FaChalkboardTeacher />
+                    <p>My Profile</p>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* ============ LOGOUT (everyone) ============ */}
+            <li className="nav-item mt-3" onClick={logoutHandler}>
+              <Button variant="danger" className="w-100 btn-sm">
+                <MdLogout /> LOGOUT
+              </Button>
+            </li>
+
+          </ul>
+        </nav>
+      </div>
+    </aside>
+  )
+}
+
+export default Sidebar

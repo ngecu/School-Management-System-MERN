@@ -108,6 +108,8 @@ import {
   examResultDeleteReducer,
   examResultsByStudentsReducer
 } from './reducers/examResultReducers';
+import { programCreateReducer, programListReducer } from './reducers/programReducers';
+import { departmentCreateReducer, departmentListReducer, departmentUpdateReducer,departmentDeleteReducer} from './reducers/departmentReducers';
 
 
 const reducer = combineReducers({
@@ -219,6 +221,14 @@ const reducer = combineReducers({
 
     // Upload reducerr
     uploadFile: uploadFileReducer,
+
+    programList: programListReducer,
+    programCreate: programCreateReducer,
+
+    departmentList: departmentListReducer,
+    departmentCreate: departmentCreateReducer,
+    departmentUpdate: departmentUpdateReducer,
+    departmentDelete: departmentDeleteReducer
 });
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

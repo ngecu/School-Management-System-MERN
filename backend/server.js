@@ -20,6 +20,10 @@ import feeRoutes from './routes/feeRoutes.js'
 import paymentRoutes from './routes/paymentRoutes.js'
 import examRoutes from './routes/examRoutes.js'
 import examResultsRoutes from './routes/examResultRoutes.js'
+import programRoutes from './routes/programRoutes.js';
+import registrationRoutes from './routes/registrationRoutes.js';
+import academicRoutes from './routes/academicRoutes.js';
+import departmentRoutes from './routes/departmentRoutes.js';
 
 import cors from 'cors'
 
@@ -55,8 +59,10 @@ app.use("/api/payment", paymentRoutes);
 app.use('/api/mpesa',mpesaRoutes)
 app.use('/api/exams',examRoutes)
 app.use('/api/exam-results',examResultsRoutes)
-
-
+app.use('/api/programs', programRoutes);
+app.use('/api/registrations', registrationRoutes);
+app.use('/api/academics', academicRoutes);
+app.use('/api/departments', departmentRoutes);
 
 
 app.use(notFound)

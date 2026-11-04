@@ -46,7 +46,7 @@ const AddLecturerScreen = () => {
         
         message.success(response.message);
 
-        // history.push('/admin/allLecturers');
+        history.push('/admin/allLecturers');
 
       } else {
         // Handle failure, show an error message
@@ -2487,7 +2487,7 @@ const { loading: loadingSchools, error: errorSchools } = schoolsList;
             "updatedAt": "2024-02-14T11:30:56.932Z"
         }
     ]
-    
+
 const courseList = useSelector((state) => state.courseList);
 const { loading: loadingCourses, success, error: errorCourses } = courseList;
 
@@ -10166,32 +10166,32 @@ const [selectedImages, setSelectedImages] = useState([]);
     accept: acceptedImageTypes.join(','), 
   });
 
-  // Show loader while schools or courses are loading
-  const isLoading = loadingSchools || loadingCourses;
+  // // Show loader while schools or courses are loading
+  // const isLoading = loadingSchools || loadingCourses;
 
-  if (isLoading) {
-    return (
-      <div class="hold-transition sidebar-mini layout-fixed">
-        <div class="wrapper">
-          <Topbar/>
-          <Sidebar />
-          <div class="content-wrapper">
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center', 
-              height: '80vh',
-              flexDirection: 'column',
-              gap: '20px'
-            }}>
-              <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
-              <h4>Loading schools and courses...</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div class="hold-transition sidebar-mini layout-fixed">
+  //       <div class="wrapper">
+  //         <Topbar/>
+  //         <Sidebar />
+  //         <div class="content-wrapper">
+  //           <div style={{ 
+  //             display: 'flex', 
+  //             justifyContent: 'center', 
+  //             alignItems: 'center', 
+  //             height: '80vh',
+  //             flexDirection: 'column',
+  //             gap: '20px'
+  //           }}>
+  //             <Spin indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
+  //             <h4>Loading schools and courses...</h4>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Show error if schools or courses failed to load
   if (errorSchools || errorCourses) {
