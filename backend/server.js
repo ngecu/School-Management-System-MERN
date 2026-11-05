@@ -24,6 +24,7 @@ import programRoutes from './routes/programRoutes.js';
 import registrationRoutes from './routes/registrationRoutes.js';
 import academicRoutes from './routes/academicRoutes.js';
 import departmentRoutes from './routes/departmentRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
 
 import cors from 'cors'
 
@@ -63,7 +64,7 @@ app.use('/api/programs', programRoutes);
 app.use('/api/registrations', registrationRoutes);
 app.use('/api/academics', academicRoutes);
 app.use('/api/departments', departmentRoutes);
-
+app.use('/api/reports', reportRoutes);
 
 app.use(notFound)
 app.use(errorHandler)
