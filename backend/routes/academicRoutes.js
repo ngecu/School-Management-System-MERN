@@ -1,5 +1,5 @@
 import express from 'express';
-import { processStudentResults, getStudentAcademicRecords } from '../controllers/academicController.js';
+import { processStudentResults, getStudentAcademicRecords, getPendingResults } from '../controllers/academicController.js';
 
 const router = express.Router();
 
@@ -8,5 +8,7 @@ router.post('/process-results', processStudentResults);
 
 // GET endpoint to generate the "Rigor Per Student" report
 router.get('/records/:studentId', getStudentAcademicRecords);
+
+router.get('/pending-results', getPendingResults); // <-- NEW ROUTE
 
 export default router;

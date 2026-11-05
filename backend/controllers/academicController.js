@@ -114,3 +114,24 @@ export const getStudentAcademicRecords = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// @desc    Get all pending results (Marks entered, not processed)
+// @route   GET /api/exams/pending-results
+export const getPendingResults = async (req, res) => {
+    try {
+        const { academicYear, semester } = req.query;
+
+        // Find results where status is 'Pending'
+        const results = await ExamResult.find({ 
+            academicYear, 
+            semester, 
+            status: 'Pending' // Assuming your ExamResult model has a status field
+        })
+        .populate('student', 'name admissionNumber') // Get student details
+        .populate('courseUnit', 'name code'); // Get unit details
+
+        res.status(200).json(results);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

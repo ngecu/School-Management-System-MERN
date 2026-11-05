@@ -17,6 +17,7 @@ import {
   DEPARTMENT_CREATE_RESET,
   DEPARTMENT_UPDATE_RESET,
 } from '../../constants/departmentConstants';
+import { exportToPdf } from '../../utils/exportToPdf';
 
 const AdminDepartmentManagementScreen = () => {
   const dispatch = useDispatch();
@@ -129,6 +130,21 @@ const { schools, error: schoolError } = schoolList;
     }
   };
 
+
+  const downloadPdfHandler = () => {
+  exportToPdf({
+    title: 'Department List',
+    filename: 'departments',
+    columns: ['Name', 'Code', 'School', 'Description'],
+    rows: departments.map((d) => [
+      d.name || '',
+      d.code || '',
+      d.school?.name || '—',
+      d.description || '—',
+    ]),
+  });
+};
+
   return (
     <div className="hold-transition sidebar-mini layout-fixed">
       <div className="wrapper">
@@ -142,10 +158,19 @@ const { schools, error: schoolError } = schoolList;
                   <h4>Department Management</h4>
                 </Col>
                 <Col className="text-end">
-                  <Button variant="primary" onClick={openCreate}>
-                    + New Department
-                  </Button>
-                </Col>
+                    <Button
+                        variant="outline-secondary"
+                        className="me-2"
+                        onClick={downloadPdfHandler}
+                        disabled={!departments || departments.length === 0}
+                    >
+                        <i className="fas fa-file-pdf me-1"></i>
+                        Download PDF
+                    </Button>
+                    <Button variant="primary" onClick={openCreate}>
+                        + New Department
+                    </Button>
+                    </Col>
               </Row>
 
               {(error || errorCreate || errorUpdate || errorDelete) && (
